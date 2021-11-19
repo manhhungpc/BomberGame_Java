@@ -1,14 +1,15 @@
 package main.states;
 
 import main.Game;
+import main.Handler;
 import main.gfx.Assets;
 
 import java.awt.*;
 
 public class MenuState extends State {
 
-    public MenuState(Game game){
-        super(game);
+    public MenuState(Handler handler){
+        super(handler);
     }
 
     @Override

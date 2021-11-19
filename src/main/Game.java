@@ -33,6 +33,9 @@ public class Game implements Runnable {
     // Inputs
     private KeyManager keyManager = new KeyManager();
 
+    //Handler
+    private Handler handler;
+
     public Game(String title, int width, int height){
         this.width = width;
         this.height = height;
@@ -46,8 +49,10 @@ public class Game implements Runnable {
         display.getFrame().addKeyListener(keyManager);
         Assets.init();
 
-        gameState = new GameState(this);
-        menuState = new MenuState(this);
+        handler = new Handler(this);
+
+        gameState = new GameState(handler);
+        menuState = new MenuState(handler);
         State.setState(gameState);
     }
 
@@ -149,6 +154,13 @@ public class Game implements Runnable {
         return keyManager;
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 }
 
 
