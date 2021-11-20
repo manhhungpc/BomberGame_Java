@@ -10,7 +10,7 @@ public class Display {
     private String title;
     private int height, width;
 
-    public Display(String title, int height, int width){
+    public Display(String title, int width, int height){
         this.title = title;
         this.height = height;
         this.width = width;
