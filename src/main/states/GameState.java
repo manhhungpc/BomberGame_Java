@@ -43,7 +43,7 @@ public class GameState extends State {
             balloons.add(new Balloon(handler, x*36, y*36));
         }
 
-        bombSet = new BombSet(handler, 0, 0, 36, 36, players.get(0));
+        bombSet = new BombSet(handler, this,0, 0, 36, 36, players.get(0));
     }
 
     @Override
@@ -85,5 +85,17 @@ public class GameState extends State {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public List<Balloon> getBalloons() {
+        return balloons;
+    }
+
+    public BombSet getBombSet() {
+        return bombSet;
     }
 }

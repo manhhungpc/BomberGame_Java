@@ -4,6 +4,7 @@ import main.Handler;
 import main.TestTime;
 import main.gfx.Animation;
 import main.gfx.Assets;
+import main.states.GameState;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,12 +23,12 @@ public class Bomb extends Creature {
     private int left, right, up, down;
     private boolean flameAlive = false;
 
-    public Bomb(Handler handler, float x, float y, int width, int height) {
+    public Bomb(Handler handler, GameState gameState, float x, float y, int width, int height) {
         super(handler, ((int) x ) / 36 * 36, ((int) y ) / 36 * 36, width, height);
         bombGif = new Animation(500, Assets.bombGif);
 //        startTime = TestTime.timeNow();
         startTime = TestTime.timeNow2();
-        flame = new Flame(handler, x, y, -1, -1, this, 2, 2, 2, 2);
+        flame = new Flame(handler, gameState, x, y, -1, -1, this, 2, 2, 2, 2);
     }
 
     @Override

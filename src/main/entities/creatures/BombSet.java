@@ -17,13 +17,15 @@ public class BombSet extends Entity {
     private final int bombNumber = 0;
     private List<Bomb> bombList;
     private boolean bombDone;
+    private GameState gameState;
 
-    public BombSet(Handler handler, float x, float y, int width, int height, Player player) {
+    public BombSet(Handler handler, GameState gameState, float x, float y, int width, int height, Player player) {
         super(handler, x, y, width, height);
         this.player = player;
         super.x = player.getX();
         super.y = player.getY();
         bombList = new ArrayList<>();
+        this.gameState = gameState;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class BombSet extends Entity {
         }
 
         if (bombedRequest && bombList.size() < maxBombNumber && !bombDone) {
-            bombList.add(new Bomb(handler, x, y, 36, 36));
+            bombList.add(new Bomb(handler, gameState, x, y, 36, 36));
 //            System.out.println(x + " " + y);
             bombDone = true;
         }

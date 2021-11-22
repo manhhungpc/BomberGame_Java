@@ -1,13 +1,16 @@
 package main.gfx;
 
+import main.entities.creatures.Flame;
+
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class Assets {
 
-    private static final int width = 32, height = 32;
+//    private static final int width = 32, height = 32;
 
     public static BufferedImage player, dirt, grass, stone, tree, wall, brick, fake;
     public static BufferedImage[] player_down, player_up, player_left, player_right;
@@ -93,33 +96,70 @@ public class Assets {
 
     public static BufferedImage[] flameUp(int length) {
         BufferedImage[] ans = new BufferedImage[1];
-        String s = "up" + (length - 1);
+        String s = "up" + (Flame.FLAME_SIZE);
         ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
+
+        double tileSize = (double) ans[0].getHeight() / Flame.FLAME_SIZE;
+        System.out.println(tileSize + " " + ans[0].getWidth() + " " + (int) (length * tileSize));
+        ans[0] = new SpriteSheet(ans[0]).crop( 0,
+                (int) ((Flame.FLAME_SIZE - length) * tileSize),
+                ans[0].getWidth(),
+                (int) (length * tileSize));
+
         return ans;
     }
 
     public static BufferedImage[] flameRight(int length) {
         BufferedImage[] ans = new BufferedImage[1];
-        String s = "right" + (length - 1);
+        String s = "right" + (Flame.FLAME_SIZE);
         ans[0] = ImageLoader.loadImage("/image/double_bomb.png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
+
+        double tileSize = (double) ans[0].getWidth() / Flame.FLAME_SIZE;
+        ans[0] = new SpriteSheet(ans[0]).crop(0,
+                0,
+                (int) (length * tileSize),
+                ans[0].getHeight());
+
         return ans;
     }
 
     public static BufferedImage[] flameDown(int length) {
         BufferedImage[] ans = new BufferedImage[1];
-        String s = "down" + (length - 1);
+        String s = "down" + (Flame.FLAME_SIZE);
         ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
+
+        double tileSize = (double) ans[0].getHeight() / Flame.FLAME_SIZE;
+        ans[0] = new SpriteSheet(ans[0]).crop( 0,
+                0,
+                ans[0].getWidth(),
+                (int) (length * tileSize));
+
         return ans;
     }
 
     public static BufferedImage[] flameLeft(int length) {
         BufferedImage[] ans = new BufferedImage[1];
-        String s = "left" + (length - 1);
+        String s = "left" + (Flame.FLAME_SIZE);
         ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
+
+        double tileSize = (double) ans[0].getWidth() / Flame.FLAME_SIZE;
+        ans[0] = new SpriteSheet(ans[0]).crop((int) ((Flame.FLAME_SIZE - length) * tileSize),
+                0,
+                (int) (length * tileSize),
+                ans[0].getHeight());
+
         return ans;
+    }
+
+    public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = resizedImage.createGraphics();
+        graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+        graphics2D.dispose();
+        return resizedImage;
     }
 }
