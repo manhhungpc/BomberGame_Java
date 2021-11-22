@@ -7,7 +7,7 @@ import main.tiles.Tile;
 public abstract class Creature extends Entity {
 
     public static final int DEFAULT_HEALTH = 10;
-    public static final float DEFAULT_SPEED = 3.0f;
+    public static final float DEFAULT_SPEED = 2.0f;
     public static final int DEFAULT_CREATURE_WIDTH = 32, DEFAULT_CREATURE_HEIGHT = 32;
 
     protected int health;
@@ -29,6 +29,21 @@ public abstract class Creature extends Entity {
         if(xMove > 0){
             //Moving right
             int tx = (int) (x + xMove + bounds.x + bounds.width) / Tile.TILE_WIDTH;
+
+            char currentTileChar = handler.getWorld().getCharTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT);
+            if (currentTileChar == 'g') {
+                handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
+                Flame.flameSize++;
+            }
+            if (currentTileChar == 'e') {
+                handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
+                handler.getGame().getGameState().getPlayers().get(0).speed += 2.0f;
+            }
+            if (currentTileChar == 'n') {
+                handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
+                BombSet.maxBombNumber++;
+            }
+
             if(!collisionTitle(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT) &&
                     !collisionTitle(tx, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)){
                 x += xMove;
@@ -38,6 +53,21 @@ public abstract class Creature extends Entity {
         }
         if(xMove < 0){
             int tx = (int) (x + xMove + bounds.x) / Tile.TILE_WIDTH;
+
+            char currentTileChar = handler.getWorld().getCharTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT);
+            if (currentTileChar == 'g') {
+                handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
+                Flame.flameSize++;
+            }
+            if (currentTileChar == 'e') {
+                handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
+                handler.getGame().getGameState().getPlayers().get(0).speed += 2.0f;
+            }
+            if (currentTileChar == 'n') {
+                handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
+                BombSet.maxBombNumber++;
+            }
+
             if(!collisionTitle(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT) &&
                     !collisionTitle(tx, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)){
                 x += xMove;
@@ -52,6 +82,21 @@ public abstract class Creature extends Entity {
         if(yMove < 0){
             //Move up
             int ty = (int) (y + yMove + bounds.y) / Tile.TILE_HEIGHT;
+
+            char currentTileChar = handler.getWorld().getCharTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty);
+            if (currentTileChar == 'g') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                Flame.flameSize++;
+            }
+            if (currentTileChar == 'e') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                handler.getGame().getGameState().getPlayers().get(0).speed += 2.0f;
+            }
+            if (currentTileChar == 'n') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                BombSet.maxBombNumber++;
+            }
+
             if(!collisionTitle((int) (x + bounds.x) / Tile.TILE_WIDTH, ty) &&
                     !collisionTitle((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, ty)){
                 y += yMove;
@@ -63,6 +108,21 @@ public abstract class Creature extends Entity {
         if(yMove > 0){
             //Move down
             int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILE_HEIGHT;
+
+            char currentTileChar = handler.getWorld().getCharTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty);
+            if (currentTileChar == 'g') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                Flame.flameSize++;
+            }
+            if (currentTileChar == 'e') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                handler.getGame().getGameState().getPlayers().get(0).speed += 2.0f;
+            }
+            if (currentTileChar == 'n') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                BombSet.maxBombNumber++;
+            }
+
             if(!collisionTitle((int) (x + bounds.x) / Tile.TILE_WIDTH, ty) &&
                     !collisionTitle((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, ty)){
                 y += yMove;

@@ -161,6 +161,10 @@ public class Game implements Runnable {
     public int getWidth() {
         return width;
     }
+
+    public GameState getGameState() {
+        return (GameState) gameState;
+    }
 }
 
 

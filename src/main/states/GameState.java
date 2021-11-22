@@ -2,6 +2,7 @@ package main.states;
 
 import main.Handler;
 import main.entities.creatures.Balloon;
+import main.entities.creatures.BombSet;
 import main.entities.creatures.Player;
 import main.worlds.World;
 
@@ -15,20 +16,21 @@ import static main.worlds.World.playerPosition;
 
 public class GameState extends State {
 
-    private List<Player> players;
-    private World world;
-    private List<Balloon> balloons;
+    private final List<Player> players;
+    private final World world;
+    private final List<Balloon> balloons;
+    private final BombSet bombSet;
 
     public GameState(Handler handler){
         super(handler);
-        world = new World("map/level1.txt");
+        world = new World(".\\src\\resource\\map\\level2.txt");
         handler.setWorld(world);
 
         players = new ArrayList<>();
         for (int i = 0; i < playerPosition.size(); i++) {
             int x = playerPosition.get(i).x;
             int y = playerPosition.get(i).y;
-            players.add(new Player(handler, x*36, y*36 - 20));
+            players.add(new Player(handler, x*36-2, y*36 - 20));
         }
 
 //        player = new Player(handler, 37, 17);
@@ -40,6 +42,8 @@ public class GameState extends State {
             int y = balloonPosition.get(i).y;
             balloons.add(new Balloon(handler, x*36, y*36));
         }
+
+        bombSet = new BombSet(handler, this,0, 0, 36, 36, players.get(0));
     }
 
     @Override
@@ -56,6 +60,7 @@ public class GameState extends State {
             Balloon balloon = balloons.get(i);
             balloon.tick();
         }
+        bombSet.tick();
     }
 
     @Override
@@ -75,6 +80,22 @@ public class GameState extends State {
             Balloon balloon = balloons.get(i);
             balloon.render(g);
         }
+        bombSet.render(g);
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public List<Balloon> getBalloons() {
+        return balloons;
+    }
+
+    public BombSet getBombSet() {
+        return bombSet;
+    }
 }
