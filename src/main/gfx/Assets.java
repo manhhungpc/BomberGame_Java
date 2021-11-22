@@ -2,10 +2,8 @@ package main.gfx;
 
 import main.entities.creatures.Flame;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class Assets {
@@ -18,6 +16,7 @@ public class Assets {
     public static BufferedImage bomb, explosionUncut, explosionX1,explosionX2, explosionX3
             , explosionY1, explosionY2, explosionY3, explosion0;
     public static BufferedImage[] bombGif, flameLeft, explosionRight, explosionUp, explosionDown;
+    public static BufferedImage flameItem, bombItem, speedItem;
 
     public static void init(){
 
@@ -91,19 +90,22 @@ public class Assets {
 //            e.printStackTrace();
 //        }
 
+        flameItem = ImageLoader.loadImage("/image/power_pierce.png");
+        speedItem = ImageLoader.loadImage("/image/power_speed.png");
+        bombItem = ImageLoader.loadImage("/image/power_bomb.png");
+
     }
 
 
     public static BufferedImage[] flameUp(int length) {
         BufferedImage[] ans = new BufferedImage[1];
-        String s = "up" + (Flame.FLAME_SIZE);
+        String s = "up" + (Flame.flameSize);
         ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
 
-        double tileSize = (double) ans[0].getHeight() / Flame.FLAME_SIZE;
-        System.out.println(tileSize + " " + ans[0].getWidth() + " " + (int) (length * tileSize));
+        double tileSize = (double) ans[0].getHeight() / Flame.flameSize;
         ans[0] = new SpriteSheet(ans[0]).crop( 0,
-                (int) ((Flame.FLAME_SIZE - length) * tileSize),
+                (int) ((Flame.flameSize - length) * tileSize),
                 ans[0].getWidth(),
                 (int) (length * tileSize));
 
@@ -112,11 +114,11 @@ public class Assets {
 
     public static BufferedImage[] flameRight(int length) {
         BufferedImage[] ans = new BufferedImage[1];
-        String s = "right" + (Flame.FLAME_SIZE);
+        String s = "right" + (Flame.flameSize);
         ans[0] = ImageLoader.loadImage("/image/double_bomb.png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
 
-        double tileSize = (double) ans[0].getWidth() / Flame.FLAME_SIZE;
+        double tileSize = (double) ans[0].getWidth() / Flame.flameSize;
         ans[0] = new SpriteSheet(ans[0]).crop(0,
                 0,
                 (int) (length * tileSize),
@@ -127,11 +129,11 @@ public class Assets {
 
     public static BufferedImage[] flameDown(int length) {
         BufferedImage[] ans = new BufferedImage[1];
-        String s = "down" + (Flame.FLAME_SIZE);
+        String s = "down" + (Flame.flameSize);
         ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
 
-        double tileSize = (double) ans[0].getHeight() / Flame.FLAME_SIZE;
+        double tileSize = (double) ans[0].getHeight() / Flame.flameSize;
         ans[0] = new SpriteSheet(ans[0]).crop( 0,
                 0,
                 ans[0].getWidth(),
@@ -142,12 +144,12 @@ public class Assets {
 
     public static BufferedImage[] flameLeft(int length) {
         BufferedImage[] ans = new BufferedImage[1];
-        String s = "left" + (Flame.FLAME_SIZE);
+        String s = "left" + (Flame.flameSize);
         ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
 
-        double tileSize = (double) ans[0].getWidth() / Flame.FLAME_SIZE;
-        ans[0] = new SpriteSheet(ans[0]).crop((int) ((Flame.FLAME_SIZE - length) * tileSize),
+        double tileSize = (double) ans[0].getWidth() / Flame.flameSize;
+        ans[0] = new SpriteSheet(ans[0]).crop((int) ((Flame.flameSize - length) * tileSize),
                 0,
                 (int) (length * tileSize),
                 ans[0].getHeight());

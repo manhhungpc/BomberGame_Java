@@ -12,7 +12,7 @@ import java.util.List;
 
 public class BombSet extends Entity {
 
-    public static int maxBombNumber = 10;
+    public static int maxBombNumber = 1;
 
     private final Player player;
     private final int bombNumber = 0;
@@ -72,8 +72,17 @@ public class BombSet extends Entity {
             int x = changePositions.get(i).x;
             int y = changePositions.get(i).y;
             char temp = world.getCharTile(x, y);
-            if (temp == '*')
+            if (temp == '*') {
                 world.setTile(x, y, ' ');
+            } else if (temp == 'f') {
+//                world.addFlameItem(x, y);
+                world.setTile(x, y, 'g');
+            } else if (temp == 'b') {
+                world.setTile(x, y, 'n');
+            } else if (temp == 's') {
+                world.setTile(x, y, 'e');
+            }
+
         }
     }
 }

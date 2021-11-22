@@ -1,6 +1,7 @@
 package main.worlds;
 
 import main.Utils;
+import main.tiles.FlameItem;
 import main.tiles.Tile;
 
 import java.awt.Graphics;
@@ -19,6 +20,7 @@ public class World {
     // Entity position
     public static List<Position> playerPosition = new ArrayList<>();
     public static List<Position> balloonPosition = new ArrayList<>();
+//    private List<Position> flamePosition = new ArrayList<>();
 
     public World(String path){
         loadWorld(path);
@@ -34,6 +36,11 @@ public class World {
                 getTile(x, y).render(g, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
             }
         }
+//        for(int i = 0; i < flamePosition.size(); i++) {
+//            int x = flamePosition.get(i).x;
+//            int y = flamePosition.get(i).y;
+//            Tile.flameItem.render(g, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
+//        }
     }
 
     public Tile getTile(int x, int y){
@@ -42,7 +49,7 @@ public class World {
 
         char typeTile = tiles[y][x];
         Tile t = Tile.tiles[typeTile];
-        if (typeTile == 'f') return Tile.brickTile;
+        if (typeTile == 'f' || typeTile == 's' || typeTile == 'b') return Tile.brickTile;
         if (typeTile == '1' || typeTile == '2' || typeTile == 'p' || typeTile == 'x') return Tile.grassTile;
         if(t == null)
             return Tile.fakeTile;
@@ -81,6 +88,7 @@ public class World {
             for(int x = 0;x < width;x++){
                 if (tiles[y][x] == 'p') playerPosition.add(new Position(x, y));
                 if (tiles[y][x] == '1') balloonPosition.add(new Position(x, y));
+//                if (tiles[y][x] == 'f') flamePosition.add(new Position(x, y));
             }
         }
 
@@ -131,4 +139,12 @@ public class World {
     public char getCharTile(int x, int y) {
         return tiles[y][x];
     }
+
+//    public List<Position> getFlamePosition() {
+//        return flamePosition;
+//    }
+//
+//    public void addFlameItem(int x, int y) {
+//        flamePosition.add( new Position(x, y));
+//    }
 }

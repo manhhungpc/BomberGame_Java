@@ -1,8 +1,6 @@
 package main.entities.creatures;
 
-import main.Game;
 import main.Handler;
-import main.TestTime;
 import main.entities.Entity;
 import main.gfx.Animation;
 import main.gfx.Assets;
@@ -16,7 +14,7 @@ import java.util.List;
 
 public class Flame extends Entity {
 
-    public static int FLAME_SIZE = 2;
+    public static int flameSize = 2;
 
     private final Bomb bomb;
     private Animation flameGifLeft, flameGifRight, flameGifUp, flameGifDown;
@@ -47,7 +45,7 @@ public class Flame extends Entity {
 
     private void setFlame4Size() {
         left = 0;
-        while (left != FLAME_SIZE) {
+        while (left != flameSize) {
             int xx = (int) x / 36 - left - 1;
             int yy =  (int) y / 36;
             if(gameState.getWorld().getTile(xx, yy).isSolid()) {
@@ -62,7 +60,7 @@ public class Flame extends Entity {
 //                + " " + gameState.getWorld().getTile(xx, yy).isSolid());
 
         right = 0;
-        while (right != FLAME_SIZE) {
+        while (right != flameSize) {
             int xx = (int) x / 36 + right + 1;
             int yy =  (int) y / 36;
             if(gameState.getWorld().getTile(xx, yy).isSolid()) {
@@ -73,7 +71,7 @@ public class Flame extends Entity {
         }
 
         up = 0;
-        while (up != FLAME_SIZE) {
+        while (up != flameSize) {
             int xx = (int) x / 36;
             int yy =  (int) y / 36 - up - 1;
             if(gameState.getWorld().getTile(xx, yy).isSolid()) {
@@ -84,7 +82,7 @@ public class Flame extends Entity {
         }
 
         down = 0;
-        while (down != FLAME_SIZE) {
+        while (down != flameSize) {
             int xx = (int) x / 36;
             int yy =  (int) y / 36 + down + 1;
             if(gameState.getWorld().getTile(xx, yy).isSolid()) {
