@@ -11,6 +11,8 @@ import main.worlds.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Flame extends Entity {
 
@@ -20,6 +22,7 @@ public class Flame extends Entity {
     private Animation flameGifLeft, flameGifRight, flameGifUp, flameGifDown;
     private int left, right, up, down;
     private GameState gameState;
+    private List<World.Position> changePositions = new ArrayList<>();
 
     public Flame(Handler handler, GameState gameState, float x, float y, int width, int height, Bomb bomb, int left, int right, int up, int down) {
         super(handler, x, y, width, height);
@@ -47,7 +50,10 @@ public class Flame extends Entity {
         while (left != FLAME_SIZE) {
             int xx = (int) x / 36 - left - 1;
             int yy =  (int) y / 36;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) break;
+            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
+                changePositions.add(new World.Position(xx, yy));
+                break;
+            }
             left++;
         }
 //        int xx = (int) x / 36 - left - 1;
@@ -59,7 +65,10 @@ public class Flame extends Entity {
         while (right != FLAME_SIZE) {
             int xx = (int) x / 36 + right + 1;
             int yy =  (int) y / 36;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) break;
+            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
+                changePositions.add(new World.Position(xx, yy));
+                break;
+            }
             right++;
         }
 
@@ -67,7 +76,10 @@ public class Flame extends Entity {
         while (up != FLAME_SIZE) {
             int xx = (int) x / 36;
             int yy =  (int) y / 36 - up - 1;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) break;
+            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
+                changePositions.add(new World.Position(xx, yy));
+                break;
+            }
             up++;
         }
 
@@ -75,14 +87,12 @@ public class Flame extends Entity {
         while (down != FLAME_SIZE) {
             int xx = (int) x / 36;
             int yy =  (int) y / 36 + down + 1;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) break;
+            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
+                changePositions.add(new World.Position(xx, yy));
+                break;
+            }
             down++;
         }
-
-//        left =;
-//        right = 2;
-//        up = 2;
-//        down = 2;
     }
 
     @Override
@@ -123,4 +133,7 @@ public class Flame extends Entity {
         return flameGifDown.getCurrentFrame();
     }
 
+    public List<World.Position> getChangePositions() {
+        return changePositions;
+    }
 }

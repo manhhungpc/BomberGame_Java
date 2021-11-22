@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class World {
 
     private int width, height;
-    public static char[][] tiles;
+    private char[][] tiles;
 
     // Entity position
     public static List<Position> playerPosition = new ArrayList<>();
@@ -122,5 +122,13 @@ public class World {
                     ", y=" + y +
                     '}';
         }
+    }
+
+    public void setTile(int x, int y, char data) {
+        tiles[y][x] = data;
+    }
+
+    public char getCharTile(int x, int y) {
+        return tiles[y][x];
     }
 }

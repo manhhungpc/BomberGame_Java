@@ -5,9 +5,11 @@ import main.TestTime;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
+import main.worlds.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class Bomb extends Creature {
 
@@ -65,5 +67,9 @@ public class Bomb extends Creature {
 
     public long getStartTime() {
         return startTime;
+    }
+
+    public List<World.Position> getChangePositions() {
+        return flame.getChangePositions();
     }
 }
