@@ -6,13 +6,19 @@ import main.tiles.Tile;
 import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class World {
 
     private int width, height;
-    private char[][] tiles;
+    public static char[][] tiles;
+
+    // Entity position
+    public static List<Position> playerPosition = new ArrayList<>();
+    public static List<Position> balloonPosition = new ArrayList<>();
 
     public World(String path){
         loadWorld(path);
@@ -34,7 +40,10 @@ public class World {
         if(x < 0  || y < 0 || x >= width || y >= height)
             return Tile.grassTile;
 
-        Tile t = Tile.tiles[tiles[y][x]];
+        char typeTile = tiles[y][x];
+        Tile t = Tile.tiles[typeTile];
+        if (typeTile == 'f') return Tile.brickTile;
+        if (typeTile == '1' || typeTile == '2' || typeTile == 'p' || typeTile == 'x') return Tile.grassTile;
         if(t == null)
             return Tile.fakeTile;
         return t;
@@ -67,6 +76,15 @@ public class World {
 //            }
 //            System.out.println();
 //        }
+
+        for(int y = 0;y < height;y++){
+            for(int x = 0;x < width;x++){
+                if (tiles[y][x] == 'p') playerPosition.add(new Position(x, y));
+                if (tiles[y][x] == '1') balloonPosition.add(new Position(x, y));
+            }
+        }
+
+
     }
 
 
@@ -85,6 +103,24 @@ public class World {
                 System.out.print(tiles[i][j]);
             }
             System.out.println();
+        }
+    }
+
+    public static class Position {
+        public int x;
+        public int y;
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public String toString() {
+            return "Position{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    '}';
         }
     }
 }

@@ -10,6 +10,6 @@ public class BrickTile extends Tile {
 
     @Override
     public boolean isSolid() {
-        return false;
+        return true;
     }
 }
