@@ -3,12 +3,9 @@ package main.entities.creatures;
 import main.Handler;
 import main.gfx.Animation;
 import main.gfx.Assets;
-import main.tiles.Tile;
-import main.worlds.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.sql.Time;
 import java.util.Random;
 
 public class Balloon extends Creature {
@@ -28,10 +25,10 @@ public class Balloon extends Creature {
         bounds.width = 32;
         bounds.height = 32;
 
-        aniDown = new Animation(500, Assets.balloom_down);
-        aniUp = new Animation(500, Assets.ballom_up);
-        aniLeft = new Animation(500, Assets.balloom_left);
-        aniRight = new Animation(500, Assets.balloom_right);
+        aniDown = new Animation(500, Assets.balloon_down);
+        aniUp = new Animation(500, Assets.balloon_up);
+        aniLeft = new Animation(500, Assets.balloon_left);
+        aniRight = new Animation(500, Assets.balloon_right);
 
     }
 
@@ -94,8 +91,7 @@ public class Balloon extends Creature {
         if(xMove < 0) return aniLeft.getCurrentFrame();
         if(xMove > 0) return aniRight.getCurrentFrame();
         if(yMove < 0) return aniUp.getCurrentFrame();
-        if(yMove > 0) return aniDown.getCurrentFrame();
-        return Assets.balloom;
+        return aniDown.getCurrentFrame();
     }
 
 }

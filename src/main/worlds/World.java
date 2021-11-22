@@ -50,7 +50,7 @@ public class World {
     }
 
     private void loadWorld(String path){
-        String file = Utils.fileToString(".\\src\\resource\\map\\level1.txt");
+        String file = Utils.fileToString(path);
         String[] lines = file.split(Pattern.quote("\n"));
         String[] levelHeightWidth = lines[0].split(Pattern.quote(" "));
         int level = Integer.parseInt(levelHeightWidth[0]);
