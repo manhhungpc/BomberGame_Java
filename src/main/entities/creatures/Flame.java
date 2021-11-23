@@ -5,6 +5,7 @@ import main.entities.Entity;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
+import main.tiles.Tile;
 import main.worlds.World;
 
 import java.awt.*;
@@ -22,7 +23,7 @@ public class Flame extends Entity {
     private GameState gameState;
     private List<World.Position> changePositions = new ArrayList<>();
 
-    public Flame(Handler handler, GameState gameState, float x, float y, int width, int height, Bomb bomb, int left, int right, int up, int down) {
+    public Flame(Handler handler, GameState gameState, float x, float y, int width, int height, Bomb bomb) {
         super(handler, x, y, width, height);
         this.bomb = bomb;
         this.gameState = gameState;
@@ -133,5 +134,21 @@ public class Flame extends Entity {
 
     public List<World.Position> getChangePositions() {
         return changePositions;
+    }
+
+    public int getLeft() {
+        return left;
+    }
+
+    public int getRight() {
+        return right;
+    }
+
+    public int getUp() {
+        return up;
+    }
+
+    public int getDown() {
+        return down;
     }
 }

@@ -94,4 +94,12 @@ public class Balloon extends Creature {
         return aniDown.getCurrentFrame();
     }
 
+    public double getCurrentTopLeftX() {
+        return x-2;
+    }
+
+    public double getCurrentTopLeftY() {
+        return y;
+    }
+
 }

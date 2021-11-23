@@ -1,9 +1,9 @@
 package main.entities.creatures;
 
-import main.Game;
 import main.Handler;
 import main.entities.Entity;
 import main.states.GameState;
+import main.tiles.Tile;
 import main.worlds.World;
 
 import java.awt.*;
@@ -40,7 +40,7 @@ public class BombSet extends Entity {
 
         for (int i = bombList.size()-1; i >= 0; i--) {
             if (!bombList.get(i).isAlive()) {
-                setNewWorld(bombList.get(i).getChangePositions());
+                momentAfterExploding(bombList.get(i));
                 bombList.remove(i);
             }
         }
@@ -72,7 +72,7 @@ public class BombSet extends Entity {
             int x = changePositions.get(i).x;
             int y = changePositions.get(i).y;
             char temp = world.getCharTile(x, y);
-            if (temp == '*') {
+            if (temp == '*' || temp == 'e' || temp == 'g' || temp == 'n') {
                 world.setTile(x, y, ' ');
             } else if (temp == 'f') {
 //                world.addFlameItem(x, y);
@@ -85,4 +85,50 @@ public class BombSet extends Entity {
 
         }
     }
+
+    private void momentAfterExploding(Bomb bomb) {
+        setNewWorld(bomb.getChangePositions());
+//        handler.getGame().getGameState().getWorld().setTile( (int) bomb.getFlame().getX()/36, (int) bomb.getFlame().getY()/36, ' ');
+        deleteEnemyAtFlame(bomb.getFlame());
+        setBombAtFlame(bomb.getFlame());
+    }
+
+    private boolean isAtFlame(Flame flame, double enemyX, double enemyY) {
+        double flameX = flame.getX();
+        double flameY = flame.getY();
+        if (enemyY > flameY - Tile.TILE_HEIGHT
+                && enemyY < flameY + 2 * Tile.TILE_HEIGHT
+                && enemyX >= flameX - flame.getLeft() * Tile.TILE_WIDTH
+                && enemyX < flameX + (1 + flame.getRight()) * Tile.TILE_WIDTH)
+            return true;
+        return enemyX > flameX - Tile.TILE_WIDTH
+                && enemyX < flameX + 2 * Tile.TILE_WIDTH
+                && enemyY >= flameY - flame.getUp() * Tile.TILE_HEIGHT
+                && enemyY < flameY + (1 + flame.getDown()) * Tile.TILE_HEIGHT;
+    }
+
+    private void deleteEnemyAtFlame(Flame flame) {
+        List<Balloon> balloonList = handler.getGame().getGameState().getBalloons();
+        for (int i = balloonList.size() - 1; i >= 0; i--) {
+            double balloonX = balloonList.get(i).getCurrentTopLeftX();
+            double balloonY = balloonList.get(i).getCurrentTopLeftY();
+            if (isAtFlame(flame, balloonX, balloonY)) {
+                balloonList.remove(i);
+            }
+        }
+    }
+
+    private void setBombAtFlame(Flame flame) {
+        for (int i = 0; i < bombList.size(); i++) {
+            Bomb bomb = bombList.get(i);
+            if (bomb.getFlame() == flame) continue;
+            double bombX = bomb.getFlame().getX();
+            double bombY = bomb.getFlame().getY();
+            if (isAtFlame(flame, bombX, bombY)) {
+                bomb.setFlameRightNow();
+            }
+        }
+    }
+
+
 }
