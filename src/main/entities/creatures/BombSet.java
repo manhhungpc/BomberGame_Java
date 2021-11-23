@@ -38,6 +38,7 @@ public class BombSet extends Entity {
         x = player.getX()+2+14;
         y = player.getY()+20+14;
 
+
         for (int i = bombList.size()-1; i >= 0; i--) {
             if (!bombList.get(i).isAlive()) {
                 momentAfterExploding(bombList.get(i));
@@ -46,7 +47,9 @@ public class BombSet extends Entity {
         }
 
         if (bombedRequest && bombList.size() < maxBombNumber && !bombDone) {
-            bombList.add(new Bomb(handler, gameState, x, y, 36, 36));
+            Bomb newBomb = new Bomb(handler, gameState, x, y, 36, 36);
+            if (!hasDuplicate(newBomb))
+                bombList.add(newBomb);
 //            System.out.println(x + " " + y);
             bombDone = true;
         }
@@ -122,7 +125,7 @@ public class BombSet extends Entity {
         for (int i = 0; i < bombList.size(); i++) {
             Bomb bomb = bombList.get(i);
             if (bomb.getFlame() == flame) continue;
-            double bombX = bomb.getFlame().getX();z
+            double bombX = bomb.getFlame().getX();
             double bombY = bomb.getFlame().getY();
             if (isAtFlame(flame, bombX, bombY)) {
                 bomb.setFlameRightNow();
@@ -132,5 +135,13 @@ public class BombSet extends Entity {
         }
     }
 
-
+    private boolean hasDuplicate(Bomb bomb) {
+        for (int i = 0; i < bombList.size(); i++) {
+            Flame bombFlameI = bombList.get(i).getFlame();
+            if (bombFlameI.getX() == bomb.getFlame().getX()
+                    && bombFlameI.getY() == bomb.getFlame().getY())
+                return true;
+        }
+        return false;
+    }
 }
