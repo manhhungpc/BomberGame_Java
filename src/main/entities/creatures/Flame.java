@@ -28,12 +28,15 @@ public class Flame extends Entity {
         this.bomb = bomb;
         this.gameState = gameState;
 
-        setFlame4Size();
+//        setFlame4Size();
 
-        if (this.left != 0) flameGifLeft = new Animation(500, Assets.flameLeft(this.left));
-        if (this.right != 0) flameGifRight = new Animation(500, Assets.flameRight(this.right));
-        if (this.up != 0) flameGifUp = new Animation(500, Assets.flameUp(this.up));
-        if (this.down != 0) flameGifDown = new Animation(500, Assets.flameDown(this.down));
+//        if (this.left != 0) flameGifLeft = new Animation(500, Assets.flameLeft(this.left));
+//        if (this.right != 0) flameGifRight = new Animation(500, Assets.flameRight(this.right));
+//        if (this.up != 0) flameGifUp = new Animation(500, Assets.flameUp(this.up));
+//        if (this.down != 0) flameGifDown = new Animation(500, Assets.flameDown(this.down));
+
+        setFlame4Size();
+        setAnimation();
 
 //        this.left = left;
 //        this.right = right;
@@ -44,7 +47,7 @@ public class Flame extends Entity {
         super.y = bomb.getY();
     }
 
-    private void setFlame4Size() {
+    public void setFlame4Size() {
         left = 0;
         while (left != flameSize) {
             int xx = (int) x / 36 - left - 1;
@@ -96,6 +99,8 @@ public class Flame extends Entity {
 
     @Override
     public void tick() {
+//        setFlame4Size();
+//        setAnimation();
         if (left != 0) flameGifLeft.tick();
         if (right != 0) flameGifRight.tick();
         if (up != 0) flameGifUp.tick();
@@ -150,5 +155,12 @@ public class Flame extends Entity {
 
     public int getDown() {
         return down;
+    }
+
+    public void setAnimation() {
+        if (this.left != 0) flameGifLeft = new Animation(500, Assets.flameLeft(this.left));
+        if (this.right != 0) flameGifRight = new Animation(500, Assets.flameRight(this.right));
+        if (this.up != 0) flameGifUp = new Animation(500, Assets.flameUp(this.up));
+        if (this.down != 0) flameGifDown = new Animation(500, Assets.flameDown(this.down));
     }
 }

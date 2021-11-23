@@ -122,10 +122,12 @@ public class BombSet extends Entity {
         for (int i = 0; i < bombList.size(); i++) {
             Bomb bomb = bombList.get(i);
             if (bomb.getFlame() == flame) continue;
-            double bombX = bomb.getFlame().getX();
+            double bombX = bomb.getFlame().getX();z
             double bombY = bomb.getFlame().getY();
             if (isAtFlame(flame, bombX, bombY)) {
                 bomb.setFlameRightNow();
+                bomb.getFlame().setFlame4Size();
+                bomb.getFlame().setAnimation();
             }
         }
     }
