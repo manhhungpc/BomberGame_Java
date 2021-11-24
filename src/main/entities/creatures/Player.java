@@ -59,11 +59,6 @@ public class Player extends Creature {
         g.setColor(Color.red);
         //g.fillRect((int) x+bounds.x, (int) y+bounds.y, bounds.width, bounds.height);
 
-//        if (bombed && bombedNumber == 0) {
-//            System.out.println("Bombed " + x + " " + y);
-//            g.drawImage(Assets.bomb, (int) x, (int) y, width, height, nu)
-//            bombedNumber++;
-//        }
     }
 
     private BufferedImage getCurrentAnimation(){
