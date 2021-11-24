@@ -1,6 +1,7 @@
 package main.entities.creatures;
 
 import main.Handler;
+import main.TimeManage;
 import main.entities.Entity;
 import main.states.GameState;
 import main.tiles.Tile;
@@ -93,21 +94,21 @@ public class BombSet extends Entity {
         setNewWorld(bomb.getChangePositions());
 //        handler.getGame().getGameState().getWorld().setTile( (int) bomb.getFlame().getX()/36, (int) bomb.getFlame().getY()/36, ' ');
         deleteEnemyAtFlame(bomb.getFlame());
-        setBombAtFlame(bomb.getFlame());
+        explodeBombAtFlame(bomb.getFlame());
     }
 
-    private boolean isAtFlame(Flame flame, double enemyX, double enemyY) {
+    private boolean enemyIsAtFlame(Flame flame, double enemyX, double enemyY) {
         double flameX = flame.getX();
         double flameY = flame.getY();
-        if (enemyY > flameY - Tile.TILE_HEIGHT
-                && enemyY < flameY + 2 * Tile.TILE_HEIGHT
-                && enemyX >= flameX - flame.getLeft() * Tile.TILE_WIDTH
-                && enemyX < flameX + (1 + flame.getRight()) * Tile.TILE_WIDTH)
+        if (enemyY > flameY - 0.9 * Tile.TILE_HEIGHT
+                && enemyY < flameY + 1.9 * Tile.TILE_HEIGHT
+                && enemyX > flameX - (0.9 + flame.getLeft()) * Tile.TILE_WIDTH
+                && enemyX < flameX + (0.9 + flame.getRight()) * Tile.TILE_WIDTH)
             return true;
-        return enemyX > flameX - Tile.TILE_WIDTH
-                && enemyX < flameX + 2 * Tile.TILE_WIDTH
-                && enemyY >= flameY - flame.getUp() * Tile.TILE_HEIGHT
-                && enemyY < flameY + (1 + flame.getDown()) * Tile.TILE_HEIGHT;
+        return enemyX > flameX - 0.9 * Tile.TILE_WIDTH
+                && enemyX < flameX + 1.9 * Tile.TILE_WIDTH
+                && enemyY > flameY - (0.9 + flame.getUp()) * Tile.TILE_HEIGHT
+                && enemyY < flameY + (0.9 + flame.getDown()) * Tile.TILE_HEIGHT;
     }
 
     private void deleteEnemyAtFlame(Flame flame) {
@@ -115,24 +116,39 @@ public class BombSet extends Entity {
         for (int i = balloonList.size() - 1; i >= 0; i--) {
             double balloonX = balloonList.get(i).getCurrentTopLeftX();
             double balloonY = balloonList.get(i).getCurrentTopLeftY();
-            if (isAtFlame(flame, balloonX, balloonY)) {
+            if (enemyIsAtFlame(flame, balloonX, balloonY)) {
                 balloonList.remove(i);
+//                System.out.println("boom" + TimeManage.timeNow());
             }
         }
     }
 
-    private void setBombAtFlame(Flame flame) {
+    private void explodeBombAtFlame(Flame flame) {
         for (int i = 0; i < bombList.size(); i++) {
             Bomb bomb = bombList.get(i);
             if (bomb.getFlame() == flame) continue;
             double bombX = bomb.getFlame().getX();
             double bombY = bomb.getFlame().getY();
-            if (isAtFlame(flame, bombX, bombY)) {
-                bomb.setFlameRightNow();
+            if (bombIsAtFlame(flame, bombX, bombY)) {
+                bomb.setFlameRightNow(); // Set Flame begin
+
+                // set flame realtime (2 flame can del 2 boxes)
                 bomb.getFlame().setFlame4Size();
                 bomb.getFlame().setAnimation();
             }
         }
+    }
+
+    private boolean bombIsAtFlame(Flame flame, double bombX, double bombY) {
+        double flameX = flame.getX();
+        double flameY = flame.getY();
+        if (bombY == flameY
+                && bombX >= flameX - flame.getLeft() * Tile.TILE_WIDTH
+                && bombX <= flameX + flame.getRight() * Tile.TILE_WIDTH)
+            return true;
+        return bombX == flameX
+                && bombY >= flameY - flame.getUp() * Tile.TILE_HEIGHT
+                && bombY <= flameY + flame.getDown() * Tile.TILE_HEIGHT;
     }
 
     private boolean hasDuplicate(Bomb bomb) {
