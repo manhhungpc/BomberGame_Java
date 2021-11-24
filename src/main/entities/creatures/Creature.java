@@ -37,7 +37,7 @@ public abstract class Creature extends Entity {
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
-                handler.getGame().getGameState().getPlayers().get(0).speed += 2.0f;
+                handler.getGame().getGameState().getPlayers().get(0).speed += 1.0f;
             }
             if (currentTileChar == 'n') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
