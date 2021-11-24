@@ -101,12 +101,12 @@ public class BombSet extends Entity {
         double flameX = flame.getX();
         double flameY = flame.getY();
         if (enemyY > flameY - 0.9 * Tile.TILE_HEIGHT
-                && enemyY < flameY + 1.9 * Tile.TILE_HEIGHT
+                && enemyY < flameY + 0.9 * Tile.TILE_HEIGHT
                 && enemyX > flameX - (0.9 + flame.getLeft()) * Tile.TILE_WIDTH
                 && enemyX < flameX + (0.9 + flame.getRight()) * Tile.TILE_WIDTH)
             return true;
         return enemyX > flameX - 0.9 * Tile.TILE_WIDTH
-                && enemyX < flameX + 1.9 * Tile.TILE_WIDTH
+                && enemyX < flameX + 0.9 * Tile.TILE_WIDTH
                 && enemyY > flameY - (0.9 + flame.getUp()) * Tile.TILE_HEIGHT
                 && enemyY < flameY + (0.9 + flame.getDown()) * Tile.TILE_HEIGHT;
     }
