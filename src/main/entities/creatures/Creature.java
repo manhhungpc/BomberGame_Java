@@ -37,7 +37,7 @@ public abstract class Creature extends Entity {
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
-                handler.getGame().getGameState().getPlayers().get(0).speed += 1.0f;
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.increasePlayerSpeed;
             }
             if (currentTileChar == 'n') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
@@ -51,6 +51,7 @@ public abstract class Creature extends Entity {
                 x = tx * Tile.TILE_WIDTH - bounds.x - bounds.width - 1;
             }
         }
+
         if(xMove < 0){
             int tx = (int) (x + xMove + bounds.x) / Tile.TILE_WIDTH;
 
@@ -61,7 +62,7 @@ public abstract class Creature extends Entity {
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
-                handler.getGame().getGameState().getPlayers().get(0).speed += 2.0f;
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.increasePlayerSpeed;
             }
             if (currentTileChar == 'n') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
@@ -90,7 +91,7 @@ public abstract class Creature extends Entity {
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
-                handler.getGame().getGameState().getPlayers().get(0).speed += 2.0f;
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.increasePlayerSpeed;
             }
             if (currentTileChar == 'n') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
@@ -116,7 +117,7 @@ public abstract class Creature extends Entity {
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
-                handler.getGame().getGameState().getPlayers().get(0).speed += 2.0f;
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.increasePlayerSpeed;
             }
             if (currentTileChar == 'n') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
