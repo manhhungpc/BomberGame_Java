@@ -1,7 +1,7 @@
 package main.entities.creatures;
 
 import main.Handler;
-import main.TestTime;
+import main.TimeManage;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
@@ -25,7 +25,7 @@ public class Bomb extends Creature {
     public Bomb(Handler handler, GameState gameState, float x, float y, int width, int height) {
         super(handler, ((int) x ) / 36 * 36, ((int) y ) / 36 * 36, width, height);
         bombGif = new Animation(500, Assets.bombGif);
-        startTime = TestTime.timeNow2();
+        startTime = TimeManage.timeNow();
         flame = new Flame(handler, gameState, x, y, -1, -1, this);
 //        handler.getGame().getGameState().getWorld().setTile((int) flame.getX()/36, (int) flame.getY()/36, 'B');
     }
@@ -33,7 +33,7 @@ public class Bomb extends Creature {
     @Override
     public void tick() {
         bombGif.tick();
-        long elapsedTime = TestTime.timeNow2() - startTime;
+        long elapsedTime = TimeManage.timeNow() - startTime;
         if (elapsedTime == BOMB_TIME)
             alive = false;
 
@@ -44,7 +44,7 @@ public class Bomb extends Creature {
     }
 
     public void setFlameRightNow() {
-        startTime = TestTime.timeNow2() - (BOMB_TIME-FLAME_TIME);
+        startTime = TimeManage.timeNow() - (BOMB_TIME-FLAME_TIME);
     }
 
     @Override
