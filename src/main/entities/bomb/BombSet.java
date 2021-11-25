@@ -1,8 +1,9 @@
-package main.entities.creatures;
+package main.entities.bomb;
 
 import main.Handler;
-import main.TimeManage;
 import main.entities.Entity;
+import main.entities.creatures.Balloon;
+import main.entities.creatures.Player;
 import main.states.GameState;
 import main.tiles.Tile;
 import main.worlds.World;

@@ -1,6 +1,6 @@
 package main.gfx;
 
-import main.entities.creatures.Flame;
+import main.entities.bomb.Flame;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -115,7 +115,7 @@ public class Assets {
     public static BufferedImage[] flameRight(int length) {
         BufferedImage[] ans = new BufferedImage[1];
         String s = "right" + (Flame.flameSize);
-        ans[0] = ImageLoader.loadImage("/image/double_bomb.png");
+        ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
 
         double tileSize = (double) ans[0].getWidth() / Flame.flameSize;
@@ -145,6 +145,7 @@ public class Assets {
     public static BufferedImage[] flameLeft(int length) {
         BufferedImage[] ans = new BufferedImage[1];
         String s = "left" + (Flame.flameSize);
+        System.out.println("/image/explosion/bombbang_" + s + ".png");
         ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
         ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
 

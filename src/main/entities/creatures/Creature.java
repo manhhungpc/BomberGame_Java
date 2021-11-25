@@ -1,7 +1,9 @@
 package main.entities.creatures;
 
 import main.Handler;
+import main.entities.bomb.BombSet;
 import main.entities.Entity;
+import main.entities.bomb.Flame;
 import main.tiles.Tile;
 
 public abstract class Creature extends Entity {
@@ -33,7 +35,7 @@ public abstract class Creature extends Entity {
             char currentTileChar = handler.getWorld().getCharTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT);
             if (currentTileChar == 'g') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
-                Flame.flameSize++;
+                if (Flame.flameSize < Flame.MAX_FLAME_SIZE) Flame.flameSize++;
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
@@ -58,7 +60,7 @@ public abstract class Creature extends Entity {
             char currentTileChar = handler.getWorld().getCharTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT);
             if (currentTileChar == 'g') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
-                Flame.flameSize++;
+                if (Flame.flameSize < Flame.MAX_FLAME_SIZE) Flame.flameSize++;
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
@@ -87,7 +89,7 @@ public abstract class Creature extends Entity {
             char currentTileChar = handler.getWorld().getCharTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty);
             if (currentTileChar == 'g') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
-                Flame.flameSize++;
+                if (Flame.flameSize < Flame.MAX_FLAME_SIZE) Flame.flameSize++;
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
@@ -113,7 +115,7 @@ public abstract class Creature extends Entity {
             char currentTileChar = handler.getWorld().getCharTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty);
             if (currentTileChar == 'g') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
-                Flame.flameSize++;
+                if (Flame.flameSize < Flame.MAX_FLAME_SIZE) Flame.flameSize++;
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');

@@ -1,11 +1,11 @@
-package main.entities.creatures;
+package main.entities.bomb;
 
 import main.Handler;
 import main.entities.Entity;
+import main.entities.bomb.Bomb;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
-import main.tiles.Tile;
 import main.worlds.World;
 
 import java.awt.*;
@@ -16,6 +16,7 @@ import java.util.List;
 public class Flame extends Entity {
 
     public static int flameSize = 2;
+    public static final int MAX_FLAME_SIZE = 10;
 
 //    private final Bomb bomb;
     private Animation flameGifLeft, flameGifRight, flameGifUp, flameGifDown;

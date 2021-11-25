@@ -1,7 +1,8 @@
-package main.entities.creatures;
+package main.entities.bomb;
 
 import main.Handler;
 import main.TimeManage;
+import main.entities.creatures.Creature;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
