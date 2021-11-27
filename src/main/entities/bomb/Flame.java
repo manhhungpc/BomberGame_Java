@@ -1,7 +1,8 @@
-package main.entities.creatures;
+package main.entities.bomb;
 
 import main.Handler;
 import main.entities.Entity;
+import main.entities.bomb.Bomb;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
@@ -15,24 +16,28 @@ import java.util.List;
 public class Flame extends Entity {
 
     public static int flameSize = 2;
+    public static final int MAX_FLAME_SIZE = 10;
 
-    private final Bomb bomb;
+//    private final Bomb bomb;
     private Animation flameGifLeft, flameGifRight, flameGifUp, flameGifDown;
     private int left, right, up, down;
-    private GameState gameState;
-    private List<World.Position> changePositions = new ArrayList<>();
+    private final GameState gameState;
+    private final List<World.Position> changePositions = new ArrayList<>();
 
-    public Flame(Handler handler, GameState gameState, float x, float y, int width, int height, Bomb bomb, int left, int right, int up, int down) {
+    public Flame(Handler handler, GameState gameState, float x, float y, int width, int height, Bomb bomb) {
         super(handler, x, y, width, height);
-        this.bomb = bomb;
+//        this.bomb = bomb;
         this.gameState = gameState;
 
-        setFlame4Size();
+//        setFlame4Size();
 
-        if (this.left != 0) flameGifLeft = new Animation(500, Assets.flameLeft(this.left));
-        if (this.right != 0) flameGifRight = new Animation(500, Assets.flameRight(this.right));
-        if (this.up != 0) flameGifUp = new Animation(500, Assets.flameUp(this.up));
-        if (this.down != 0) flameGifDown = new Animation(500, Assets.flameDown(this.down));
+//        if (this.left != 0) flameGifLeft = new Animation(500, Assets.flameLeft(this.left));
+//        if (this.right != 0) flameGifRight = new Animation(500, Assets.flameRight(this.right));
+//        if (this.up != 0) flameGifUp = new Animation(500, Assets.flameUp(this.up));
+//        if (this.down != 0) flameGifDown = new Animation(500, Assets.flameDown(this.down));
+
+        setFlame4Size();
+        setAnimation();
 
 //        this.left = left;
 //        this.right = right;
@@ -43,28 +48,26 @@ public class Flame extends Entity {
         super.y = bomb.getY();
     }
 
-    private void setFlame4Size() {
+    public void setFlame4Size() {
         left = 0;
         while (left != flameSize) {
             int xx = (int) x / 36 - left - 1;
             int yy =  (int) y / 36;
             if(gameState.getWorld().getTile(xx, yy).isSolid()) {
-                changePositions.add(new World.Position(xx, yy));
+                if (!haveDuplicatePosition(changePositions, xx, yy))
+                    changePositions.add(new World.Position(xx, yy));
                 break;
             }
             left++;
         }
-//        int xx = (int) x / 36 - left - 1;
-//        int yy =  (int) y / 36;
-//        System.out.println(xx + " " + yy + " " + left
-//                + " " + gameState.getWorld().getTile(xx, yy).isSolid());
 
         right = 0;
         while (right != flameSize) {
             int xx = (int) x / 36 + right + 1;
             int yy =  (int) y / 36;
             if(gameState.getWorld().getTile(xx, yy).isSolid()) {
-                changePositions.add(new World.Position(xx, yy));
+                if (!haveDuplicatePosition(changePositions, xx, yy))
+                    changePositions.add(new World.Position(xx, yy));
                 break;
             }
             right++;
@@ -75,7 +78,8 @@ public class Flame extends Entity {
             int xx = (int) x / 36;
             int yy =  (int) y / 36 - up - 1;
             if(gameState.getWorld().getTile(xx, yy).isSolid()) {
-                changePositions.add(new World.Position(xx, yy));
+                if (!haveDuplicatePosition(changePositions, xx, yy))
+                    changePositions.add(new World.Position(xx, yy));
                 break;
             }
             up++;
@@ -86,15 +90,19 @@ public class Flame extends Entity {
             int xx = (int) x / 36;
             int yy =  (int) y / 36 + down + 1;
             if(gameState.getWorld().getTile(xx, yy).isSolid()) {
-                changePositions.add(new World.Position(xx, yy));
+                if (!haveDuplicatePosition(changePositions, xx, yy))
+                    changePositions.add(new World.Position(xx, yy));
                 break;
             }
             down++;
         }
     }
 
+
     @Override
     public void tick() {
+//        setFlame4Size();
+//        setAnimation();
         if (left != 0) flameGifLeft.tick();
         if (right != 0) flameGifRight.tick();
         if (up != 0) flameGifUp.tick();
@@ -133,5 +141,38 @@ public class Flame extends Entity {
 
     public List<World.Position> getChangePositions() {
         return changePositions;
+    }
+
+    public int getLeft() {
+        return left;
+    }
+
+    public int getRight() {
+        return right;
+    }
+
+    public int getUp() {
+        return up;
+    }
+
+    public int getDown() {
+        return down;
+    }
+
+    public void setAnimation() {
+        if (this.left != 0) flameGifLeft = new Animation(500, Assets.flameLeft(this.left));
+        if (this.right != 0) flameGifRight = new Animation(500, Assets.flameRight(this.right));
+        if (this.up != 0) flameGifUp = new Animation(500, Assets.flameUp(this.up));
+        if (this.down != 0) flameGifDown = new Animation(500, Assets.flameDown(this.down));
+    }
+
+    private boolean haveDuplicatePosition(List<World.Position> changePositions, int x, int y) {
+        for (int i = 0; i < changePositions.size(); i++) {
+            if (x == changePositions.get(i).x
+                && y == changePositions.get(i).y) {
+                return true;
+            }
+        }
+        return false;
     }
 }

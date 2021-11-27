@@ -15,6 +15,7 @@ public class Tile {
     public static Tile flameItem = new FlameItem('g');
     public static Tile speedItem = new SpeedItem('e');
     public static Tile bombItem = new BombItem('n');
+    public static Tile bombTile = new BombTile('B');
 
 
 //    public static Tile dirtTile = new DirtTile(1);

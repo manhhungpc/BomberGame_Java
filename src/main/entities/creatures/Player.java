@@ -7,13 +7,14 @@ import main.gfx.Assets;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends Creature {
 
-    //private Game game;
+    public static double increasePlayerSpeed = 1.0f;
+
     private final Animation aniDown, aniUp, aniLeft, aniRight;
-//    private int bombedNumber = 0;
-//    private boolean bombed = true;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, 32, 48);
@@ -42,7 +43,6 @@ public class Player extends Creature {
     private void getInput() {
         xMove = 0;
         yMove = 0;
-//        bombed = false;
 
         if(handler.getKeyManager().up)
             yMove = -speed;
@@ -53,9 +53,6 @@ public class Player extends Creature {
         if(handler.getKeyManager().right)
             xMove = speed;
 
-//        if(handler.getKeyManager().bombed) {
-//            bombed = true;
-//        }
     }
 
     @Override
@@ -64,11 +61,6 @@ public class Player extends Creature {
         g.setColor(Color.red);
         //g.fillRect((int) x+bounds.x, (int) y+bounds.y, bounds.width, bounds.height);
 
-//        if (bombed && bombedNumber == 0) {
-//            System.out.println("Bombed " + x + " " + y);
-//            g.drawImage(Assets.bomb, (int) x, (int) y, width, height, nu)
-//            bombedNumber++;
-//        }
     }
 
     private BufferedImage getCurrentAnimation(){
@@ -78,5 +70,6 @@ public class Player extends Creature {
         if(yMove > 0) return aniDown.getCurrentFrame();
         return Assets.player;
     }
+
 
 }
