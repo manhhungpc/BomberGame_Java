@@ -16,7 +16,7 @@ import java.util.List;
 public class Flame extends Entity {
 
     public static int flameSize = 1;
-    public static final int MAX_FLAME_SIZE = 4;
+    public static final int MAX_FLAME_SIZE = 5;
 
 //    private final Bomb bomb;
     private Animation flameGifLeft, flameGifRight, flameGifUp, flameGifDown, flameGifMid;
