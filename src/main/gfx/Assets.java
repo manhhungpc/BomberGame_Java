@@ -2,8 +2,10 @@ package main.gfx;
 
 import main.entities.bomb.Flame;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public class Assets {
@@ -15,7 +17,7 @@ public class Assets {
     public static BufferedImage[] balloon_down, balloon_up, balloon_left, balloon_right;
     public static BufferedImage bomb, explosionUncut, explosionX1,explosionX2, explosionX3
             , explosionY1, explosionY2, explosionY3, explosion0;
-    public static BufferedImage[] bombGif, flameLeft, explosionRight, explosionUp, explosionDown;
+    public static BufferedImage[] bombGif;
     public static BufferedImage flameItem, bombItem, speedItem;
 
     public static void init(){
@@ -68,7 +70,7 @@ public class Assets {
 
         bombGif = new BufferedImage[2];
         bombGif[0] = bomb;
-        bombGif[1] = ImageLoader.loadImage("/image/bomb2.png");
+        bombGif[1] = bomb;
 
         // explosion cutting
         explosionUncut = ImageLoader.loadImage("/image/uncut/explosion.png");
@@ -83,86 +85,155 @@ public class Assets {
 
         explosion0 = spriteSheetExplosion.crop(5*32, 0, 32, 32);
 
-//        File outputfile = new File("D:\\mid_mid.png");
-//        try {
-//            ImageIO.write(explosion0, "png", outputfile);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         flameItem = ImageLoader.loadImage("/image/power_pierce.png");
         speedItem = ImageLoader.loadImage("/image/power_speed.png");
         bombItem = ImageLoader.loadImage("/image/power_bomb.png");
 
+//        for (int i = 0; i <= 4; i++) {
+//            for (int j = 0; j <= 6; j++) {
+//                BufferedImage temp = spriteSheetExplosion.crop(i*32, j*32, 32, 32);
+//                saveImage(temp, i + "_" + j);
+//            }
+//        }
     }
 
+    private static void saveImage(BufferedImage image, String name) {
+        File outputfile = new File("D:\\" + name + ".png");
+        try {
+            ImageIO.write(image, "png", outputfile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public static BufferedImage[] flameUp(int length) {
-        BufferedImage[] ans = new BufferedImage[1];
-        String s = "up" + (Flame.flameSize);
-        ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
-        ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
+    public static BufferedImage[] flameLeft(int length) {
+        BufferedImage[] ans = new BufferedImage[8];
+        String s = "left" + (Flame.flameSize);
 
-        double tileSize = (double) ans[0].getHeight() / Flame.flameSize;
-        ans[0] = new SpriteSheet(ans[0]).crop( 0,
-                (int) ((Flame.flameSize - length) * tileSize),
-                ans[0].getWidth(),
-                (int) (length * tileSize));
+        for (int i = 0; i <= 4; i++) {
+//            System.out.println("ans[" + i + "]" + " /image/explosion/"+ i + "/" + i + "bombbang_" + s + ".png");
+//            ans[i] = ImageLoader.loadImage("/image/explosion/"+ i + "/" + i + "bombbang_" + s + ".png");
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (4-i) + "/bombbang_" + s + ".png");
+            ans[i] = cropLeft(length, ans[i]);
+        }
+        for (int i = 5; i <= 7; i++) {
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (i-4) + "/bombbang_" + s + ".png");
+            ans[i] = cropLeft(length, ans[i]);
+        }
+//        ans[6] = ImageLoader.loadImage("/image/explosion/"+ 2 + "/bombbang_" + s + ".png");
+//        ans[7] = ImageLoader.loadImage("/image/explosion/"+ 3 + "/bombbang_" + s + ".png");
 
         return ans;
     }
 
     public static BufferedImage[] flameRight(int length) {
-        BufferedImage[] ans = new BufferedImage[1];
+        BufferedImage[] ans = new BufferedImage[8];
         String s = "right" + (Flame.flameSize);
-        ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
-        ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
 
-        double tileSize = (double) ans[0].getWidth() / Flame.flameSize;
-        ans[0] = new SpriteSheet(ans[0]).crop(0,
-                0,
-                (int) (length * tileSize),
-                ans[0].getHeight());
+        for (int i = 0; i <= 4; i++) {
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (4-i) + "/bombbang_" + s + ".png");
+            ans[i] = cropRight(length, ans[i]);
+        }
+        for (int i = 5; i <= 7; i++) {
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (i-4) + "/bombbang_" + s + ".png");
+            ans[i] = cropRight(length, ans[i]);
+        }
+
+        return ans;
+    }
+
+    public static BufferedImage[] flameUp(int length) {
+        BufferedImage[] ans = new BufferedImage[8];
+        String s = "up" + (Flame.flameSize);
+
+        for (int i = 0; i <= 4; i++) {
+//            System.out.println("/image/explosion/"+ i + "/bombbang_" + s + ".png");
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (4-i) + "/bombbang_" + s + ".png");
+            ans[i] = cropUp(length, ans[i]);
+        }
+        for (int i = 5; i <= 7; i++) {
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (i-4) + "/bombbang_" + s + ".png");
+            ans[i] = cropUp(length, ans[i]);
+        }
 
         return ans;
     }
 
     public static BufferedImage[] flameDown(int length) {
-        BufferedImage[] ans = new BufferedImage[1];
+        BufferedImage[] ans = new BufferedImage[8];
         String s = "down" + (Flame.flameSize);
-        ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
-        ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
 
-        double tileSize = (double) ans[0].getHeight() / Flame.flameSize;
-        ans[0] = new SpriteSheet(ans[0]).crop( 0,
-                0,
-                ans[0].getWidth(),
-                (int) (length * tileSize));
+        for (int i = 0; i <= 4; i++) {
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (4-i) + "/bombbang_" + s + ".png");
+            ans[i] = cropDown(length, ans[i]);
+        }
+        for (int i = 5; i <= 7; i++) {
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (i-4) + "/bombbang_" + s + ".png");
+            ans[i] = cropDown(length, ans[i]);
+        }
 
         return ans;
     }
 
-    public static BufferedImage[] flameLeft(int length) {
-        BufferedImage[] ans = new BufferedImage[1];
-        String s = "left" + (Flame.flameSize);
-        System.out.println("/image/explosion/bombbang_" + s + ".png");
-        ans[0] = ImageLoader.loadImage("/image/explosion/bombbang_" + s + ".png");
-        ans[0] = new SpriteSheet(ans[0]).crop(0, 0, ans[0].getWidth()-1, ans[0].getHeight()-1);
+    public static BufferedImage[] flameMid() {
+        BufferedImage[] ans = new BufferedImage[8];
+        for (int i = 0; i <= 4; i++) {
+//            System.out.println("/image/explosion/"+ i + "/bombbang_mid.png");
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (4-i) + "/bombbang_mid.png");
+        }
+        for (int i = 5; i <= 7; i++) {
+            ans[i] = ImageLoader.loadImage("/image/explosion/"+ (i-4) + "/bombbang_mid.png");
+        }
+        return ans;
+    }
 
-        double tileSize = (double) ans[0].getWidth() / Flame.flameSize;
-        ans[0] = new SpriteSheet(ans[0]).crop((int) ((Flame.flameSize - length) * tileSize),
+
+
+    private static BufferedImage cropLeft(int length, BufferedImage ans) {
+        ans = new SpriteSheet(ans).crop(0, 0, ans.getWidth()-1, ans.getHeight()-1);
+        double tileSize = (double) ans.getWidth() / Flame.flameSize;
+        ans = new SpriteSheet(ans).crop((int) ((Flame.flameSize - length) * tileSize),
                 0,
                 (int) (length * tileSize),
-                ans[0].getHeight());
-
+                ans.getHeight());
         return ans;
     }
 
-    public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
-        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics2D = resizedImage.createGraphics();
-        graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
-        graphics2D.dispose();
-        return resizedImage;
+    private static BufferedImage cropRight(int length, BufferedImage ans) {
+        ans = new SpriteSheet(ans).crop(0, 0, ans.getWidth()-1, ans.getHeight()-1);
+        double tileSize = (double) ans.getWidth() / Flame.flameSize;
+        ans = new SpriteSheet(ans).crop(0,
+                0,
+                (int) (length * tileSize),
+                ans.getHeight());
+        return ans;
     }
+
+    private static BufferedImage cropUp(int length, BufferedImage ans) {
+        ans = new SpriteSheet(ans).crop(0, 0, ans.getWidth()-1, ans.getHeight()-1);
+        double tileSize = (double) ans.getHeight() / Flame.flameSize;
+        ans = new SpriteSheet(ans).crop( 0,
+                (int) ((Flame.flameSize - length) * tileSize),
+                ans.getWidth(),
+                (int) (length * tileSize));
+        return ans;
+    }
+
+    private static BufferedImage cropDown(int length, BufferedImage ans) {
+        ans = new SpriteSheet(ans).crop(0, 0, ans.getWidth()-1, ans.getHeight()-1);
+        double tileSize = (double) ans.getHeight() / Flame.flameSize;
+        ans = new SpriteSheet(ans).crop( 0,
+                0,
+                ans.getWidth(),
+                (int) (length * tileSize));
+        return ans;
+    }
+
+//    public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+//        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+//        Graphics2D graphics2D = resizedImage.createGraphics();
+//        graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+//        graphics2D.dispose();
+//        return resizedImage;
+//    }
 }

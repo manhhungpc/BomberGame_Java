@@ -15,13 +15,13 @@ import java.util.List;
 public class Bomb extends Creature {
 
     private static final int BOMB_TIME = 20;
-    private static final int FLAME_TIME = 2;
+    private static final int FLAME_TIME = 3;
 
     private final Animation bombGif;
     private long startTime;
     private boolean alive = true;
     private final Flame flame;
-    private boolean flameAlive = false;
+    private boolean flameAlive = false, flameEarlier = false;
 
     public Bomb(Handler handler, GameState gameState, float x, float y, int width, int height) {
         super(handler, ((int) x ) / 36 * 36, ((int) y ) / 36 * 36, width, height);
@@ -33,25 +33,35 @@ public class Bomb extends Creature {
 
     @Override
     public void tick() {
+        long timeNow = TimeManage.timeNow();
+        if (flameEarlier) {
+            startTime = timeNow - (BOMB_TIME-FLAME_TIME);
+            flameEarlier = false;
+        }
         bombGif.tick();
-        long elapsedTime = TimeManage.timeNow() - startTime;
+        long elapsedTime = timeNow - startTime;
         if (elapsedTime == BOMB_TIME)
             alive = false;
 
-        if (elapsedTime == BOMB_TIME - FLAME_TIME) {
+        if (elapsedTime >= BOMB_TIME - FLAME_TIME) {
             flameAlive = true;
             flame.tick();
         }
     }
 
     public void setFlameRightNow() {
-        startTime = TimeManage.timeNow() - (BOMB_TIME-FLAME_TIME);
+//        startTime = TimeManage.timeNow() - (BOMB_TIME-FLAME_TIME);
+        flameEarlier = true;
     }
 
     @Override
     public void render(Graphics g) {
-
-        g.drawImage(getCurrentAnimation(), (int) x, (int) y, width, height, null);
+        if(!flameAlive) {
+            if (bombGif.getIndex() == 0)
+                g.drawImage(getCurrentAnimation(), (int) x+2, (int) y+2, width-5, height-5, null);
+            else
+                g.drawImage(getCurrentAnimation(), (int) x, (int) y, width, height, null);
+        }
 
         if(flameAlive) flame.render(g);
     }
