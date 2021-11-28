@@ -25,7 +25,7 @@ public class Bomb extends Creature {
 
     public Bomb(Handler handler, GameState gameState, float x, float y, int width, int height) {
         super(handler, ((int) x ) / 36 * 36, ((int) y ) / 36 * 36, width, height);
-        bombGif = new Animation(500, Assets.bombGif);
+        bombGif = new Animation(250, Assets.bombGif);
         startTime = TimeManage.timeNow();
         flame = new Flame(handler, gameState, x, y, -1, -1, this);
 //        handler.getGame().getGameState().getWorld().setTile((int) flame.getX()/36, (int) flame.getY()/36, 'B');
@@ -40,7 +40,7 @@ public class Bomb extends Creature {
         }
         bombGif.tick();
         long elapsedTime = timeNow - startTime;
-        if (elapsedTime == BOMB_TIME)
+        if (elapsedTime >= BOMB_TIME)
             alive = false;
 
         if (elapsedTime >= BOMB_TIME - FLAME_TIME) {
