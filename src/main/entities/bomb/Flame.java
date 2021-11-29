@@ -3,6 +3,7 @@ package main.entities.bomb;
 import main.Handler;
 import main.entities.Entity;
 import main.entities.bomb.Bomb;
+import main.entities.creatures.Player;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
@@ -15,106 +16,44 @@ import java.util.List;
 
 public class Flame extends Entity {
 
-    public static int flameSize = 2;
-    public static final int MAX_FLAME_SIZE = 10;
+    public static int flameSize = 1;
+    public static final int MAX_FLAME_SIZE = 5;
 
 //    private final Bomb bomb;
-    private Animation flameGifLeft, flameGifRight, flameGifUp, flameGifDown;
+    private Animation flameGifLeft, flameGifRight, flameGifUp, flameGifDown, flameGifMid;
     private int left, right, up, down;
     private final GameState gameState;
     private final List<World.Position> changePositions = new ArrayList<>();
 
     public Flame(Handler handler, GameState gameState, float x, float y, int width, int height, Bomb bomb) {
         super(handler, x, y, width, height);
-//        this.bomb = bomb;
         this.gameState = gameState;
-
-//        setFlame4Size();
-
-//        if (this.left != 0) flameGifLeft = new Animation(500, Assets.flameLeft(this.left));
-//        if (this.right != 0) flameGifRight = new Animation(500, Assets.flameRight(this.right));
-//        if (this.up != 0) flameGifUp = new Animation(500, Assets.flameUp(this.up));
-//        if (this.down != 0) flameGifDown = new Animation(500, Assets.flameDown(this.down));
 
         setFlame4Size();
         setAnimation();
-
-//        this.left = left;
-//        this.right = right;
-//        this.down = down;
-//        this.up = up;
 
         super.x = bomb.getX();
         super.y = bomb.getY();
     }
 
-    public void setFlame4Size() {
-        left = 0;
-        while (left != flameSize) {
-            int xx = (int) x / 36 - left - 1;
-            int yy =  (int) y / 36;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
-                if (!haveDuplicatePosition(changePositions, xx, yy))
-                    changePositions.add(new World.Position(xx, yy));
-                break;
-            }
-            left++;
-        }
-
-        right = 0;
-        while (right != flameSize) {
-            int xx = (int) x / 36 + right + 1;
-            int yy =  (int) y / 36;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
-                if (!haveDuplicatePosition(changePositions, xx, yy))
-                    changePositions.add(new World.Position(xx, yy));
-                break;
-            }
-            right++;
-        }
-
-        up = 0;
-        while (up != flameSize) {
-            int xx = (int) x / 36;
-            int yy =  (int) y / 36 - up - 1;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
-                if (!haveDuplicatePosition(changePositions, xx, yy))
-                    changePositions.add(new World.Position(xx, yy));
-                break;
-            }
-            up++;
-        }
-
-        down = 0;
-        while (down != flameSize) {
-            int xx = (int) x / 36;
-            int yy =  (int) y / 36 + down + 1;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
-                if (!haveDuplicatePosition(changePositions, xx, yy))
-                    changePositions.add(new World.Position(xx, yy));
-                break;
-            }
-            down++;
-        }
-    }
-
-
     @Override
     public void tick() {
-//        setFlame4Size();
-//        setAnimation();
+        flameGifMid.tick();
         if (left != 0) flameGifLeft.tick();
         if (right != 0) flameGifRight.tick();
         if (up != 0) flameGifUp.tick();
         if (down != 0) flameGifDown.tick();
     }
 
-
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.explosion0, (int) x, (int) y, 36, 36, null);
-        if (left != 0)
+//        g.drawImage(Assets.explosion0, (int) x, (int) y, 36, 36, null);
+        g.drawImage(getCurrentAnimationMid(), (int) x, (int) y, 36, 36, null);
+//        System.out.print("mid " + flameGifMid.getIndex());
+        if (left != 0) {
+//            System.out.println(", left" + flameGifLeft.getIndex());
             g.drawImage(getCurrentAnimationLeft(), (int) x-left*36, (int) y, left*36, 36, null);
+        }
         if (right != 0)
             g.drawImage(getCurrentAnimationRight(), (int) x+36, (int) y, right*36, 36, null);
         if (up != 0)
@@ -139,6 +78,10 @@ public class Flame extends Entity {
         return flameGifDown.getCurrentFrame();
     }
 
+    private BufferedImage getCurrentAnimationMid() {
+        return flameGifMid.getCurrentFrame();
+    }
+
     public List<World.Position> getChangePositions() {
         return changePositions;
     }
@@ -160,10 +103,11 @@ public class Flame extends Entity {
     }
 
     public void setAnimation() {
-        if (this.left != 0) flameGifLeft = new Animation(500, Assets.flameLeft(this.left));
-        if (this.right != 0) flameGifRight = new Animation(500, Assets.flameRight(this.right));
-        if (this.up != 0) flameGifUp = new Animation(500, Assets.flameUp(this.up));
-        if (this.down != 0) flameGifDown = new Animation(500, Assets.flameDown(this.down));
+        flameGifMid = new Animation(100, Assets.flameMid());
+        if (this.left != 0) flameGifLeft = new Animation(100, Assets.flameLeft(this.left));
+        if (this.right != 0) flameGifRight = new Animation(100, Assets.flameRight(this.right));
+        if (this.up != 0) flameGifUp = new Animation(100, Assets.flameUp(this.up));
+        if (this.down != 0) flameGifDown = new Animation(100, Assets.flameDown(this.down));
     }
 
     private boolean haveDuplicatePosition(List<World.Position> changePositions, int x, int y) {
@@ -175,4 +119,55 @@ public class Flame extends Entity {
         }
         return false;
     }
+
+    public void setFlame4Size() {
+        left = 0;
+        while (left != flameSize) {
+            int xx = (int) x / 36 - left - 1;
+            int yy =  (int) y / 36;
+            if(gameState.getWorld().getTile(xx, yy).isSolidToBomb()) {
+                if (!haveDuplicatePosition(changePositions, xx, yy))
+                    changePositions.add(new World.Position(xx, yy));
+                break;
+            }
+            left++;
+        }
+
+        right = 0;
+        while (right != flameSize) {
+            int xx = (int) x / 36 + right + 1;
+            int yy =  (int) y / 36;
+            if(gameState.getWorld().getTile(xx, yy).isSolidToBomb()) {
+                if (!haveDuplicatePosition(changePositions, xx, yy))
+                    changePositions.add(new World.Position(xx, yy));
+                break;
+            }
+            right++;
+        }
+
+        up = 0;
+        while (up != flameSize) {
+            int xx = (int) x / 36;
+            int yy =  (int) y / 36 - up - 1;
+            if(gameState.getWorld().getTile(xx, yy).isSolidToBomb()) {
+                if (!haveDuplicatePosition(changePositions, xx, yy))
+                    changePositions.add(new World.Position(xx, yy));
+                break;
+            }
+            up++;
+        }
+
+        down = 0;
+        while (down != flameSize) {
+            int xx = (int) x / 36;
+            int yy =  (int) y / 36 + down + 1;
+            if(gameState.getWorld().getTile(xx, yy).isSolidToBomb()) {
+                if (!haveDuplicatePosition(changePositions, xx, yy))
+                    changePositions.add(new World.Position(xx, yy));
+                break;
+            }
+            down++;
+        }
+    }
+
 }

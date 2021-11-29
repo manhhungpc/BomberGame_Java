@@ -12,4 +12,14 @@ public class BombTile extends Tile {
     public boolean isSolid() {
         return true;
     }
+
+    @Override
+    public boolean isSolidToPlayer() {
+        return false;
+    }
+
+    @Override
+    public boolean isSolidToBomb() {
+        return false;
+    }
 }
