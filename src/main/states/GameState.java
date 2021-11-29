@@ -4,6 +4,8 @@ import main.Handler;
 import main.entities.creatures.Balloon;
 import main.entities.bomb.BombSet;
 import main.entities.creatures.Player;
+import main.gfx.Assets;
+import main.gfx.CreatureDieAnimation;
 import main.worlds.World;
 
 import java.awt.Graphics;
@@ -20,6 +22,7 @@ public class GameState extends State {
     private final World world;
     private final List<Balloon> balloons;
     private final BombSet bombSet;
+    private final List<CreatureDieAnimation> creatureDieAnimations = new ArrayList<>();
 
     public GameState(Handler handler){
         super(handler);
@@ -43,6 +46,8 @@ public class GameState extends State {
         bombSet.tick();
 
         tickBalloons();
+
+        tickCreatureDie();
     }
 
     @Override
@@ -53,6 +58,8 @@ public class GameState extends State {
 
         bombSet.render(g);
         renderPlayers(g);
+
+        renderCreatureDie(g);
     }
 
     public List<Player> getPlayers() {
@@ -105,6 +112,12 @@ public class GameState extends State {
         for (int i = players.size() - 1; i >= 0; i--) {
             Player playerI = players.get(i);
             if (!playerI.isAlive()) {
+
+                // add player die animation
+                CreatureDieAnimation temp = new CreatureDieAnimation(100, Assets.playerDie, 30, playerI.getX(), playerI.getY());
+                creatureDieAnimations.add(temp);
+                System.out.println("add");
+
                 players.remove(i);
                 continue;
             }
@@ -117,5 +130,30 @@ public class GameState extends State {
             Balloon balloon = balloons.get(i);
             balloon.tick();
         }
+    }
+
+    private void setCreatureDieAnimations() {
+
+    }
+
+    private void tickCreatureDie() {
+        for (int i = creatureDieAnimations.size() - 1; i >= 0; i--) {
+            CreatureDieAnimation creatureDieI = creatureDieAnimations.get(i);
+            if (!creatureDieI.isAlive()) {
+                creatureDieAnimations.remove(i);
+                continue;
+            }
+            creatureDieI.tick();
+        }
+    }
+
+    private void renderCreatureDie(Graphics g) {
+        for (int i = 0; i < creatureDieAnimations.size(); i++) {
+            creatureDieAnimations.get(i).render(g);
+        }
+    }
+
+    public List<CreatureDieAnimation> getCreatureDieAnimations() {
+        return creatureDieAnimations;
     }
 }

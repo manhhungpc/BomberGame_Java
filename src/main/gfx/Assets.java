@@ -19,6 +19,8 @@ public class Assets {
             , explosionY1, explosionY2, explosionY3, explosion0;
     public static BufferedImage[] bombGif;
     public static BufferedImage flameItem, bombItem, speedItem;
+    public static BufferedImage[] playerDie;
+    public static BufferedImage empty;
 
     public static void init(){
 
@@ -95,6 +97,37 @@ public class Assets {
 //                saveImage(temp, i + "_" + j);
 //            }
 //        }
+
+        empty = ImageLoader.loadImage("/image/empty.png");
+
+        playerDie = new BufferedImage[27];
+        playerDie[0] = empty;
+        playerDie[1] = ImageLoader.loadImage("/image/bomber-die.png");
+        playerDie[2] = empty;
+        playerDie[3] = playerDie[1];
+        playerDie[4] = empty;
+        playerDie[5] = ImageLoader.loadImage("/image/bomber-die2.png");
+        playerDie[6] = empty;
+        playerDie[7] = playerDie[5];
+        playerDie[8] = empty;
+        playerDie[9] = ImageLoader.loadImage("/image/bomber-die3.png");
+        playerDie[10] = empty;
+        playerDie[11] = playerDie[9];
+        playerDie[12] = empty;
+        playerDie[13] = ImageLoader.loadImage("/image/bomber-die4.png");
+        playerDie[14] = playerDie[13];
+        playerDie[15] = playerDie[13];
+        playerDie[16] = playerDie[13];
+        playerDie[17] = playerDie[13];
+        playerDie[18] = playerDie[13];
+        playerDie[19] = playerDie[13];
+        playerDie[20] = playerDie[13];
+        playerDie[21] = playerDie[13];
+        playerDie[22] = playerDie[13];
+        playerDie[23] = playerDie[13];
+        playerDie[24] = playerDie[13];
+        playerDie[25] = playerDie[13];
+        playerDie[26] = playerDie[13];
     }
 
     private static void saveImage(BufferedImage image, String name) {

@@ -6,6 +6,7 @@ import main.entities.bomb.BombSet;
 import main.entities.bomb.Flame;
 import main.gfx.Animation;
 import main.gfx.Assets;
+import main.gfx.CreatureDieAnimation;
 import main.tiles.Tile;
 
 import java.awt.*;
