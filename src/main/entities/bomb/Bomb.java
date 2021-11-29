@@ -57,6 +57,9 @@ public class Bomb extends Creature {
             // delete bomb tile
             handler.getWorld().setTile((int) (getFlame().getX() / 36), (int) (getFlame().getY() / 36), ' ');
 
+            // delete players
+            deletePlayerAtFlame();
+
             alive = false;
         }
 
@@ -136,5 +139,28 @@ public class Bomb extends Creature {
 
     private int j() {
         return (int) (getFlame().getY() / 36);
+    }
+
+    private boolean playerIsAtFlame(Player player) {
+        float flameX = flame.getX();
+        float flameY = flame.getY();
+
+        return (player.getDownY() >= flameY && player.getUpY() <= flameY + Tile.TILE_HEIGHT
+                && player.getRightX() >= flameX - flame.getLeft() * Tile.TILE_WIDTH
+                && player.getLeftX() <= flameX + (flame.getRight() + 1) * Tile.TILE_WIDTH)
+                ||
+                (player.getRightX() >= flameX && player.getLeftX() <= flameX + Tile.TILE_WIDTH
+                && player.getDownY() >= flameY - flame.getUp() * Tile.TILE_HEIGHT
+                && player.getUpY() <= flameY + (flame.getDown() + 1) * Tile.TILE_HEIGHT);
+    }
+
+    private void deletePlayerAtFlame() {
+        List<Player> players = handler.getGame().getGameState().getPlayers();
+        for (int i = 0; i < players.size(); i++) {
+            Player playerI =  players.get(i);
+            if (playerIsAtFlame(playerI)) {
+                playerI.setAlive(false);
+            }
+        }
     }
 }

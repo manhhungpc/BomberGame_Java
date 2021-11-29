@@ -43,6 +43,8 @@ public class Player extends Creature {
         aniRight.tick();
         getInput();
         move();
+        checkAlive();
+
     }
 
     @Override
@@ -51,7 +53,6 @@ public class Player extends Creature {
         g.setColor(Color.red);
 //        g.fillRect((int) x+bounds.x, (int) y+bounds.y, bounds.width, bounds.height);
 //        g.fillRect((int) x, (int) y, bounds.width + bounds.x, bounds.height + bounds.y);
-        checkAlive();
 //        System.out.println(isAlive);
     }
 
@@ -98,19 +99,30 @@ public class Player extends Creature {
         List<Balloon> balloons = handler.getGame().getGameState().getBalloons();
         for (int i = 0; i < balloons.size(); i++) {
             if (isCollision((float) balloons.get(i).getCurrentTopLeftX(), (float) balloons.get(i).getCurrentTopLeftY())) {
-//                isAlive = false;
+                isAlive = false;
                 return;
             }
         }
     }
 
     private boolean isCollision(float balloonX, float balloonY) {
-        return  (getUpY() - bounds.height < balloonY || balloonY < getUpY() + bounds.height)
-                && (getLeftX() - bounds.width < balloonX || balloonX < getLeftX() + bounds.width);
+//        System.out.println(getUpY() + " " + balloonY + " " + getLeftX() + " " + balloonX);
+        return  getUpY() +  bounds.height >= balloonY
+                && getUpY() <= balloonY + Tile.TILE_HEIGHT
+                && getLeftX() + bounds.width >= balloonX
+                && getLeftX() <= balloonX + Tile.TILE_WIDTH;
     }
 
     @Override
     protected boolean collisionTitle(int x, int y) {
         return handler.getWorld().getTile(x,y).isSolidToPlayer();
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 }

@@ -3,6 +3,7 @@ package main.entities.bomb;
 import main.Handler;
 import main.entities.Entity;
 import main.entities.bomb.Bomb;
+import main.entities.creatures.Player;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
@@ -168,4 +169,5 @@ public class Flame extends Entity {
             down++;
         }
     }
+
 }

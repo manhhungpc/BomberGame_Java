@@ -102,8 +102,12 @@ public class GameState extends State {
     }
 
     private void tickPlayers() {
-        for (int i = 0; i < players.size(); i++) {
+        for (int i = players.size() - 1; i >= 0; i--) {
             Player playerI = players.get(i);
+            if (!playerI.isAlive()) {
+                players.remove(i);
+                continue;
+            }
             playerI.tick();
         }
     }
