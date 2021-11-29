@@ -15,7 +15,8 @@ public class Tile {
     public static Tile flameItem = new FlameItem('g');
     public static Tile speedItem = new SpeedItem('e');
     public static Tile bombItem = new BombItem('n');
-    public static Tile bombTile = new BombTile('B');
+    public static Tile bombTile = new BombTile('v');
+    public static Tile bombTileSolid = new BombTileSolid('V');
 
 
 //    public static Tile dirtTile = new DirtTile(1);
@@ -27,6 +28,8 @@ public class Tile {
 
     protected BufferedImage texture;
     protected final char id;
+
+    protected boolean solidToPlayer = false;
 
     public Tile(BufferedImage texture, char id){
         this.texture = texture;
@@ -47,8 +50,23 @@ public class Tile {
         return false;
     }
 
+    public boolean isSolidToPlayer() {
+        return isSolid();
+    }
+
+    public boolean isSolidToBomb() {
+        return isSolid();
+    }
+
     public int getId(){
         return id;
     }
 
+    public void setSolidToPlayer() {
+        this.solidToPlayer = true;
+    }
+
+    public void setUnSolidToPlayer() {
+        this.solidToPlayer = false;
+    }
 }

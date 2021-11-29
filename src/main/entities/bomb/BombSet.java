@@ -53,6 +53,7 @@ public class BombSet extends Entity {
             if (!hasDuplicate(newBomb))
                 bombList.add(newBomb);
 //            System.out.println(x + " " + y);
+
             bombDone = true;
         }
         if (!bombedRequest) {
@@ -80,7 +81,6 @@ public class BombSet extends Entity {
             if (temp == '*' || temp == 'e' || temp == 'g' || temp == 'n') {
                 world.setTile(x, y, ' ');
             } else if (temp == 'f') {
-//                world.addFlameItem(x, y);
                 world.setTile(x, y, 'g');
             } else if (temp == 'b') {
                 world.setTile(x, y, 'n');
@@ -96,6 +96,7 @@ public class BombSet extends Entity {
 //        handler.getGame().getGameState().getWorld().setTile( (int) bomb.getFlame().getX()/36, (int) bomb.getFlame().getY()/36, ' ');
         deleteEnemyAtFlame(bomb.getFlame());
         explodeBombAtFlame(bomb.getFlame());
+
     }
 
     private boolean enemyIsAtFlame(Flame flame, double enemyX, double enemyY) {

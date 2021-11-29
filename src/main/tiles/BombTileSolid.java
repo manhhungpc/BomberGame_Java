@@ -2,9 +2,9 @@ package main.tiles;
 
 import main.gfx.Assets;
 
-public class BombTile extends Tile {
+public class BombTileSolid extends Tile {
 
-    public BombTile(char id) {
+    public BombTileSolid(char id) {
         super(Assets.grass, id);
     }
 
@@ -15,7 +15,7 @@ public class BombTile extends Tile {
 
     @Override
     public boolean isSolidToPlayer() {
-        return false;
+        return true;
     }
 
     @Override

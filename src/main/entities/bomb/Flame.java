@@ -124,7 +124,7 @@ public class Flame extends Entity {
         while (left != flameSize) {
             int xx = (int) x / 36 - left - 1;
             int yy =  (int) y / 36;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
+            if(gameState.getWorld().getTile(xx, yy).isSolidToBomb()) {
                 if (!haveDuplicatePosition(changePositions, xx, yy))
                     changePositions.add(new World.Position(xx, yy));
                 break;
@@ -136,7 +136,7 @@ public class Flame extends Entity {
         while (right != flameSize) {
             int xx = (int) x / 36 + right + 1;
             int yy =  (int) y / 36;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
+            if(gameState.getWorld().getTile(xx, yy).isSolidToBomb()) {
                 if (!haveDuplicatePosition(changePositions, xx, yy))
                     changePositions.add(new World.Position(xx, yy));
                 break;
@@ -148,7 +148,7 @@ public class Flame extends Entity {
         while (up != flameSize) {
             int xx = (int) x / 36;
             int yy =  (int) y / 36 - up - 1;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
+            if(gameState.getWorld().getTile(xx, yy).isSolidToBomb()) {
                 if (!haveDuplicatePosition(changePositions, xx, yy))
                     changePositions.add(new World.Position(xx, yy));
                 break;
@@ -160,7 +160,7 @@ public class Flame extends Entity {
         while (down != flameSize) {
             int xx = (int) x / 36;
             int yy =  (int) y / 36 + down + 1;
-            if(gameState.getWorld().getTile(xx, yy).isSolid()) {
+            if(gameState.getWorld().getTile(xx, yy).isSolidToBomb()) {
                 if (!haveDuplicatePosition(changePositions, xx, yy))
                     changePositions.add(new World.Position(xx, yy));
                 break;

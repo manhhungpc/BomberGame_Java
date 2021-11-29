@@ -3,9 +3,12 @@ package main.entities.bomb;
 import main.Handler;
 import main.TimeManage;
 import main.entities.creatures.Creature;
+import main.entities.creatures.Player;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
+import main.tiles.BombTile;
+import main.tiles.Tile;
 import main.worlds.World;
 
 import java.awt.*;
@@ -23,13 +26,20 @@ public class Bomb extends Creature {
     private final Flame flame;
     private boolean flameAlive = false, flameEarlier = false;
 
+    private boolean isPlayerOutOfBombTile = false;
+
     public Bomb(Handler handler, GameState gameState, float x, float y, int width, int height) {
         super(handler, ((int) x ) / 36 * 36, ((int) y ) / 36 * 36, width, height);
         bombGif = new Animation(250, Assets.bombGif);
         startTime = TimeManage.timeNow();
         flame = new Flame(handler, gameState, x, y, -1, -1, this);
 //        handler.getGame().getGameState().getWorld().setTile((int) flame.getX()/36, (int) flame.getY()/36, 'B');
+
+        // create bomb Tile (not solid)
+        handler.getWorld().setTile(i(), j(), 'v');
     }
+
+
 
     @Override
     public void tick() {
@@ -39,18 +49,28 @@ public class Bomb extends Creature {
             flameEarlier = false;
         }
         bombGif.tick();
+
         long elapsedTime = timeNow - startTime;
-        if (elapsedTime >= BOMB_TIME)
+
+        if (elapsedTime >= BOMB_TIME)  {
+
+            // delete bomb tile
+            handler.getWorld().setTile((int) (getFlame().getX() / 36), (int) (getFlame().getY() / 36), ' ');
+
             alive = false;
+        }
 
         if (elapsedTime >= BOMB_TIME - FLAME_TIME) {
             flameAlive = true;
             flame.tick();
         }
+
+        if (!isPlayerOutOfBombTile) checkPlayerOutOfBombTile();
+
     }
 
+
     public void setFlameRightNow() {
-//        startTime = TimeManage.timeNow() - (BOMB_TIME-FLAME_TIME);
         flameEarlier = true;
     }
 
@@ -84,5 +104,37 @@ public class Bomb extends Creature {
 
     public Flame getFlame() {
         return flame;
+    }
+
+    private void checkPlayerOutOfBombTile() {
+        if (isPlayerOutOfBombTile()) {
+            // set bomb tile solid
+            isPlayerOutOfBombTile = true;
+            handler.getWorld().setTile(i(), j(), 'V');
+        }
+    }
+
+    private boolean isPlayerOutOfBombTile() {
+        Player player = handler.getGame().getGameState().getPlayers().get(0);
+
+        float playerX = player.getLeftX();
+        float playerY = player.getUpY();
+
+        float bomX = flame.getX();
+        float bomY = flame.getY();
+
+
+        return playerX < bomX - Tile.TILE_HEIGHT * 0.8
+                || playerX > bomX + Tile.TILE_HEIGHT * 0.8
+                || playerY < bomY - Tile.TILE_HEIGHT * 0.8
+                || playerY > bomY + Tile.TILE_HEIGHT * 0.8;
+    }
+
+    private int i() {
+        return (int) (getFlame().getX() / 36);
+    }
+
+    private int j() {
+        return (int) (getFlame().getY() / 36);
     }
 }

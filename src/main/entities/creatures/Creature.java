@@ -39,7 +39,7 @@ public abstract class Creature extends Entity {
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
-                handler.getGame().getGameState().getPlayers().get(0).speed += Player.increasePlayerSpeed;
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.INCREASE_PLAYER_SPEED;
             }
             if (currentTileChar == 'n') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
@@ -50,7 +50,7 @@ public abstract class Creature extends Entity {
                     !collisionTitle(tx, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)){
                 x += xMove;
             } else{
-                x = tx * Tile.TILE_WIDTH - bounds.x - bounds.width - 1;
+//                x = tx * Tile.TILE_WIDTH - bounds.x - bounds.width - 1;
             }
         }
 
@@ -64,7 +64,7 @@ public abstract class Creature extends Entity {
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
-                handler.getGame().getGameState().getPlayers().get(0).speed += Player.increasePlayerSpeed;
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.INCREASE_PLAYER_SPEED;
             }
             if (currentTileChar == 'n') {
                 handler.getWorld().setTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT, ' ');
@@ -75,7 +75,7 @@ public abstract class Creature extends Entity {
                     !collisionTitle(tx, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)){
                 x += xMove;
             }else{
-                x = tx * Tile.TILE_WIDTH + Tile.TILE_WIDTH - bounds.x;
+//                x = tx * Tile.TILE_WIDTH + Tile.TILE_WIDTH - bounds.x;
             }
         }
         //x += xMove;
@@ -93,7 +93,7 @@ public abstract class Creature extends Entity {
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
-                handler.getGame().getGameState().getPlayers().get(0).speed += Player.increasePlayerSpeed;
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.INCREASE_PLAYER_SPEED;
             }
             if (currentTileChar == 'n') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
@@ -104,7 +104,7 @@ public abstract class Creature extends Entity {
                     !collisionTitle((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, ty)){
                 y += yMove;
             } else{
-                y = ty * Tile.TILE_HEIGHT + Tile.TILE_HEIGHT - bounds.y;
+//                y = ty * Tile.TILE_HEIGHT + Tile.TILE_HEIGHT - bounds.y;
             }
         }
 
@@ -119,7 +119,7 @@ public abstract class Creature extends Entity {
             }
             if (currentTileChar == 'e') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
-                handler.getGame().getGameState().getPlayers().get(0).speed += Player.increasePlayerSpeed;
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.INCREASE_PLAYER_SPEED;
             }
             if (currentTileChar == 'n') {
                 handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
@@ -130,7 +130,7 @@ public abstract class Creature extends Entity {
                     !collisionTitle((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, ty)){
                 y += yMove;
             }else{
-                y = ty * Tile.TILE_HEIGHT - bounds.y - bounds.height - 1;
+//                y = ty * Tile.TILE_HEIGHT - bounds.y - bounds.height - 1;
             }
         }
         //y += yMove;

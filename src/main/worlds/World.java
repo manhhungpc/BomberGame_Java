@@ -147,4 +147,5 @@ public class World {
 //    public void addFlameItem(int x, int y) {
 //        flamePosition.add( new Position(x, y));
 //    }
+
 }
