@@ -3,7 +3,6 @@ package main.gfx;
 import main.entities.bomb.Flame;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -130,7 +129,7 @@ public class Assets {
         playerDie[25] = playerDie[13];
         playerDie[26] = playerDie[13];
 
-        setBot2();
+        setBot2Image();
     }
 
     private static void saveImage(BufferedImage image, String name) {
@@ -273,14 +272,17 @@ public class Assets {
 //        return resizedImage;
 //    }
 
-    public static void setBot2() {
+    public static void setBot2Image() {
         bot2_left = new BufferedImage[1];
-        bot2_left[0] = ImageLoader.loadImage("");
+        bot2_left[0] = ImageLoader.loadImage("/resource/image/enemy/bot2_left.png");
 
         bot2_right = new BufferedImage[1];
+        bot2_right[0] = ImageLoader.loadImage("/resource/image/enemy/bot2_right.png");
 
         bot2_up = new BufferedImage[1];
+        bot2_up[0] = ImageLoader.loadImage("/resource/image/enemy/bot2_up.png");
 
         bot2_down = new BufferedImage[1];
+        bot2_down[0] = ImageLoader.loadImage("/resource/image/enemy/bot2_down.png");
     }
 }

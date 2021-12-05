@@ -10,15 +10,19 @@ import java.util.Random;
 
 public class Balloon extends Creature {
 
-    //private Game game;
-    private Animation aniDown, aniUp, aniLeft, aniRight;
+    public static final float BALLOON_SPEED = DEFAULT_SPEED - 0.5f;
 
-    private int choose = 0;
-    private Random random = new Random(0);
+    //private Game game;
+    protected Animation aniDown;
+    protected Animation aniUp;
+    protected Animation aniLeft;
+    protected Animation aniRight;
+
+    protected final Random random = new Random(0);
 
     public Balloon(Handler handler, float x, float y) {
         super(handler, x, y, 36, 36);
-        speed = 1.0f;
+        speed = BALLOON_SPEED;
 
         bounds.x = 0;
         bounds.y = 0;
@@ -42,7 +46,7 @@ public class Balloon extends Creature {
         move();
     }
 
-    private void setAutoMove() {
+    protected void setAutoMove() {
         if (x % 36 == 0 && y % 36 == 0) {
             int tx = (int) x/36;
             int ty = (int) y/36;
@@ -55,7 +59,7 @@ public class Balloon extends Creature {
             if (collisionTitle((int) (x-1)/36, ty)) canLeft = false;
 
             while(true) {
-                choose = random.nextInt(4);
+                int choose = random.nextInt(4);
                 if (choose == 0 && canDown) {
                     xMove = 0;
                     yMove = speed;

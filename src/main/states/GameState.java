@@ -1,9 +1,11 @@
 package main.states;
 
+import main.AI.EnemyAI;
 import main.Handler;
 import main.entities.creatures.Balloon;
 import main.entities.bomb.BombSet;
-import main.entities.creatures.FindPath;
+//import main.entities.creatures.FindPath;
+import main.entities.creatures.Bot2;
 import main.entities.creatures.Player;
 import main.gfx.Assets;
 import main.gfx.CreatureDieAnimation;
@@ -13,18 +15,21 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.worlds.World.balloonPosition;
-import static main.worlds.World.playerPosition;
+import static main.worlds.World.*;
 
 
 public class GameState extends State {
 
     private final List<Player> players;
     private final World world;
+
     private final List<Balloon> balloons;
+//    private EnemyAI enemyAI;
+    private final List<Bot2> bot2s;
+
     private final BombSet bombSet;
     private final List<CreatureDieAnimation> creatureDieAnimations = new ArrayList<>();
-    private final FindPath findPath;
+//    private final FindPath findPath;
 
     public GameState(Handler handler){
         super(handler);
@@ -38,7 +43,10 @@ public class GameState extends State {
         balloons = new ArrayList<>();
         setBalloons();
 
-        findPath = new FindPath(handler, players.get(0), balloons.get(0));
+        bot2s = new ArrayList<>();
+        setBot2();
+
+//        findPath = new FindPath(handler, players.get(0), balloons.get(0));
     }
 
     @Override
@@ -49,10 +57,12 @@ public class GameState extends State {
         bombSet.tick();
 
         tickBalloons();
+//        enemyAI = new EnemyAI(handler);
+        tickBot2s();
 
         tickCreatureDie();
 
-        findPath.tick();
+//        findPath.tick();
     }
 
     @Override
@@ -60,13 +70,14 @@ public class GameState extends State {
         world.render(g);
 
         renderBalloons(g);
+        renderBot2s(g);
 
         bombSet.render(g);
         renderPlayers(g);
 
         renderCreatureDie(g);
 
-        System.out.println(findPath.paths());
+//        System.out.println(findPath.paths());
     }
 
     public List<Player> getPlayers() {
@@ -101,6 +112,14 @@ public class GameState extends State {
         }
     }
 
+    private void setBot2() {
+        for (int i = 0; i < bot2Position.size(); i++) {
+            int x = bot2Position.get(i).x;
+            int y = bot2Position.get(i).y;
+            bot2s.add(new Bot2(handler, x*36, y*36));
+        }
+    }
+
     private void renderPlayers(Graphics g) {
         for (int i = 0; i < players.size(); i++) {
             Player playerI = players.get(i);
@@ -112,6 +131,12 @@ public class GameState extends State {
         for (int i = 0; i < balloons.size(); i++) {
             Balloon balloon = balloons.get(i);
             balloon.render(g);
+        }
+    }
+
+    private void renderBot2s(Graphics g) {
+        for (int i = 0; i < bot2s.size(); i++) {
+            bot2s.get(i).render(g);
         }
     }
 
@@ -139,6 +164,12 @@ public class GameState extends State {
         }
     }
 
+    private void tickBot2s() {
+        for (int i = 0; i < bot2s.size(); i++) {
+            bot2s.get(i).tick();
+        }
+    }
+
     private void setCreatureDieAnimations() {
 
     }
@@ -162,5 +193,9 @@ public class GameState extends State {
 
     public List<CreatureDieAnimation> getCreatureDieAnimations() {
         return creatureDieAnimations;
+    }
+
+    public List<Bot2> getBot2s() {
+        return bot2s;
     }
 }

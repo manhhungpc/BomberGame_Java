@@ -20,6 +20,7 @@ public class World {
     // Entity position
     public static List<Position> playerPosition = new ArrayList<>();
     public static List<Position> balloonPosition = new ArrayList<>();
+    public static List<Position> bot2Position = new ArrayList<>();
 //    private List<Position> flamePosition = new ArrayList<>();
 
     public World(String path){
@@ -72,11 +73,6 @@ public class World {
         height = Integer.parseInt(levelHeightWidth[1]);
         width = Integer.parseInt(levelHeightWidth[2]);
 
-//        System.out.println(level + " " + height + " " + width);
-
-        System.out.println("width = " + width);
-        System.out.println("height = " + height);
-
         tiles = new char[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -84,22 +80,7 @@ public class World {
             }
         }
 
-
-//        for (int i = 0; i < height; i++) {
-//            for (int j = 0; j < width; j++) {
-//                System.out.print(tiles[i][j]);
-//            }
-//            System.out.println();
-//        }
-
-        for(int y = 0;y < height;y++){
-            for(int x = 0;x < width;x++){
-                if (tiles[y][x] == 'p') playerPosition.add(new Position(x, y));
-                if (tiles[y][x] == '1') balloonPosition.add(new Position(x, y));
-//                if (tiles[y][x] == 'f') flamePosition.add(new Position(x, y));
-            }
-        }
-
+        setCreaturePosition();
 
     }
 
@@ -133,10 +114,7 @@ public class World {
 
         @Override
         public String toString() {
-            return "Position{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    '}';
+            return "{" + x + ", " + y + "}";
         }
     }
 
@@ -159,5 +137,18 @@ public class World {
 
     public char[][] getTiles() {
         return tiles;
+    }
+
+    private void setCreaturePosition() {
+        for(int y = 0;y < height;y++){
+            for(int x = 0;x < width;x++){
+                if (tiles[y][x] == 'p') playerPosition.add(new Position(x, y));
+                if (tiles[y][x] == '1') balloonPosition.add(new Position(x, y));
+                if (tiles[y][x] == '2') {
+                    bot2Position.add(new Position(x, y));
+//                    System.out.println("suck");
+                }
+            }
+        }
     }
 }
