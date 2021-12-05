@@ -148,4 +148,8 @@ public class World {
 //        flamePosition.add( new Position(x, y));
 //    }
 
+
+    public char[][] getTiles() {
+        return tiles;
+    }
 }

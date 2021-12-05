@@ -3,6 +3,7 @@ package main.states;
 import main.Handler;
 import main.entities.creatures.Balloon;
 import main.entities.bomb.BombSet;
+import main.entities.creatures.FindPath;
 import main.entities.creatures.Player;
 import main.gfx.Assets;
 import main.gfx.CreatureDieAnimation;
@@ -23,6 +24,7 @@ public class GameState extends State {
     private final List<Balloon> balloons;
     private final BombSet bombSet;
     private final List<CreatureDieAnimation> creatureDieAnimations = new ArrayList<>();
+    private final FindPath findPath;
 
     public GameState(Handler handler){
         super(handler);
@@ -36,6 +38,7 @@ public class GameState extends State {
         balloons = new ArrayList<>();
         setBalloons();
 
+        findPath = new FindPath(handler, players.get(0), balloons.get(0));
     }
 
     @Override
@@ -48,6 +51,8 @@ public class GameState extends State {
         tickBalloons();
 
         tickCreatureDie();
+
+        findPath.tick();
     }
 
     @Override
@@ -60,6 +65,8 @@ public class GameState extends State {
         renderPlayers(g);
 
         renderCreatureDie(g);
+
+        System.out.println(findPath.paths());
     }
 
     public List<Player> getPlayers() {

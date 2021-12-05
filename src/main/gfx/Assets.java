@@ -21,6 +21,7 @@ public class Assets {
     public static BufferedImage flameItem, bombItem, speedItem;
     public static BufferedImage[] playerDie;
     public static BufferedImage empty;
+    public static BufferedImage[] bot2_left, bot2_right, bot2_up, bot2_down;
 
     public static void init(){
 
@@ -128,6 +129,8 @@ public class Assets {
         playerDie[24] = playerDie[13];
         playerDie[25] = playerDie[13];
         playerDie[26] = playerDie[13];
+
+        setBot2();
     }
 
     private static void saveImage(BufferedImage image, String name) {
@@ -269,4 +272,15 @@ public class Assets {
 //        graphics2D.dispose();
 //        return resizedImage;
 //    }
+
+    public static void setBot2() {
+        bot2_left = new BufferedImage[1];
+        bot2_left[0] = ImageLoader.loadImage("");
+
+        bot2_right = new BufferedImage[1];
+
+        bot2_up = new BufferedImage[1];
+
+        bot2_down = new BufferedImage[1];
+    }
 }
