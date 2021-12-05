@@ -58,7 +58,7 @@ public class Tile {
         return isSolid();
     }
 
-    public int getId(){
+    public char getId(){
         return id;
     }
 

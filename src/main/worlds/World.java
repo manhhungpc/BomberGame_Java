@@ -30,6 +30,14 @@ public class World {
 
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
     public void render(Graphics g){
         for(int y = 0;y < height;y++){
             for(int x = 0;x < width;x++){
