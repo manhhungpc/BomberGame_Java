@@ -24,7 +24,7 @@ public class GameState extends State {
     private final World world;
 
     private final List<Balloon> balloons;
-//    private EnemyAI enemyAI;
+    private static EnemyAI enemyAI;
     private final List<Bot2> bot2s;
 
     private final BombSet bombSet;
@@ -57,7 +57,7 @@ public class GameState extends State {
         bombSet.tick();
 
         tickBalloons();
-//        enemyAI = new EnemyAI(handler);
+        if (enemyAI == null) enemyAI = new EnemyAI(handler);
         tickBot2s();
 
         tickCreatureDie();
@@ -197,5 +197,9 @@ public class GameState extends State {
 
     public List<Bot2> getBot2s() {
         return bot2s;
+    }
+
+    public static EnemyAI getEnemyAI() {
+        return enemyAI;
     }
 }

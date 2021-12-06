@@ -9,30 +9,19 @@ import java.io.IOException;
 
 public class Assets {
 
-//    private static final int width = 32, height = 32;
-
-    public static BufferedImage player, dirt, grass, stone, tree, wall, brick, fake;
+    public static BufferedImage player, grass, wall, brick, fake;
     public static BufferedImage[] player_down, player_up, player_left, player_right;
     public static BufferedImage[] balloon_down, balloon_up, balloon_left, balloon_right;
-    public static BufferedImage bomb, explosionUncut, explosionX1,explosionX2, explosionX3
-            , explosionY1, explosionY2, explosionY3, explosion0;
+    public static BufferedImage bomb, explosionUncut, explosion0;
     public static BufferedImage[] bombGif;
     public static BufferedImage flameItem, bombItem, speedItem;
     public static BufferedImage[] playerDie;
-    public static BufferedImage empty;
+    public static BufferedImage empty, botUncut;
     public static BufferedImage[] bot2_left, bot2_right, bot2_up, bot2_down;
 
+    private static SpriteSheet botUncutSheet;
+
     public static void init(){
-
-
-//        SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/sheet.png"));
-//
-//        player = sheet.crop(0, 0, width, height);
-//        dirt = sheet.crop(width, 0, width, height);
-//        grass = sheet.crop(width * 2, 0, width, height);
-//        stone = sheet.crop(width * 3, 0, width, height);
-//        tree = sheet.crop(0, height, width, height);
-
         player = ImageLoader.loadImage("/image/bomber-down.png");
         player_down = new BufferedImage[2];
         player_up = new BufferedImage[2];
@@ -59,7 +48,6 @@ public class Assets {
         bomb = ImageLoader.loadImage("/image/bomb1.png");
 
 
-//        balloon = ImageLoader.loadImage("/image/enemy/balloon_down.png");
         balloon_down = new BufferedImage[1];
         balloon_up = new BufferedImage[1];
         balloon_right = new BufferedImage[1];
@@ -77,65 +65,25 @@ public class Assets {
         // explosion cutting
         explosionUncut = ImageLoader.loadImage("/image/uncut/explosion.png");
         SpriteSheet spriteSheetExplosion = new SpriteSheet(explosionUncut);
-        explosionX1 = spriteSheetExplosion.crop(5*32, 32, 32, 32);
-        explosionX2 = spriteSheetExplosion.crop(5*32, 3*32, 32, 32);
-        explosionX3 = spriteSheetExplosion.crop(5*32, 4*32, 32, 32);
-
-        explosionY1 = spriteSheetExplosion.crop(5*32, 2*32, 32, 32);
-        explosionY2 = spriteSheetExplosion.crop(5*32, 5*32, 32, 32);
-        explosionY3 = spriteSheetExplosion.crop(5*32, 6*32, 32, 32);
-
         explosion0 = spriteSheetExplosion.crop(5*32, 0, 32, 32);
 
         flameItem = ImageLoader.loadImage("/image/power_pierce.png");
         speedItem = ImageLoader.loadImage("/image/power_speed.png");
         bombItem = ImageLoader.loadImage("/image/power_bomb.png");
 
-//        for (int i = 0; i <= 4; i++) {
-//            for (int j = 0; j <= 6; j++) {
-//                BufferedImage temp = spriteSheetExplosion.crop(i*32, j*32, 32, 32);
-//                saveImage(temp, i + "_" + j);
-//            }
-//        }
-
         empty = ImageLoader.loadImage("/image/empty.png");
 
-        playerDie = new BufferedImage[27];
-        playerDie[0] = empty;
-        playerDie[1] = ImageLoader.loadImage("/image/bomber-die.png");
-        playerDie[2] = empty;
-        playerDie[3] = playerDie[1];
-        playerDie[4] = empty;
-        playerDie[5] = ImageLoader.loadImage("/image/bomber-die2.png");
-        playerDie[6] = empty;
-        playerDie[7] = playerDie[5];
-        playerDie[8] = empty;
-        playerDie[9] = ImageLoader.loadImage("/image/bomber-die3.png");
-        playerDie[10] = empty;
-        playerDie[11] = playerDie[9];
-        playerDie[12] = empty;
-        playerDie[13] = ImageLoader.loadImage("/image/bomber-die4.png");
-        playerDie[14] = playerDie[13];
-        playerDie[15] = playerDie[13];
-        playerDie[16] = playerDie[13];
-        playerDie[17] = playerDie[13];
-        playerDie[18] = playerDie[13];
-        playerDie[19] = playerDie[13];
-        playerDie[20] = playerDie[13];
-        playerDie[21] = playerDie[13];
-        playerDie[22] = playerDie[13];
-        playerDie[23] = playerDie[13];
-        playerDie[24] = playerDie[13];
-        playerDie[25] = playerDie[13];
-        playerDie[26] = playerDie[13];
+        setPlayerDieImage();
 
+        botUncut = ImageLoader.loadImage("/image/enemy/bot_uncut.png");
+        botUncutSheet = new SpriteSheet(botUncut);
         setBot2Image();
     }
 
     private static void saveImage(BufferedImage image, String name) {
-        File outputfile = new File("D:\\" + name + ".png");
+        File outputFile = new File("D:\\" + name + ".png");
         try {
-            ImageIO.write(image, "png", outputfile);
+            ImageIO.write(image, "png", outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,8 +94,6 @@ public class Assets {
         String s = "left" + (Flame.flameSize);
 
         for (int i = 0; i <= 4; i++) {
-//            System.out.println("ans[" + i + "]" + " /image/explosion/"+ i + "/" + i + "bombbang_" + s + ".png");
-//            ans[i] = ImageLoader.loadImage("/image/explosion/"+ i + "/" + i + "bombbang_" + s + ".png");
             ans[i] = ImageLoader.loadImage("/image/explosion/"+ (4-i) + "/bombbang_" + s + ".png");
             ans[i] = cropLeft(length, ans[i]);
         }
@@ -155,8 +101,6 @@ public class Assets {
             ans[i] = ImageLoader.loadImage("/image/explosion/"+ (i-4) + "/bombbang_" + s + ".png");
             ans[i] = cropLeft(length, ans[i]);
         }
-//        ans[6] = ImageLoader.loadImage("/image/explosion/"+ 2 + "/bombbang_" + s + ".png");
-//        ans[7] = ImageLoader.loadImage("/image/explosion/"+ 3 + "/bombbang_" + s + ".png");
 
         return ans;
     }
@@ -264,25 +208,57 @@ public class Assets {
         return ans;
     }
 
-//    public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
-//        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
-//        Graphics2D graphics2D = resizedImage.createGraphics();
-//        graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
-//        graphics2D.dispose();
-//        return resizedImage;
-//    }
+    private static void setPlayerDieImage() {
+        playerDie = new BufferedImage[27];
+        playerDie[0] = empty;
+        playerDie[1] = ImageLoader.loadImage("/image/bomber-die.png");
+        playerDie[2] = empty;
+        playerDie[3] = playerDie[1];
+        playerDie[4] = empty;
+        playerDie[5] = ImageLoader.loadImage("/image/bomber-die2.png");
+        playerDie[6] = empty;
+        playerDie[7] = playerDie[5];
+        playerDie[8] = empty;
+        playerDie[9] = ImageLoader.loadImage("/image/bomber-die3.png");
+        playerDie[10] = empty;
+        playerDie[11] = playerDie[9];
+        playerDie[12] = empty;
+        playerDie[13] = ImageLoader.loadImage("/image/bomber-die4.png");
+        playerDie[14] = playerDie[13];
+        playerDie[15] = playerDie[13];
+        playerDie[16] = playerDie[13];
+        playerDie[17] = playerDie[13];
+        playerDie[18] = playerDie[13];
+        playerDie[19] = playerDie[13];
+        playerDie[20] = playerDie[13];
+        playerDie[21] = playerDie[13];
+        playerDie[22] = playerDie[13];
+        playerDie[23] = playerDie[13];
+        playerDie[24] = playerDie[13];
+        playerDie[25] = playerDie[13];
+        playerDie[26] = playerDie[13];
+    }
 
     public static void setBot2Image() {
-        bot2_left = new BufferedImage[1];
-        bot2_left[0] = ImageLoader.loadImage("/resource/image/enemy/bot2_left.png");
+        bot2_left = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            bot2_left[i] = botUncutSheet.crop((6+i)*47, 47, 47, 47);
+        }
 
-        bot2_right = new BufferedImage[1];
-        bot2_right[0] = ImageLoader.loadImage("/resource/image/enemy/bot2_right.png");
+        bot2_right = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            bot2_right[i] = botUncutSheet.crop((6+i)*47, 2*47, 47, 47);
+        }
 
-        bot2_up = new BufferedImage[1];
-        bot2_up[0] = ImageLoader.loadImage("/resource/image/enemy/bot2_up.png");
+        bot2_up = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            bot2_up[i] = botUncutSheet.crop((6+i)*47, 3*47, 47, 47);
+        }
 
-        bot2_down = new BufferedImage[1];
-        bot2_down[0] = ImageLoader.loadImage("/resource/image/enemy/bot2_down.png");
+        bot2_down = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            bot2_down[i] = botUncutSheet.crop((6+i)*47, 0, 47, 47);
+        }
+
     }
 }

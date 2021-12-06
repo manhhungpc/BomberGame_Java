@@ -3,6 +3,7 @@ package main.entities.creatures;
 import main.AI.EnemyAI;
 import main.Game;
 import main.Handler;
+import main.TimeManage;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
@@ -17,8 +18,9 @@ import java.util.Random;
 public class Bot2 extends Balloon {
     int count1 = 0, count2 = 0, count3 = 0;
 
-    public static final int MIN_SPEED = 1, MAX_SPEED = 3;
-    private EnemyAI enemyAI;
+    public static final int MIN_SPEED = 1, MAX_SPEED = 3, TIME_CHANGE_SPEED = 10;
+    public static EnemyAI enemyAI;
+    private long startTime;
 
     public Bot2(Handler handler, float x, float y) {
         super(handler, x, y);
@@ -27,6 +29,8 @@ public class Bot2 extends Balloon {
         aniUp = new Animation(500, Assets.bot2_up);
         aniLeft = new Animation(500, Assets.bot2_left);
         aniRight = new Animation(500, Assets.bot2_right);
+
+        startTime = TimeManage.timeNow();
     }
 
     @Override
@@ -41,12 +45,11 @@ public class Bot2 extends Balloon {
     }
 
     private void setRandomSpeed() {
-        speed = random.nextInt(MIN_SPEED, MAX_SPEED+1);
-//        if (speed != 1 && speed !=2 && speed != 3) System.out.println(speed);
-//        if (speed == 1) count1++;
-//        if (speed == 2) count2++;
-//        if (speed == 3) count3++;
-//        System.out.println(count1 + " " + count2 + " " + count3);
+        long timeNow = TimeManage.timeNow();
+        if (timeNow - startTime > TIME_CHANGE_SPEED) {
+            speed = random.nextInt(MIN_SPEED, MAX_SPEED+1);
+            startTime = timeNow;
+        }
     }
 
     @Override
@@ -65,7 +68,7 @@ public class Bot2 extends Balloon {
             // catching player
             List<Player> players = handler.getGame().getGameState().getPlayers();
             if (players.size() > 0) {
-                EnemyAI enemyAI = new EnemyAI(handler);
+                if (enemyAI == null) enemyAI = GameState.getEnemyAI();
                 int playerX = (int) players.get(0).getLeftX() / Tile.TILE_WIDTH;
                 int playerY = (int) players.get(0).getUpY() / Tile.TILE_HEIGHT;
                 List<World.Position> path = enemyAI.path(playerX, playerY, tx, ty);
