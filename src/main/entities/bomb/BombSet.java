@@ -2,7 +2,7 @@ package main.entities.bomb;
 
 import main.Handler;
 import main.entities.Entity;
-import main.entities.creatures.Balloon;
+import main.entities.creatures.bot.Balloon;
 import main.entities.creatures.Player;
 import main.states.GameState;
 import main.tiles.Tile;

@@ -18,45 +18,18 @@ public class Assets {
     public static BufferedImage[] playerDie;
     public static BufferedImage empty, botUncut;
     public static BufferedImage[] bot2_left, bot2_right, bot2_up, bot2_down;
+    public static BufferedImage[] bot3_left, bot3_right, bot3_up, bot3_down;
 
     private static SpriteSheet botUncutSheet;
 
     public static void init(){
-        player = ImageLoader.loadImage("/image/bomber-down.png");
-        player_down = new BufferedImage[2];
-        player_up = new BufferedImage[2];
-        player_right = new BufferedImage[2];
-        player_left = new BufferedImage[2];
-
-        player_down[0] = ImageLoader.loadImage("/image/bomber-down-left.png");
-        player_down[1] = ImageLoader.loadImage("/image/bomber-down-right.png");
-
-        player_up[0] = ImageLoader.loadImage("/image/bomber-up-left.png");
-        player_up[1] = ImageLoader.loadImage("/image/bomber-up-right.png");
-
-        player_left[0] = ImageLoader.loadImage("/image/bomber-left-up.png");
-        player_left[1] = ImageLoader.loadImage("/image/bomber-left-walk.png");
-
-        player_right[0] = ImageLoader.loadImage("/image/bomber-right-up.png");
-        player_right[1] = ImageLoader.loadImage("/image/bomber-right-walk.png");
-
+        setPlayerImage();
 
         grass = ImageLoader.loadImage("/image/grass.jpg");
         wall = ImageLoader.loadImage("/image/hardWall.png");
         brick = ImageLoader.loadImage("/image/softWall.png");
         fake = ImageLoader.loadImage("/image/bomb1.png");
         bomb = ImageLoader.loadImage("/image/bomb1.png");
-
-
-        balloon_down = new BufferedImage[1];
-        balloon_up = new BufferedImage[1];
-        balloon_right = new BufferedImage[1];
-        balloon_left = new BufferedImage[1];
-
-        balloon_down[0] = ImageLoader.loadImage("/image/enemy/balloon_down.png");
-        balloon_up[0] = ImageLoader.loadImage("/image/enemy/balloon_up.png");
-        balloon_left[0] = ImageLoader.loadImage("/image/enemy/balloon_left.png");
-        balloon_right[0] = ImageLoader.loadImage("/image/enemy/balloon_right.png");
 
         bombGif = new BufferedImage[2];
         bombGif[0] = bomb;
@@ -78,6 +51,8 @@ public class Assets {
         botUncut = ImageLoader.loadImage("/image/enemy/bot_uncut.png");
         botUncutSheet = new SpriteSheet(botUncut);
         setBot2Image();
+        setBalloonImage();
+        setBot3Image();
     }
 
     private static void saveImage(BufferedImage image, String name) {
@@ -166,8 +141,6 @@ public class Assets {
         return ans;
     }
 
-
-
     private static BufferedImage cropLeft(int length, BufferedImage ans) {
         ans = new SpriteSheet(ans).crop(0, 0, ans.getWidth()-1, ans.getHeight()-1);
         double tileSize = (double) ans.getWidth() / Flame.flameSize;
@@ -208,6 +181,27 @@ public class Assets {
         return ans;
     }
 
+    private static void setPlayerImage() {
+        player = ImageLoader.loadImage("/image/bomber-down.png");
+        player_down = new BufferedImage[2];
+        player_up = new BufferedImage[2];
+        player_right = new BufferedImage[2];
+        player_left = new BufferedImage[2];
+
+        player_down[0] = ImageLoader.loadImage("/image/bomber-down-left.png");
+        player_down[1] = ImageLoader.loadImage("/image/bomber-down-right.png");
+
+        player_up[0] = ImageLoader.loadImage("/image/bomber-up-left.png");
+        player_up[1] = ImageLoader.loadImage("/image/bomber-up-right.png");
+
+        player_left[0] = ImageLoader.loadImage("/image/bomber-left-up.png");
+        player_left[1] = ImageLoader.loadImage("/image/bomber-left-walk.png");
+
+        player_right[0] = ImageLoader.loadImage("/image/bomber-right-up.png");
+        player_right[1] = ImageLoader.loadImage("/image/bomber-right-walk.png");
+
+    }
+
     private static void setPlayerDieImage() {
         playerDie = new BufferedImage[27];
         playerDie[0] = empty;
@@ -239,7 +233,7 @@ public class Assets {
         playerDie[26] = playerDie[13];
     }
 
-    public static void setBot2Image() {
+    private static void setBot2Image() {
         bot2_left = new BufferedImage[6];
         for (int i = 0; i < 6; i++) {
             bot2_left[i] = botUncutSheet.crop((6+i)*47, 47, 47, 47);
@@ -258,6 +252,50 @@ public class Assets {
         bot2_down = new BufferedImage[6];
         for (int i = 0; i < 6; i++) {
             bot2_down[i] = botUncutSheet.crop((6+i)*47, 0, 47, 47);
+        }
+    }
+
+    private static void setBalloonImage() {
+        balloon_left = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            balloon_left[i] = botUncutSheet.crop((i)*47, 47, 47, 47);
+        }
+
+        balloon_right = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            balloon_right[i] = botUncutSheet.crop((i)*47, 2*47, 47, 47);
+        }
+
+        balloon_up = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            balloon_up[i] = botUncutSheet.crop((i)*47, 3*47, 47, 47);
+        }
+
+        balloon_down = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            balloon_down[i] = botUncutSheet.crop((i)*47, 0, 47, 47);
+        }
+    }
+
+    private static void setBot3Image() {
+        bot3_left = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            bot3_left[i] = botUncutSheet.crop((6+i)*47, 5*47, 47, 47);
+        }
+
+        bot3_right = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            bot3_right[i] = botUncutSheet.crop((6+i)*47, 6*47, 47, 47);
+        }
+
+        bot3_up = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            bot3_up[i] = botUncutSheet.crop((6+i)*47, 7*47, 47, 47);
+        }
+
+        bot3_down = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            bot3_down[i] = botUncutSheet.crop((6+i)*47, 4*47, 47, 47);
         }
 
     }

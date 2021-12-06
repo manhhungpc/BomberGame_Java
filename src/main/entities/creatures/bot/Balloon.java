@@ -1,6 +1,7 @@
-package main.entities.creatures;
+package main.entities.creatures.bot;
 
 import main.Handler;
+import main.entities.creatures.Creature;
 import main.gfx.Animation;
 import main.gfx.Assets;
 

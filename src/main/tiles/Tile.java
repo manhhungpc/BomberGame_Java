@@ -11,7 +11,7 @@ public class Tile {
     public static Tile grassTile = new GrassTile(' ');
     public static Tile brickTile = new BrickTile('*');
     public static Tile wallTile = new WallTile('#');
-    public static Tile fakeTile = new FakeTile('%');
+    public static Tile fakeTile = new FakeTile('!');
     public static Tile flameItem = new FlameItem('g');
     public static Tile speedItem = new SpeedItem('e');
     public static Tile bombItem = new BombItem('n');

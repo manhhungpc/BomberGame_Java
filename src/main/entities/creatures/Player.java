@@ -1,17 +1,13 @@
 package main.entities.creatures;
 
-import main.Game;
 import main.Handler;
-import main.entities.bomb.BombSet;
-import main.entities.bomb.Flame;
+import main.entities.creatures.bot.Balloon;
 import main.gfx.Animation;
 import main.gfx.Assets;
-import main.gfx.CreatureDieAnimation;
 import main.tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Creature {

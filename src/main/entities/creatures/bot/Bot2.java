@@ -1,9 +1,9 @@
-package main.entities.creatures;
+package main.entities.creatures.bot;
 
 import main.AI.EnemyAI;
-import main.Game;
 import main.Handler;
 import main.TimeManage;
+import main.entities.creatures.Player;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
@@ -11,9 +11,7 @@ import main.tiles.Tile;
 import main.worlds.World;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Random;
 
 public class Bot2 extends Balloon {
     int count1 = 0, count2 = 0, count3 = 0;
