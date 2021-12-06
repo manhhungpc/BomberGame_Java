@@ -9,13 +9,13 @@ import java.io.IOException;
 
 public class Assets {
 
-    public static BufferedImage player, grass, wall, brick, fake;
+    public static BufferedImage player, grass, wall, brick, fake, brickUncut;
     public static BufferedImage[] player_down, player_up, player_left, player_right;
     public static BufferedImage[] balloon_down, balloon_up, balloon_left, balloon_right;
     public static BufferedImage bomb, explosionUncut, explosion0;
     public static BufferedImage[] bombGif;
     public static BufferedImage flameItem, bombItem, speedItem;
-    public static BufferedImage[] playerDie;
+    public static BufferedImage[] playerDie, brickDie;
     public static BufferedImage empty, botUncut;
     public static BufferedImage[] bot2_left, bot2_right, bot2_up, bot2_down;
     public static BufferedImage[] bot3_left, bot3_right, bot3_up, bot3_down;
@@ -27,7 +27,7 @@ public class Assets {
 
         grass = ImageLoader.loadImage("/image/grass.jpg");
         wall = ImageLoader.loadImage("/image/hardWall.png");
-        brick = ImageLoader.loadImage("/image/softWall.png");
+        setBrickImage();
         fake = ImageLoader.loadImage("/image/bomb1.png");
         bomb = ImageLoader.loadImage("/image/bomb1.png");
 
@@ -298,5 +298,30 @@ public class Assets {
             bot3_down[i] = botUncutSheet.crop((6+i)*47, 4*47, 47, 47);
         }
 
+    }
+
+    private static void setBrickImage() {
+                brick = ImageLoader.loadImage("/image/softWall.png");
+//        brickUncut = ImageLoader.loadImage("/image/uncut/brick_uncut.png");
+//        SpriteSheet brickSheet = new SpriteSheet(brickUncut);
+//        brick = brickSheet.crop(59, 22, 98, 98);
+//        brick = brickSheet.crop(59+98+95, 22,98,98);
+        brickDie = new BufferedImage[8];
+//        brickDie[0] = brickSheet.crop(59+98+95, 22,98,98);
+//        brickDie[1] = brickSheet.crop(59+2*98+2*95, 22,98,98);
+//        brickDie[2] = brickSheet.crop(98,98);
+//        brickDie[3] = brickSheet.crop(98,98);
+//        brickDie[4] = brickSheet.crop(98,98);
+//        brickDie[5] = brickSheet.crop(98,98);
+//        brickDie[6] = brickSheet.crop(98,98);
+//        brickDie[7] = brickSheet.crop(98,98);
+        brickDie[0] = empty;
+        brickDie[1] = brick;
+        brickDie[2] = empty;
+        brickDie[3] = brick;
+        brickDie[4] = empty;
+        brickDie[5] = brick;
+        brickDie[6] = empty;
+        brickDie[7] = brick;
     }
 }

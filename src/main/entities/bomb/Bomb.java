@@ -68,7 +68,7 @@ public class Bomb extends Creature {
             flame.tick();
         }
 
-        if (!isPlayerOutOfBombTile) checkPlayerOutOfBombTile();
+        if (handler.getGame().getGameState().getPlayers().size() != 0 &&!isPlayerOutOfBombTile) checkPlayerOutOfBombTile();
 
     }
 

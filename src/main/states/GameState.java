@@ -29,7 +29,7 @@ public class GameState extends State {
     private final List<Bot2> bot2s;
     private final List<Bot3> bot3s;
 
-    private final BombSet bombSet;
+    private BombSet bombSet;
     private final List<CreatureDieAnimation> creatureDieAnimations = new ArrayList<>();
 //    private final FindPath findPath;
 
@@ -58,7 +58,7 @@ public class GameState extends State {
         world.tick();
 
         tickPlayers();
-        bombSet.tick();
+        if (bombSet != null) bombSet.tick();
 
         tickBalloons();
         if (enemyAI == null) enemyAI = new EnemyAI(handler);
@@ -78,7 +78,7 @@ public class GameState extends State {
         renderBot2s(g);
         renderBot3s(g);
 
-        bombSet.render(g);
+        if (bombSet != null) bombSet.render(g);
         renderPlayers(g);
 
         renderCreatureDie(g);
@@ -168,13 +168,13 @@ public class GameState extends State {
                 // add player die animation
                 CreatureDieAnimation temp = new CreatureDieAnimation(100, Assets.playerDie, 30, playerI.getX(), playerI.getY());
                 creatureDieAnimations.add(temp);
-                System.out.println("add");
 
                 players.remove(i);
                 continue;
             }
             playerI.tick();
         }
+        if (players.size() == 0) bombSet = null;
     }
 
     private void tickBalloons() {
@@ -223,6 +223,10 @@ public class GameState extends State {
 
     public List<Bot2> getBot2s() {
         return bot2s;
+    }
+
+    public List<Bot3> getBot3s() {
+        return bot3s;
     }
 
     public static EnemyAI getEnemyAI() {

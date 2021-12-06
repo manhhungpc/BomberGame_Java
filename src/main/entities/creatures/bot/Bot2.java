@@ -14,10 +14,9 @@ import java.awt.*;
 import java.util.List;
 
 public class Bot2 extends Balloon {
-    int count1 = 0, count2 = 0, count3 = 0;
 
-    public static final int MIN_SPEED = 1, MAX_SPEED = 3, TIME_CHANGE_SPEED = 10;
-    public static EnemyAI enemyAI;
+    public static final int MIN_SPEED = 1, MAX_SPEED = 2, TIME_CHANGE_SPEED = 10;
+    private EnemyAI enemyAI;
     private long startTime;
 
     public Bot2(Handler handler, float x, float y) {
