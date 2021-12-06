@@ -8,8 +8,10 @@ import main.entities.bomb.BombSet;
 import main.entities.creatures.bot.Bot2;
 import main.entities.creatures.Player;
 import main.entities.creatures.bot.Bot3;
+import main.gfx.Animation;
 import main.gfx.Assets;
 import main.gfx.CreatureDieAnimation;
+import main.tiles.Tile;
 import main.worlds.World;
 
 import java.awt.Graphics;
@@ -31,7 +33,11 @@ public class GameState extends State {
 
     private BombSet bombSet;
     private final List<CreatureDieAnimation> creatureDieAnimations = new ArrayList<>();
-//    private final FindPath findPath;
+
+    private final List<Animation> portalAnimations = new ArrayList<>();
+    private boolean openedPortal = false;
+    private Animation portalCloseAnimation;
+    private Animation portalOpenAnimation;
 
     public GameState(Handler handler){
         super(handler);
@@ -51,6 +57,8 @@ public class GameState extends State {
         bot3s = new ArrayList<>();
         setBot3();
 
+        portalCloseAnimation = new Animation(100, Assets.portalClose);
+        portalOpenAnimation = new Animation(100, Assets.portalOpen);
     }
 
     @Override
@@ -67,12 +75,15 @@ public class GameState extends State {
 
         tickCreatureDie();
 
-//        findPath.tick();
+        portalCloseAnimation.tick();
+        portalOpenAnimation.tick();
     }
 
     @Override
     public void render(Graphics g) {
         world.render(g);
+
+        renderPortal(g);
 
         renderBalloons(g);
         renderBot2s(g);
@@ -133,6 +144,14 @@ public class GameState extends State {
         }
     }
 
+    private void setPortalAnimations() {
+//        for (int i = 0; i < portalPosition.size(); i++) {
+//            int x = portalPosition.get(i).x;
+//            int y = portalPosition.get(i).y;
+//            portalAnimations.add(new Animation(500, Assets.portalClose));
+//        }
+    }
+
     private void renderPlayers(Graphics g) {
         for (int i = 0; i < players.size(); i++) {
             Player playerI = players.get(i);
@@ -159,6 +178,19 @@ public class GameState extends State {
         }
     }
 
+    private void renderPortal(Graphics g) {
+        if (!openedPortal && balloons.size() == 0 && bot2s.size() == 0 && bot3s.size() == 0)
+            openedPortal = true;
+        for (int i = 0; i < portalPosition.size(); i++) {
+            int x = portalPosition.get(i).x;
+            int y = portalPosition.get(i).y;
+            if (world.getCharTile(x, y) == 'x') return;
+            if (!openedPortal)
+                g.drawImage(portalCloseAnimation.getCurrentFrame(), x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT, null);
+            else
+                g.drawImage(portalOpenAnimation.getCurrentFrame(), x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT, null);
+        }
+    }
 
     private void tickPlayers() {
         for (int i = players.size() - 1; i >= 0; i--) {
@@ -196,10 +228,6 @@ public class GameState extends State {
         }
     }
 
-    private void setCreatureDieAnimations() {
-
-    }
-
     private void tickCreatureDie() {
         for (int i = creatureDieAnimations.size() - 1; i >= 0; i--) {
             CreatureDieAnimation creatureDieI = creatureDieAnimations.get(i);
@@ -209,6 +237,14 @@ public class GameState extends State {
             }
             creatureDieI.tick();
         }
+    }
+
+    private void tickPortalAnimations() {
+//        // if win
+//        if (!changePortal && balloons.size() == 0 && bot2s.size() == 0 && bot3s.size() == 0) {
+//            changePortal = true;
+//            for (int i = 0; i < po)
+//        }
     }
 
     private void renderCreatureDie(Graphics g) {

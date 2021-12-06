@@ -80,7 +80,7 @@ public class BombSet extends Entity {
             int x = changePositions.get(i).x;
             int y = changePositions.get(i).y;
             char temp = world.getCharTile(x, y);
-            if (temp == '*' || temp == 'e' || temp == 'g' || temp == 'n') {
+            if (temp == '*' || temp == 'e' || temp == 'g' || temp == 'n' || temp == 'x') {
                 world.setTile(x, y, ' ');
             } else if (temp == 'f') {
                 world.setTile(x, y, 'g');

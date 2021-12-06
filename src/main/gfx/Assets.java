@@ -19,6 +19,7 @@ public class Assets {
     public static BufferedImage empty, botUncut;
     public static BufferedImage[] bot2_left, bot2_right, bot2_up, bot2_down;
     public static BufferedImage[] bot3_left, bot3_right, bot3_up, bot3_down;
+    public static BufferedImage[] portalOpen, portalClose;
 
     private static SpriteSheet botUncutSheet;
 
@@ -53,6 +54,8 @@ public class Assets {
         setBot2Image();
         setBalloonImage();
         setBot3Image();
+
+        setPortalImage();
     }
 
     private static void saveImage(BufferedImage image, String name) {
@@ -323,5 +326,25 @@ public class Assets {
         brickDie[5] = brick;
         brickDie[6] = empty;
         brickDie[7] = brick;
+    }
+
+    private static void setPortalImage() {
+        portalClose = new BufferedImage[17];
+        BufferedImage portalCloseUncut = ImageLoader.loadImage("/image/portal_close.png");
+        SpriteSheet portalCloseSheet = new SpriteSheet(portalCloseUncut);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (j + i*4 >= 17) break;
+                portalClose[j + i*4] = portalCloseSheet.crop(j * 32, i * 32, 32, 32);
+            }
+        }
+//        portalClose[17] =
+
+        portalOpen = new BufferedImage[5];
+        BufferedImage portalOpenUncut = ImageLoader.loadImage("/image/portal_open.png");
+        SpriteSheet portalOpenSheet = new SpriteSheet(portalOpenUncut);
+        for (int i = 0; i < 5; i++) {
+            portalOpen[i] = portalOpenSheet.crop(i * 32, 0, 32, 32);
+        }
     }
 }
