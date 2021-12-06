@@ -9,6 +9,7 @@ public class Handler {
     private World world;
     public Handler(Game game){
         this.game = game;
+        if (game.getGameState() != null) this.world = game.getGameState().getWorld();
     }
 
     public Game getGame() {

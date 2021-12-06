@@ -7,4 +7,9 @@ public class FakeTile extends Tile {
     public FakeTile(char id) {
         super(Assets.fake, id);
     }
+
+    @Override
+    public boolean isSolid() {
+        return true;
+    }
 }

@@ -1,19 +1,25 @@
 package main.AI;
 
+import main.Handler;
 import main.worlds.World;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.interfaces.ShortestPathAlgorithm;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedGraph;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class EnemyAI {
     private World world;
+    private final int row, col;
 
-    public EnemyAI(World world){
-        this.world = world;
+    public EnemyAI(Handler handler){
+        this.world = handler.getGame().getGameState().getWorld();
+        row = world.getTiles().length-2;
+        col = world.getTiles()[0].length-2;
     }
     public void connectUp(int i, int j, int currVertex, Graph<Integer, DefaultEdge> graph ){
         int upVertex = (i - 1) * (world.getWidth() - 2) + j;
@@ -39,7 +45,16 @@ public class EnemyAI {
         graph.addEdge(currVertex, rightVertex);
     }
 
-    public List<Integer> MoveAI(World world, int playerX, int playerY, int monsterX, int monsterY) {
+    public List<World.Position> path(int playerX, int playerY, int monsterX, int monsterY) {
+        List<Integer> list = moveAI(playerX, playerY, monsterX, monsterY);
+        List<World.Position> ans = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            ans.add(positionFromIndex(list.get(i)));
+        }
+        return ans;
+    }
+
+    public List<Integer> moveAI(int playerX, int playerY, int monsterX, int monsterY) {
         int height = world.getHeight();
         int width = world.getWidth();
         Graph<Integer, DefaultEdge> graph =
@@ -84,10 +99,25 @@ public class EnemyAI {
         return monsterToPlayer.getPath(player2D).getVertexList();
     }
 
+    private World.Position positionFromIndex(int index) {
+        // index = i* so cot + j + 1;
+        int j = (index-1) % col;
+        int i = (index-1) / col;
+        return new World.Position(j + 1, i + 1);
+    }
+
     public static void main(String[] args) {
-        World w = new World(".\\src\\resource\\map\\level1.txt");
-        EnemyAI e = new EnemyAI(w);
-        List<Integer> res =  e.MoveAI(w,1,1, 6, 3);
-        System.out.println(res);
+//        World world = new World(".\\src\\resource\\map\\level2.txt");
+//        EnemyAI enemyAI = new EnemyAI(world);
+////        List<Integer> res =  enemyAI.moveAI(world,1,1, 6, 3);
+//        System.out.println(enemyAI.path(10, 7, 29, 1));
+//        System.out.println(enemyAI.moveAI(10, 7, 13, 1));
+
+
+        // test positionFromIndex
+//        System.out.println(enemyAI.row + " " + enemyAI.col);
+//        for (int i = 1; i < 100; i++) {
+//            System.out.println(i + " " + enemyAI.positionFromIndex(i));
+//        }
     }
 }

@@ -1,17 +1,15 @@
 package main.entities.creatures;
 
-import main.Game;
 import main.Handler;
-import main.entities.bomb.BombSet;
-import main.entities.bomb.Flame;
+import main.entities.creatures.bot.Balloon;
+import main.entities.creatures.bot.Bot2;
+import main.entities.creatures.bot.Bot3;
 import main.gfx.Animation;
 import main.gfx.Assets;
-import main.gfx.CreatureDieAnimation;
 import main.tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Creature {
@@ -100,6 +98,22 @@ public class Player extends Creature {
         List<Balloon> balloons = handler.getGame().getGameState().getBalloons();
         for (int i = 0; i < balloons.size(); i++) {
             if (isCollision((float) balloons.get(i).getCurrentTopLeftX(), (float) balloons.get(i).getCurrentTopLeftY())) {
+                isAlive = false;
+                return;
+            }
+        }
+
+        List<Bot2> bot2s = handler.getGame().getGameState().getBot2s();
+        for (int i =0; i < bot2s.size(); i++) {
+            if (isCollision((float) bot2s.get(i).getCurrentTopLeftX(), (float) bot2s.get(i).getCurrentTopLeftY())) {
+                isAlive = false;
+                return;
+            }
+        }
+
+        List<Bot3> bot3s = handler.getGame().getGameState().getBot3s();
+        for (int i =0; i < bot3s.size(); i++) {
+            if (isCollision((float) bot3s.get(i).getCurrentTopLeftX(), (float) bot3s.get(i).getCurrentTopLeftY())) {
                 isAlive = false;
                 return;
             }

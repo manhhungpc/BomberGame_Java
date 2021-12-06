@@ -2,8 +2,10 @@ package main.entities.bomb;
 
 import main.Handler;
 import main.entities.Entity;
-import main.entities.creatures.Balloon;
+import main.entities.creatures.bot.Balloon;
 import main.entities.creatures.Player;
+import main.entities.creatures.bot.Bot2;
+import main.entities.creatures.bot.Bot3;
 import main.states.GameState;
 import main.tiles.Tile;
 import main.worlds.World;
@@ -120,7 +122,24 @@ public class BombSet extends Entity {
             double balloonY = balloonList.get(i).getCurrentTopLeftY();
             if (enemyIsAtFlame(flame, balloonX, balloonY)) {
                 balloonList.remove(i);
-//                System.out.println("boom" + TimeManage.timeNow());
+            }
+        }
+
+        List<Bot2> bot2s = handler.getGame().getGameState().getBot2s();
+        for (int i = bot2s.size() - 1; i >= 0; i--) {
+            double bot2X = bot2s.get(i).getCurrentTopLeftX();
+            double bot2Y = bot2s.get(i).getCurrentTopLeftY();
+            if (enemyIsAtFlame(flame, bot2X, bot2Y)) {
+                bot2s.remove(i);
+            }
+        }
+
+        List<Bot3> bot3s = handler.getGame().getGameState().getBot3s();
+        for (int i = bot3s.size() - 1; i >= 0; i--) {
+            double bot3X = bot3s.get(i).getCurrentTopLeftX();
+            double bot3Y = bot3s.get(i).getCurrentTopLeftY();
+            if (enemyIsAtFlame(flame, bot3X, bot3Y)) {
+                bot3s.remove(i);
             }
         }
     }

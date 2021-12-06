@@ -20,6 +20,8 @@ public class World {
     // Entity position
     public static List<Position> playerPosition = new ArrayList<>();
     public static List<Position> balloonPosition = new ArrayList<>();
+    public static List<Position> bot2Position = new ArrayList<>();
+    public static List<Position> bot3Position = new ArrayList<>();
 //    private List<Position> flamePosition = new ArrayList<>();
 
     public World(String path){
@@ -53,12 +55,12 @@ public class World {
 
     public Tile getTile(int x, int y){
         if(x < 0  || y < 0 || x >= width || y >= height)
-            return Tile.grassTile;
+            return Tile.fakeTile;
 
         char typeTile = tiles[y][x];
         Tile t = Tile.tiles[typeTile];
         if (typeTile == 'f' || typeTile == 's' || typeTile == 'b') return Tile.brickTile;
-        if (typeTile == '1' || typeTile == '2' || typeTile == 'p' || typeTile == 'x') return Tile.grassTile;
+        if (typeTile == '1' || typeTile == '2' || typeTile == '3' || typeTile == 'p' || typeTile == 'x') return Tile.grassTile;
         if(t == null)
             return Tile.fakeTile;
         return t;
@@ -72,11 +74,6 @@ public class World {
         height = Integer.parseInt(levelHeightWidth[1]);
         width = Integer.parseInt(levelHeightWidth[2]);
 
-//        System.out.println(level + " " + height + " " + width);
-
-        System.out.println("width = " + width);
-        System.out.println("height = " + height);
-
         tiles = new char[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -84,22 +81,7 @@ public class World {
             }
         }
 
-
-//        for (int i = 0; i < height; i++) {
-//            for (int j = 0; j < width; j++) {
-//                System.out.print(tiles[i][j]);
-//            }
-//            System.out.println();
-//        }
-
-        for(int y = 0;y < height;y++){
-            for(int x = 0;x < width;x++){
-                if (tiles[y][x] == 'p') playerPosition.add(new Position(x, y));
-                if (tiles[y][x] == '1') balloonPosition.add(new Position(x, y));
-//                if (tiles[y][x] == 'f') flamePosition.add(new Position(x, y));
-            }
-        }
-
+        setCreaturePosition();
 
     }
 
@@ -133,10 +115,7 @@ public class World {
 
         @Override
         public String toString() {
-            return "Position{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    '}';
+            return "{" + x + ", " + y + "}";
         }
     }
 
@@ -145,6 +124,7 @@ public class World {
     }
 
     public char getCharTile(int x, int y) {
+        if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return '!';
         return tiles[y][x];
     }
 
@@ -156,4 +136,19 @@ public class World {
 //        flamePosition.add( new Position(x, y));
 //    }
 
+
+    public char[][] getTiles() {
+        return tiles;
+    }
+
+    private void setCreaturePosition() {
+        for(int y = 0;y < height;y++){
+            for(int x = 0;x < width;x++){
+                if (tiles[y][x] == 'p') playerPosition.add(new Position(x, y));
+                if (tiles[y][x] == '1') balloonPosition.add(new Position(x, y));
+                if (tiles[y][x] == '2') bot2Position.add(new Position(x, y));
+                if (tiles[y][x] == '3') bot3Position.add(new Position(x,y));
+            }
+        }
+    }
 }
