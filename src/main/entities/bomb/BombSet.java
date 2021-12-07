@@ -6,11 +6,15 @@ import main.entities.creatures.bot.Balloon;
 import main.entities.creatures.Player;
 import main.entities.creatures.bot.Bot2;
 import main.entities.creatures.bot.Bot3;
+import main.entities.creatures.bot.Bot4;
+import main.gfx.Assets;
+import main.gfx.CreatureDieAnimation;
 import main.states.GameState;
 import main.tiles.Tile;
 import main.worlds.World;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,6 +125,16 @@ public class BombSet extends Entity {
             double balloonX = balloonList.get(i).getCurrentTopLeftX();
             double balloonY = balloonList.get(i).getCurrentTopLeftY();
             if (enemyIsAtFlame(flame, balloonX, balloonY)) {
+                BufferedImage[] bot1Die = Assets.bot1Die;
+                bot1Die[0] = balloonList.get(i).getCurrentAnimation();
+                CreatureDieAnimation balloonDie =
+                        new CreatureDieAnimation(100, bot1Die, 20,
+                                (long) balloonList.get(i).getX(),
+                                (long) balloonList.get(i).getY(),
+                                balloonList.get(i).getWidth(),
+                                balloonList.get(i).getHeight());
+                handler.getGame().getGameState().creatureDieAnimations.add(balloonDie);
+
                 balloonList.remove(i);
             }
         }
@@ -130,6 +144,16 @@ public class BombSet extends Entity {
             double bot2X = bot2s.get(i).getCurrentTopLeftX();
             double bot2Y = bot2s.get(i).getCurrentTopLeftY();
             if (enemyIsAtFlame(flame, bot2X, bot2Y)) {
+                BufferedImage[] bot2Die = Assets.bot1Die;
+                bot2Die[0] = bot2s.get(i).getCurrentAnimation();
+                CreatureDieAnimation bot2DieAni =
+                        new CreatureDieAnimation(100, bot2Die, 20,
+                                (long) bot2s.get(i).getX(),
+                                (long) bot2s.get(i).getY(),
+                                bot2s.get(i).getWidth(),
+                                bot2s.get(i).getHeight());
+                handler.getGame().getGameState().creatureDieAnimations.add(bot2DieAni);
+
                 bot2s.remove(i);
             }
         }
@@ -139,7 +163,36 @@ public class BombSet extends Entity {
             double bot3X = bot3s.get(i).getCurrentTopLeftX();
             double bot3Y = bot3s.get(i).getCurrentTopLeftY();
             if (enemyIsAtFlame(flame, bot3X, bot3Y)) {
+                BufferedImage[] bot3Die = Assets.bot1Die;
+                bot3Die[0] = bot3s.get(i).getCurrentAnimation();
+                CreatureDieAnimation bot3DieAni =
+                        new CreatureDieAnimation(100, bot3Die, 20,
+                                (long) bot3s.get(i).getX(),
+                                (long) bot3s.get(i).getY(),
+                                bot3s.get(i).getWidth(),
+                                bot3s.get(i).getHeight());
+                handler.getGame().getGameState().creatureDieAnimations.add(bot3DieAni);
+
                 bot3s.remove(i);
+            }
+        }
+
+        List<Bot4> bot4s = handler.getGame().getGameState().getBot4s();
+        for (int i = bot4s.size() - 1; i >= 0; i--) {
+            double bot4X = bot4s.get(i).getCurrentTopLeftX();
+            double bot4Y = bot4s.get(i).getCurrentTopLeftY();
+            if (enemyIsAtFlame(flame, bot4X, bot4Y)) {
+                BufferedImage[] bot4Die = Assets.bot1Die;
+                bot4Die[0] = bot4s.get(i).getCurrentAnimation();
+                CreatureDieAnimation bot4DieAni =
+                        new CreatureDieAnimation(100, bot4Die, 20,
+                                (long) bot4s.get(i).getX(),
+                                (long) bot4s.get(i).getY(),
+                                bot4s.get(i).getWidth(),
+                                bot4s.get(i).getHeight());
+                handler.getGame().getGameState().creatureDieAnimations.add(bot4DieAni);
+
+                bot4s.remove(i);
             }
         }
     }

@@ -92,7 +92,7 @@ public class Balloon extends Creature {
         //g.fillRect((int) x+bounds.x, (int) y+bounds.y, bounds.width, bounds.height);
     }
 
-    private BufferedImage getCurrentAnimation(){
+    public BufferedImage getCurrentAnimation(){
         if(xMove < 0) return aniLeft.getCurrentFrame();
         if(xMove > 0) return aniRight.getCurrentFrame();
         if(yMove < 0) return aniUp.getCurrentFrame();
@@ -106,5 +106,7 @@ public class Balloon extends Creature {
     public double getCurrentTopLeftY() {
         return y;
     }
+
+
 
 }

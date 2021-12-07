@@ -15,10 +15,11 @@ public class Assets {
     public static BufferedImage bomb, explosionUncut, explosion0;
     public static BufferedImage[] bombGif;
     public static BufferedImage flameItem, bombItem, speedItem;
-    public static BufferedImage[] playerDie, brickDie;
+    public static BufferedImage[] playerDie, brickDie, bot1Die, bot2Die, bot3Die, bot4Die;
     public static BufferedImage empty, botUncut;
     public static BufferedImage[] bot2_left, bot2_right, bot2_up, bot2_down;
     public static BufferedImage[] bot3_left, bot3_right, bot3_up, bot3_down;
+    public static BufferedImage[] bot4_left, bot4_right, bot4_up, bot4_down;
     public static BufferedImage[] portalOpen, portalClose;
 
     private static SpriteSheet botUncutSheet;
@@ -54,8 +55,33 @@ public class Assets {
         setBot2Image();
         setBalloonImage();
         setBot3Image();
+        setBot4Image();
 
         setPortalImage();
+    }
+
+    private static void setBot4Image() {
+        BufferedImage bot4Uncut = ImageLoader.loadImage("/image/enemy/bot4_uncut.png");
+        SpriteSheet bot4Sheet = new SpriteSheet(bot4Uncut);
+        bot4_left = new BufferedImage[3];
+        for (int i = 0; i < 3; i++) {
+            bot4_left[i] = bot4Sheet.crop(i * 192, 192, 192, 192);
+        }
+
+        bot4_right = new BufferedImage[3];
+        for (int i = 0; i < 3; i++) {
+            bot4_right[i] = bot4Sheet.crop(i * 192, 2 * 192, 192, 192);
+        }
+
+        bot4_up = new BufferedImage[3];
+        for (int i = 0; i < 3; i++) {
+            bot4_up[i] = bot4Sheet.crop(i * 192, 3 * 192, 192, 192);
+        }
+
+        bot4_down =  new BufferedImage[3];
+        for (int i = 0; i < 3; i++) {
+            bot4_down[i] = bot4Sheet.crop(i * 192, 0, 192, 192);
+        }
     }
 
     private static void saveImage(BufferedImage image, String name) {
@@ -278,6 +304,10 @@ public class Assets {
         for (int i = 0; i < 6; i++) {
             balloon_down[i] = botUncutSheet.crop((i)*47, 0, 47, 47);
         }
+
+        bot1Die = new BufferedImage[2];
+        bot1Die[0] = balloon_down[0];
+        bot1Die[1] = empty;
     }
 
     private static void setBot3Image() {

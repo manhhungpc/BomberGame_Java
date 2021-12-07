@@ -46,7 +46,6 @@ public class Bot2 extends Balloon {
         if (timeNow - startTime > TIME_CHANGE_SPEED) {
 //            speed = random.nextInt(MIN_SPEED, MAX_SPEED+1);
             speed = MIN_SPEED + (int) (random.nextDouble() * MAX_SPEED);
-            System.out.println(speed);
             startTime = timeNow;
         }
     }

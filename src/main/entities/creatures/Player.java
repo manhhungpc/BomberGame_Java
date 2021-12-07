@@ -4,6 +4,7 @@ import main.Handler;
 import main.entities.creatures.bot.Balloon;
 import main.entities.creatures.bot.Bot2;
 import main.entities.creatures.bot.Bot3;
+import main.entities.creatures.bot.Bot4;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.tiles.Tile;
@@ -114,6 +115,14 @@ public class Player extends Creature {
         List<Bot3> bot3s = handler.getGame().getGameState().getBot3s();
         for (int i =0; i < bot3s.size(); i++) {
             if (isCollision((float) bot3s.get(i).getCurrentTopLeftX(), (float) bot3s.get(i).getCurrentTopLeftY())) {
+                isAlive = false;
+                return;
+            }
+        }
+
+        List<Bot4> bot4s = handler.getGame().getGameState().getBot4s();
+        for (int i =0; i < bot4s.size(); i++) {
+            if (isCollision((float) bot4s.get(i).getCurrentTopLeftX(), (float) bot4s.get(i).getCurrentTopLeftY())) {
                 isAlive = false;
                 return;
             }

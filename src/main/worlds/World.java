@@ -22,6 +22,7 @@ public class World {
     public static List<Position> balloonPosition = new ArrayList<>();
     public static List<Position> bot2Position = new ArrayList<>();
     public static List<Position> bot3Position = new ArrayList<>();
+    public static List<Position> bot4Position = new ArrayList<>();
     public static List<Position> portalPosition = new ArrayList<>();
 //    private List<Position> flamePosition = new ArrayList<>();
 
@@ -61,9 +62,11 @@ public class World {
         char typeTile = tiles[y][x];
         Tile t = Tile.tiles[typeTile];
         if (typeTile == 'f' || typeTile == 's' || typeTile == 'b' || typeTile == 'x') return Tile.brickTile;
-        if (typeTile == '1' || typeTile == '2' || typeTile == '3' || typeTile == 'p' ) return Tile.grassTile;
+        if (typeTile == '1' || typeTile == '2'
+                || typeTile == '3' || typeTile == 'p' || typeTile == '4')
+            return Tile.grassTile;
         if(t == null)
-            return Tile.fakeTile;
+            return Tile.grassTile;
         return t;
     }
 
@@ -145,10 +148,26 @@ public class World {
     private void setCreaturePosition() {
         for(int y = 0;y < height;y++){
             for(int x = 0;x < width;x++){
-                if (tiles[y][x] == 'p') playerPosition.add(new Position(x, y));
-                if (tiles[y][x] == '1') balloonPosition.add(new Position(x, y));
-                if (tiles[y][x] == '2') bot2Position.add(new Position(x, y));
-                if (tiles[y][x] == '3') bot3Position.add(new Position(x,y));
+                if (tiles[y][x] == 'p') {
+                    tiles[y][x] = ' ';
+                    playerPosition.add(new Position(x, y));
+                }
+                if (tiles[y][x] == '1') {
+                    tiles[y][x] = ' ';
+                    balloonPosition.add(new Position(x, y));
+                }
+                if (tiles[y][x] == '2') {
+                    tiles[y][x] = ' ';
+                    bot2Position.add(new Position(x, y));
+                }
+                if (tiles[y][x] == '3') {
+                    tiles[y][x] = ' ';
+                    bot3Position.add(new Position(x, y));
+                }
+                if (tiles[y][x] == '4') {
+                    tiles[y][x] = ' ';
+                    bot4Position.add(new Position(x, y));
+                }
             }
         }
     }

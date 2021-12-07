@@ -8,6 +8,7 @@ import main.entities.bomb.BombSet;
 import main.entities.creatures.bot.Bot2;
 import main.entities.creatures.Player;
 import main.entities.creatures.bot.Bot3;
+import main.entities.creatures.bot.Bot4;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.gfx.CreatureDieAnimation;
@@ -30,14 +31,15 @@ public class GameState extends State {
     private static EnemyAI enemyAI;
     private final List<Bot2> bot2s;
     private final List<Bot3> bot3s;
+    private final List<Bot4> bot4s;
 
     private BombSet bombSet;
-    private final List<CreatureDieAnimation> creatureDieAnimations = new ArrayList<>();
+    public final List<CreatureDieAnimation> creatureDieAnimations = new ArrayList<>();
 
     private final List<Animation> portalAnimations = new ArrayList<>();
     private boolean openedPortal = false;
-    private Animation portalCloseAnimation;
-    private Animation portalOpenAnimation;
+    private final Animation portalCloseAnimation;
+    private final Animation portalOpenAnimation;
 
     public GameState(Handler handler){
         super(handler);
@@ -57,6 +59,9 @@ public class GameState extends State {
         bot3s = new ArrayList<>();
         setBot3();
 
+        bot4s = new ArrayList<>();
+        setBot4();
+
         portalCloseAnimation = new Animation(100, Assets.portalClose);
         portalOpenAnimation = new Animation(100, Assets.portalOpen);
     }
@@ -72,6 +77,7 @@ public class GameState extends State {
         if (enemyAI == null) enemyAI = new EnemyAI(handler);
         tickBot2s();
         tickBot3s();
+        tickBot4s();
 
         tickCreatureDie();
 
@@ -88,6 +94,7 @@ public class GameState extends State {
         renderBalloons(g);
         renderBot2s(g);
         renderBot3s(g);
+        renderBot4s(g);
 
         if (bombSet != null) bombSet.render(g);
         renderPlayers(g);
@@ -144,6 +151,14 @@ public class GameState extends State {
         }
     }
 
+    private void setBot4() {
+        for (int i = 0; i < bot4Position.size(); i++) {
+            int x = bot4Position.get(i).x;
+            int y = bot4Position.get(i).y;
+            bot4s.add(new Bot4(handler, x*36, y*36));
+        }
+    }
+
     private void setPortalAnimations() {
 //        for (int i = 0; i < portalPosition.size(); i++) {
 //            int x = portalPosition.get(i).x;
@@ -178,13 +193,19 @@ public class GameState extends State {
         }
     }
 
+    private void renderBot4s(Graphics g) {
+        for (int i = 0; i < bot4s.size(); i++) {
+            bot4s.get(i).render(g);
+        }
+    }
+
     private void renderPortal(Graphics g) {
         if (!openedPortal && balloons.size() == 0 && bot2s.size() == 0 && bot3s.size() == 0)
             openedPortal = true;
         for (int i = 0; i < portalPosition.size(); i++) {
             int x = portalPosition.get(i).x;
             int y = portalPosition.get(i).y;
-            if (world.getCharTile(x, y) == 'x') return;
+            if (world.getCharTile(x, y) == 'x') continue;
             if (!openedPortal)
                 g.drawImage(portalCloseAnimation.getCurrentFrame(), x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT, null);
             else
@@ -228,6 +249,12 @@ public class GameState extends State {
         }
     }
 
+    private void tickBot4s() {
+        for (int i = 0; i < bot4s.size(); i++) {
+            bot4s.get(i).tick();
+        }
+    }
+
     private void tickCreatureDie() {
         for (int i = creatureDieAnimations.size() - 1; i >= 0; i--) {
             CreatureDieAnimation creatureDieI = creatureDieAnimations.get(i);
@@ -263,6 +290,10 @@ public class GameState extends State {
 
     public List<Bot3> getBot3s() {
         return bot3s;
+    }
+
+    public List<Bot4> getBot4s() {
+        return bot4s;
     }
 
     public static EnemyAI getEnemyAI() {

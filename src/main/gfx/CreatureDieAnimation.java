@@ -11,6 +11,7 @@ public class CreatureDieAnimation extends Animation {
     private float y;
     private final long startTime, time;
     private boolean isAlive = true;
+    private int width = 0, height = 0;
 
     public CreatureDieAnimation(int speed, BufferedImage[] frames, long time, float x, float y) {
         super(speed, frames);
@@ -19,6 +20,18 @@ public class CreatureDieAnimation extends Animation {
         this.x = x;
         this.y = y;
     }
+
+    public CreatureDieAnimation(int speed, BufferedImage[] frames, long time, float x, float y, int width, int height) {
+        super(speed, frames);
+        startTime = TimeManage.timeNow();
+        this.time = time;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+
 
     @Override
     public void tick() {
@@ -34,7 +47,8 @@ public class CreatureDieAnimation extends Animation {
 
     public void render(Graphics g) {
         if (isAlive) {
-            g.drawImage(getCurrentFrame(), (int) x, (int) y, null);
+            if (width != 0) g.drawImage(getCurrentFrame(), (int) x, (int) y, width, height, null);
+            else g.drawImage(getCurrentFrame(), (int) x, (int) y, null);
         }
     }
 
