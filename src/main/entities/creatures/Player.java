@@ -29,10 +29,10 @@ public class Player extends Creature {
         bounds.width = 28;
         bounds.height = 28;
 
-        aniDown = new Animation(500, Assets.player_down);
-        aniUp = new Animation(500, Assets.player_up);
-        aniLeft = new Animation(500, Assets.player_left);
-        aniRight = new Animation(500, Assets.player_right);
+        aniDown = new Animation(250, Assets.player_down);
+        aniUp = new Animation(250, Assets.player_up);
+        aniLeft = new Animation(250, Assets.player_left);
+        aniRight = new Animation(250, Assets.player_right);
     }
 
     @Override
