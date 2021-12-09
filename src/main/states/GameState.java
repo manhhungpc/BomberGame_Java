@@ -2,6 +2,7 @@ package main.states;
 
 import main.AI.EnemyAI;
 import main.Handler;
+import main.Launcher;
 import main.entities.creatures.bot.Balloon;
 import main.entities.bomb.BombSet;
 //import main.entities.creatures.FindPath;
@@ -41,10 +42,20 @@ public class GameState extends State {
     private final Animation portalCloseAnimation;
     private final Animation portalOpenAnimation;
 
+    // position list
+    private List<Position> playerPosition = new ArrayList<>();
+    private List<Position> balloonPosition = new ArrayList<>();
+    private List<Position> bot2Position = new ArrayList<>();
+    private List<Position> bot3Position = new ArrayList<>();
+    private List<Position> bot4Position = new ArrayList<>();
+    private List<Position> portalPosition = new ArrayList<>();
+
+
     public GameState(Handler handler){
         super(handler);
-        world = new World(".\\src\\resource\\map\\level2.txt");
+        world = new World(Launcher.PATH);
         handler.setWorld(world);
+        setPositionList();
 
         players = new ArrayList<>();
         setPlayers();
@@ -298,5 +309,14 @@ public class GameState extends State {
 
     public static EnemyAI getEnemyAI() {
         return enemyAI;
+    }
+
+    private void setPositionList() {
+        playerPosition = world.playerPosition;
+        balloonPosition = world.balloonPosition;
+        bot2Position = world.bot2Position;
+        bot3Position = world.bot3Position;
+        bot4Position = world.bot4Position;
+        portalPosition = world.portalPosition;
     }
 }

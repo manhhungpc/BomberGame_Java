@@ -18,12 +18,12 @@ public class World {
     private char[][] tiles;
 
     // Entity position
-    public static List<Position> playerPosition = new ArrayList<>();
-    public static List<Position> balloonPosition = new ArrayList<>();
-    public static List<Position> bot2Position = new ArrayList<>();
-    public static List<Position> bot3Position = new ArrayList<>();
-    public static List<Position> bot4Position = new ArrayList<>();
-    public static List<Position> portalPosition = new ArrayList<>();
+    public List<Position> playerPosition = new ArrayList<>();
+    public List<Position> balloonPosition = new ArrayList<>();
+    public List<Position> bot2Position = new ArrayList<>();
+    public List<Position> bot3Position = new ArrayList<>();
+    public List<Position> bot4Position = new ArrayList<>();
+    public List<Position> portalPosition = new ArrayList<>();
 //    private List<Position> flamePosition = new ArrayList<>();
 
     public World(String path){
@@ -146,25 +146,21 @@ public class World {
     }
 
     private void setCreaturePosition() {
-        for(int y = 0;y < height;y++){
-            for(int x = 0;x < width;x++){
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
                 if (tiles[y][x] == 'p') {
                     tiles[y][x] = ' ';
                     playerPosition.add(new Position(x, y));
-                }
-                if (tiles[y][x] == '1') {
+                } else if (tiles[y][x] == '1') {
                     tiles[y][x] = ' ';
                     balloonPosition.add(new Position(x, y));
-                }
-                if (tiles[y][x] == '2') {
+                } else if (tiles[y][x] == '2') {
                     tiles[y][x] = ' ';
                     bot2Position.add(new Position(x, y));
-                }
-                if (tiles[y][x] == '3') {
+                } else if (tiles[y][x] == '3') {
                     tiles[y][x] = ' ';
                     bot3Position.add(new Position(x, y));
-                }
-                if (tiles[y][x] == '4') {
+                } else if (tiles[y][x] == '4') {
                     tiles[y][x] = ' ';
                     bot4Position.add(new Position(x, y));
                 }
@@ -175,8 +171,9 @@ public class World {
     private void setPortalPosition() {
         for(int y = 0;y < height;y++){
             for(int x = 0;x < width;x++){
-//                if (tiles[y][x] == 'p') playerPosition.add(new Position(x, y));
-                if (tiles[y][x] == 'x') portalPosition.add(new Position(x, y));
+                if (tiles[y][x] == 'x') {
+                    portalPosition.add(new Position(x, y));
+                }
             }
         }
     }
