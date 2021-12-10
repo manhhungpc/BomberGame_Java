@@ -1,5 +1,6 @@
 package main.entities.creatures;
 
+import main.AI.PlayerAI;
 import main.Handler;
 import main.entities.creatures.bot.Balloon;
 import main.entities.creatures.bot.Bot2;
@@ -21,6 +22,9 @@ public class Player extends Creature {
     private final Animation aniDown, aniUp, aniLeft, aniRight;
 
     private boolean isAlive = true;
+
+    private boolean modeAI = true;
+    private PlayerAI playerAI;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, 32, 48);
@@ -47,6 +51,8 @@ public class Player extends Creature {
         move();
         checkAlive();
 
+        if (playerAI == null) playerAI = handler.getGame().getGameState().getPlayerAI();
+        autoBombNearBot();
     }
 
     @Override
@@ -73,11 +79,31 @@ public class Player extends Creature {
 
     }
 
+    private int lastDirect;
+
     private BufferedImage getCurrentAnimation(){
-        if(xMove < 0) return aniLeft.getCurrentFrame();
-        if(xMove > 0) return aniRight.getCurrentFrame();
-        if(yMove < 0) return aniUp.getCurrentFrame();
-        if(yMove > 0) return aniDown.getCurrentFrame();
+        if(xMove < 0) {
+            lastDirect = 0;
+            return aniLeft.getCurrentFrame();
+        }
+        if(xMove > 0) {
+            lastDirect = 1;
+            return aniRight.getCurrentFrame();
+        }
+        if(yMove < 0) {
+            lastDirect = 2;
+            return aniUp.getCurrentFrame();
+        }
+        if(yMove > 0) {
+            lastDirect = 3;
+            return aniDown.getCurrentFrame();
+        }
+
+        if (lastDirect == 0) return Assets.player_left[0];
+        if (lastDirect == 1) return Assets.player_right[0];
+        if (lastDirect == 2) return Assets.player_up[0];
+        if (lastDirect == 3) return Assets.player_down[0];
+
         return Assets.player;
     }
 
@@ -150,5 +176,29 @@ public class Player extends Creature {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+    }
+
+    public void turnOffAI() {
+        modeAI = false;
+    }
+
+    public void turnOnAI() {
+        modeAI = true;
+    }
+
+    private void autoBombNearBot() {
+        if (!modeAI) return;
+
+        List<Balloon> balloons = handler.getGame().getGameState().getBalloons();
+        if (balloons.size() == 0) return;
+        float botX = balloons.get(0).getX();
+        float botY = balloons.get(0).getY();
+
+        float playerX = getLeftX(), playerY = getUpY();
+
+        if (Math.abs(playerX - botX) <= Tile.TILE_WIDTH * 1.5
+                && Math.abs(playerY - botY) <= Tile.TILE_HEIGHT * 1.5) {
+            playerAI.bomb();
+        }
     }
 }

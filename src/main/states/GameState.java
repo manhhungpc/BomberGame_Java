@@ -1,8 +1,10 @@
 package main.states;
 
 import main.AI.EnemyAI;
+import main.AI.PlayerAI;
 import main.Handler;
 import main.Launcher;
+import main.TimeManage;
 import main.entities.creatures.bot.Balloon;
 import main.entities.bomb.BombSet;
 //import main.entities.creatures.FindPath;
@@ -17,6 +19,7 @@ import main.tiles.Tile;
 import main.worlds.World;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +53,9 @@ public class GameState extends State {
     private List<Position> bot4Position = new ArrayList<>();
     private List<Position> portalPosition = new ArrayList<>();
 
+    // Player AI
+    private final PlayerAI playerAI;
+
 
     public GameState(Handler handler){
         super(handler);
@@ -75,6 +81,8 @@ public class GameState extends State {
 
         portalCloseAnimation = new Animation(100, Assets.portalClose);
         portalOpenAnimation = new Animation(100, Assets.portalOpen);
+
+        playerAI = new PlayerAI();
     }
 
     @Override
@@ -94,6 +102,8 @@ public class GameState extends State {
 
         portalCloseAnimation.tick();
         portalOpenAnimation.tick();
+
+        playerAI.tick();
     }
 
     @Override
@@ -318,5 +328,9 @@ public class GameState extends State {
         bot3Position = world.bot3Position;
         bot4Position = world.bot4Position;
         portalPosition = world.portalPosition;
+    }
+
+    public PlayerAI getPlayerAI() {
+        return playerAI;
     }
 }
