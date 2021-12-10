@@ -16,6 +16,8 @@ public class PlayerAI {
     private Robot robot;
     private final List<KeyWithTime> keyWithTimeList;
 
+    private boolean moveLeft, moveRight, moveUp, moveDown;
+
     public PlayerAI() {
         try {
             robot = new Robot();
@@ -51,6 +53,33 @@ public class PlayerAI {
 
     public void bomb() {
         pressForTime(KeyEvent.VK_B);
+    }
+
+    public void moveUp() {
+        press(KeyEvent.VK_W);
+        moveUp = true;
+    }
+
+    public void moveDown() {
+        press(KeyEvent.VK_S);
+        moveDown = true;
+    }
+
+    public void moveLeft() {
+        press(KeyEvent.VK_A);
+        moveLeft = true;
+    }
+
+    public void moveRight() {
+        press(KeyEvent.VK_D);
+        moveRight = true;
+    }
+
+    public void stop() {
+        if (moveLeft) release(KeyEvent.VK_A);
+        if (moveRight) release(KeyEvent.VK_D);
+        if (moveUp) release(KeyEvent.VK_W);
+        if (moveDown) release(KeyEvent.VK_S);
     }
 
     private static class KeyWithTime {

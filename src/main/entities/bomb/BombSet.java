@@ -234,4 +234,8 @@ public class BombSet extends Entity {
         }
         return false;
     }
+
+    public List<Bomb> getBombList() {
+        return bombList;
+    }
 }

@@ -89,11 +89,12 @@ public class GameState extends State {
     public void tick() {
         world.tick();
 
+        if (enemyAI == null) enemyAI = new EnemyAI(handler);
+
         tickPlayers();
         if (bombSet != null) bombSet.tick();
 
         tickBalloons();
-        if (enemyAI == null) enemyAI = new EnemyAI(handler);
         tickBot2s();
         tickBot3s();
         tickBot4s();
@@ -333,4 +334,6 @@ public class GameState extends State {
     public PlayerAI getPlayerAI() {
         return playerAI;
     }
+
+
 }

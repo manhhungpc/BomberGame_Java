@@ -7,7 +7,6 @@ import main.entities.creatures.Player;
 import main.gfx.Animation;
 import main.gfx.Assets;
 import main.states.GameState;
-import main.tiles.BombTile;
 import main.tiles.Tile;
 import main.worlds.World;
 
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class Bomb extends Creature {
 
-    private static final int BOMB_TIME = 20;
+    public static final int BOMB_TIME = 20;
     private static final int FLAME_TIME = 3;
 
     private final Animation bombGif;
@@ -36,7 +35,7 @@ public class Bomb extends Creature {
 //        handler.getGame().getGameState().getWorld().setTile((int) flame.getX()/36, (int) flame.getY()/36, 'B');
 
         // create bomb Tile (not solid)
-        handler.getWorld().setTile(i(), j(), 'v');
+        handler.getWorld().setTile(flameI(), flameJ(), 'v');
     }
 
 
@@ -113,7 +112,7 @@ public class Bomb extends Creature {
         if (isPlayerOutOfBombTile()) {
             // set bomb tile solid
             isPlayerOutOfBombTile = true;
-            handler.getWorld().setTile(i(), j(), 'V');
+            handler.getWorld().setTile(flameI(), flameJ(), 'V');
         }
     }
 
@@ -133,11 +132,11 @@ public class Bomb extends Creature {
                 || playerY > bomY + Tile.TILE_HEIGHT * 0.8;
     }
 
-    private int i() {
+    public int flameI() {
         return (int) (getFlame().getX() / 36);
     }
 
-    private int j() {
+    public int flameJ() {
         return (int) (getFlame().getY() / 36);
     }
 

@@ -1,23 +1,33 @@
 package main.entities.creatures;
 
+import main.AI.EnemyAI;
 import main.AI.PlayerAI;
 import main.Handler;
+import main.TimeManage;
+import main.entities.bomb.Bomb;
+import main.entities.bomb.BombSet;
 import main.entities.creatures.bot.Balloon;
 import main.entities.creatures.bot.Bot2;
 import main.entities.creatures.bot.Bot3;
 import main.entities.creatures.bot.Bot4;
 import main.gfx.Animation;
 import main.gfx.Assets;
+import main.states.GameState;
 import main.tiles.Tile;
+import main.worlds.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Player extends Creature {
 
     public static final double INCREASE_PLAYER_SPEED = 1.0f;
     public static final float PLAYER_SPEED = 2.5f;
+//    public static final float PLAYER_SPEED = 1.0f;
 
     private final Animation aniDown, aniUp, aniLeft, aniRight;
 
@@ -25,6 +35,7 @@ public class Player extends Creature {
 
     private boolean modeAI = true;
     private PlayerAI playerAI;
+    private EnemyAI enemyAI;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, 32, 48);
@@ -52,7 +63,7 @@ public class Player extends Creature {
         checkAlive();
 
         if (playerAI == null) playerAI = handler.getGame().getGameState().getPlayerAI();
-        autoBombNearBot();
+        autoMove();
     }
 
     @Override
@@ -186,19 +197,218 @@ public class Player extends Creature {
         modeAI = true;
     }
 
-    private void autoBombNearBot() {
-        if (!modeAI) return;
+    private boolean isRunningFromBomb;
+    private long timeStopRunningFromBomb;
+    private List<Balloon> balloons;
+    private World world;
+    private World.Position lastSafeArea;
 
-        List<Balloon> balloons = handler.getGame().getGameState().getBalloons();
-        if (balloons.size() == 0) return;
+    private void autoBombNearBot() {
         float botX = balloons.get(0).getX();
         float botY = balloons.get(0).getY();
 
         float playerX = getLeftX(), playerY = getUpY();
 
-        if (Math.abs(playerX - botX) <= Tile.TILE_WIDTH * 1.5
-                && Math.abs(playerY - botY) <= Tile.TILE_HEIGHT * 1.5) {
+        if (isPlayerNearBot(playerX, playerY, botX, botY)) {
             playerAI.bomb();
+            isRunningFromBomb = true;
+            timeStopRunningFromBomb = TimeManage.timeNow() + Bomb.BOMB_TIME;
         }
+    }
+
+    private boolean isPlayerNearBot(float playerX, float playerY, float botX, float botY) {
+        return Math.abs(playerX - botX) <= Tile.TILE_WIDTH * 1.9
+                && Math.abs(playerY - botY) <= Tile.TILE_HEIGHT * 1.9;
+    }
+
+    private void autoMove() {
+        if (!modeAI) return;
+
+        if (world == null) world = handler.getGame().getGameState().getWorld();
+
+        if (balloons == null) balloons = handler.getGame().getGameState().getBalloons();
+        if (balloons.size() == 0) {
+            playerAI.stop();
+            return;
+        }
+
+        if (enemyAI == null) enemyAI = GameState.getEnemyAI();
+
+        autoBombNearBot();
+
+        if (!isRunningFromBomb) {
+            lastSafeArea = null;
+            if (isPlayerNearBot(getLeftX(), getUpY(), balloons.get(0).getX(), balloons.get(0).getY())) {
+                playerAI.stop();
+            } else {
+                catchingBalloon(balloons.get(0));
+            }
+        } else {
+            if (TimeManage.timeNow() >= timeStopRunningFromBomb) {
+                isRunningFromBomb = false;
+                return;
+            }
+
+            if (lastSafeArea == null || !isSafe()) {
+                runToSafeArea();
+            }
+            else {
+                playerAI.stop();
+//                lastSafeArea = null;
+            }
+        }
+    }
+
+    private void catchingBalloon(Balloon balloon) {
+        int playerX = (int) getLeftX() / Tile.TILE_WIDTH;
+        int playerY = (int) getUpY() / Tile.TILE_HEIGHT;
+        int tx = (int) balloon.getX() / 36;
+        int ty = (int) balloon.getY() / 36;
+
+        movePlayerToPosition(tx, ty);
+    }
+
+    private void runToSafeArea() {
+        int playerX = (int) getLeftX() / Tile.TILE_WIDTH;
+        int playerY = (int) getUpY() / Tile.TILE_HEIGHT;
+
+        if (lastSafeArea != null) {
+//            if (playerX == lastSafeArea.x && playerY == lastSafeArea.y) {
+//                playerAI.stop();
+//                lastSafeArea = null;
+//            } else {
+                movePlayerToPosition(lastSafeArea.x, lastSafeArea.y);
+//            }
+        } else {
+            List<World.Position> safePositionList = new ArrayList<>();
+
+//            if (playerX - 2 >= 0 && world.getCharTile(playerX - 2, playerY) == ' ')
+//                safePositionList.add(new World.Position(playerX - 2, playerY));
+//            if (playerX + 2 <= world.getWidth()-1 && world.getCharTile(playerX + 2, playerY) == ' ')
+//                safePositionList.add(new World.Position(playerX + 2, playerY));
+//            if (playerY - 2 >= 0 && world.getCharTile(playerX, playerY - 2) == ' ')
+//                safePositionList.add(new World.Position(playerX, playerY - 2));
+//            if (playerY + 2 <= world.getHeight()-1 && world.getCharTile(playerX, playerY + 2) == ' ')
+//                safePositionList.add(new World.Position(playerX, playerY + 2));
+//            if (playerX )
+
+            List<Bomb> bombList = handler.getGame().getGameState().getBombSet().getBombList();
+            if (bombList.size() > 0){
+                Bomb bomb = handler.getGame().getGameState().getBombSet().getBombList().get(0);
+                playerX = bomb.flameI();
+                playerY = bomb.flameJ();
+                System.out.println("bomb at " + playerX + " " + playerY);
+            }
+            tryAdd(safePositionList, playerX - 2, playerY);
+//            tryAdd(safePositionList, playerX + 2, playerY);
+//            tryAdd(safePositionList, playerX, playerY - 2);
+//            tryAdd(safePositionList, playerX, playerY + 2);
+//            tryAdd(safePositionList, playerX - 1, playerY - 1);
+//            tryAdd(safePositionList, playerX - 1, playerY + 1);
+//            tryAdd(safePositionList, playerX + 1, playerY - 1);
+//            tryAdd(safePositionList, playerX + 1, playerY + 1);
+
+
+            World.Position bestPosition = bestPosition(safePositionList);
+            lastSafeArea = bestPosition;
+            System.out.println(lastSafeArea.x + " " + lastSafeArea.y);
+
+//            System.out.println(bestPosition.x + " " + bestPosition.y);
+            movePlayerToPosition(bestPosition.x, bestPosition.y);
+        }
+    }
+
+    private void tryAdd(List<World.Position> list, int placeX, int placeY) {
+        if (!validPlaceX(placeX) || !validPlaceY(placeY)) return;
+        if (world.getCharTile(placeX, placeY) == ' ') {
+            list.add(new World.Position(placeX, placeY));
+        }
+    }
+
+    private boolean validPlaceX(int placeX) {
+        return placeX >= 0 && placeX <= world.getWidth()-1;
+    }
+
+    private boolean validPlaceY(int placeY) {
+        return placeY >= 0 && placeY <= world.getHeight()-1;
+    }
+
+    private World.Position bestPosition(List<World.Position> positionList) {
+        World.Position[] array = new World.Position[positionList.size()];
+        for (int i = 0; i < positionList.size(); i++) {
+            array[i] = positionList.get(i);
+        }
+
+        Arrays.sort(array, positionComparator());
+
+        return array[array.length-1];
+    }
+
+    private Comparator<World.Position> positionComparator() {
+        return new Comparator<World.Position>() {
+            @Override
+            public int compare(World.Position position1, World.Position position2) {
+                int x1 = position1.x, y1 = position1.y;
+                int x2 = position2.x, y2 = position2.y;
+
+                int botX = (int) balloons.get(0).getX() / 36;
+                int botY = (int) balloons.get(0).getY() / 36;
+
+                int distance1ToBot = Math.abs(x1 - botX) + Math.abs(y1 - botY);
+                int distance2ToBot = Math.abs(x2 - botX) + Math.abs(y2 - botY);
+
+                if (distance1ToBot - distance2ToBot > 0)
+                    return 1;
+                else if (distance1ToBot - distance2ToBot < 0)
+                    return -1;
+                return 0;
+            }
+        };
+    }
+
+    private void movePlayerToPosition(int tx, int ty) {
+        int playerX = (int) getLeftX() / Tile.TILE_WIDTH;
+        int playerY = (int) getUpY() / Tile.TILE_HEIGHT;
+
+        List<World.Position> path = enemyAI.path(playerX, playerY, tx, ty);
+//        System.out.println(path);
+        if (path.size() == 0) return;
+        while (path.get(path.size() - 1).x == playerX && path.get(path.size()-1).y == playerY) {
+            path.remove(path.size() -1);
+            if (path.size() == 0) return;
+        }
+        World.Position catchingPosition = path.get(path.size() - 1);
+        int newPlayerX = catchingPosition.x;
+        int newPlayerY = catchingPosition.y;
+
+
+        if (newPlayerY == playerY && newPlayerX > playerX) {
+            playerAI.stop();
+            playerAI.moveRight();
+            return;
+        }
+
+        if (newPlayerY == playerY && newPlayerX < playerX) {
+            playerAI.stop();
+            playerAI.moveLeft();
+            return;
+        }
+
+        if (newPlayerX == playerX && newPlayerY > playerY) {
+            playerAI.stop();
+            playerAI.moveDown();
+            return;
+        }
+
+        if (newPlayerX == playerX && newPlayerY < playerY) {
+            playerAI.stop();
+            playerAI.moveUp();
+            return;
+        }
+    }
+
+    private boolean isSafe() {
+        return Math.abs(getLeftX() - lastSafeArea.x * Tile.TILE_WIDTH) <= 2
+                && Math.abs(getUpY() - lastSafeArea.y * Tile.TILE_HEIGHT) <= 2;
     }
 }
