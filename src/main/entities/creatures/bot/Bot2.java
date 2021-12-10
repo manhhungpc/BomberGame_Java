@@ -44,7 +44,6 @@ public class Bot2 extends Balloon {
     private void setRandomSpeed() {
         long timeNow = TimeManage.timeNow();
         if (timeNow - startTime > TIME_CHANGE_SPEED) {
-//            speed = random.nextInt(MIN_SPEED, MAX_SPEED+1);
             speed = MIN_SPEED + (int) (random.nextDouble() * MAX_SPEED);
             startTime = timeNow;
         }
@@ -52,16 +51,14 @@ public class Bot2 extends Balloon {
 
     @Override
     protected void setAutoMove() {
-        if (x % 36 == 0 && y % 36 == 0) {
+        if ((x % 36 == 0 || x % 36 == 1) && (y % 36 == 0 || y % 36 == 1)) {
             int tx = (int) x/36;
             int ty = (int) y/36;
 
-            boolean canUp = true, canDown = true, canLeft = true, canRight = true;
-
-            if (collisionTitle(tx, (int) (y+36) / 36)) canDown = false;
-            if (collisionTitle(tx, (int) (y-1)/36)) canUp = false;
-            if (collisionTitle((int) (x+36)/36, ty)) canRight = false;
-            if (collisionTitle((int) (x-1)/36, ty)) canLeft = false;
+            boolean canLeft = !collisionTitle(tx-1,ty);
+            boolean canRight = !collisionTitle(tx+1, ty);
+            boolean canUp = !collisionTitle(tx, ty-1);
+            boolean canDown = !collisionTitle(tx, ty+1);
 
             // catching player
             List<Player> players = handler.getGame().getGameState().getPlayers();

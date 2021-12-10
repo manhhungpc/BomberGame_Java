@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Balloon extends Creature {
 
-    public static final float BALLOON_SPEED = DEFAULT_SPEED - 0.5f;
+    public static final float BALLOON_SPEED = 2.0f;
 
     //private Game game;
     protected Animation aniDown;

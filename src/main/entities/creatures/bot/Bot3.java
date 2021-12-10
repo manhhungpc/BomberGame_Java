@@ -9,7 +9,6 @@ import main.worlds.World;
 import java.awt.*;
 
 public class Bot3 extends Balloon{
-    int count1 = 0, count2 = 0, count3 = 0;
     private World world;
     private boolean canUp = true, canDown = true, canLeft = true, canRight = true;
     private int tx, ty;
@@ -45,7 +44,6 @@ public class Bot3 extends Balloon{
         if (x % 36 == 0 && y % 36 == 0) {
             int tx = (int) x/36;
             int ty = (int) y/36;
-//            System.out.println(tx + " " + ty);
 
             boolean canLeft = !collisionTitle(tx-1,ty);
             boolean canRight = !collisionTitle(tx+1, ty);
@@ -55,7 +53,6 @@ public class Bot3 extends Balloon{
             while(true) {
                 int choose = random.nextInt(4);
                 if (choose == 0 && canDown) {
-//                    System.out.println(tx + " " + (ty+1));
                     xMove = 0;
                     yMove = speed;
                     return;
@@ -95,25 +92,21 @@ public class Bot3 extends Balloon{
             if (choose == 0 && !canDown && canJump(tx, ty+2)
                     && ty < world.getHeight()-2 && world.getCharTile(tx, ty+2) == ' ') {
                 y += Tile.TILE_HEIGHT * 2;
-//                System.out.println("jump down at " + tx + " " + ty);
                  return;
             }
             if (choose == 1 && !canUp && canJump(tx, ty-2)
                     && ty > 1 && world.getCharTile(tx, ty - 2) == ' ') {
                 y -= Tile.TILE_HEIGHT * 2;
-//                System.out.println("jump up at " + tx + " " + ty);
                 return;
             }
             if (choose == 2 && !canRight && canJump(tx+2, ty)
                     && tx < world.getWidth()-3 && world.getCharTile(tx + 2, ty) == ' ') {
                 x += Tile.TILE_WIDTH * 2;
-//                System.out.println("jump right at " + tx + " " + ty);
                 return;
             }
             if (choose == 3 && !canLeft && canJump(tx-2, ty)
                     && tx > 1 && world.getCharTile(tx - 2, ty) == ' ') {
                 x -= Tile.TILE_WIDTH * 2;
-//                System.out.println("jump left at " + tx + " " + ty);
             }
         }
     }
