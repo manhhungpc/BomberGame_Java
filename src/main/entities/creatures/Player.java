@@ -16,6 +16,7 @@ import java.util.List;
 public class Player extends Creature {
 
     public static final double INCREASE_PLAYER_SPEED = 1.0f;
+    public static final float PLAYER_SPEED = 2.5f;
 
     private final Animation aniDown, aniUp, aniLeft, aniRight;
 
@@ -23,6 +24,7 @@ public class Player extends Creature {
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, 32, 48);
+        speed = PLAYER_SPEED;
 
         bounds.x = 2;
         bounds.y = 20;
