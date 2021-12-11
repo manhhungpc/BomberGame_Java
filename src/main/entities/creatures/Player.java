@@ -5,7 +5,6 @@ import main.AI.PlayerAI;
 import main.Handler;
 import main.TimeManage;
 import main.entities.bomb.Bomb;
-import main.entities.bomb.BombSet;
 import main.entities.creatures.bot.Balloon;
 import main.entities.creatures.bot.Bot2;
 import main.entities.creatures.bot.Bot3;
@@ -26,14 +25,14 @@ import java.util.List;
 public class Player extends Creature {
 
     public static final double INCREASE_PLAYER_SPEED = 1.0f;
-    public static final float PLAYER_SPEED = 2.5f;
+    public static final float PLAYER_SPEED = 2.0f;
 //    public static final float PLAYER_SPEED = 1.0f;
 
     private final Animation aniDown, aniUp, aniLeft, aniRight;
 
     private boolean isAlive = true;
 
-    private boolean modeAI = true;
+    private boolean modeAI = false;
     private PlayerAI playerAI;
     private EnemyAI enemyAI;
 
@@ -90,7 +89,7 @@ public class Player extends Creature {
 
     }
 
-    private int lastDirect;
+    private int lastDirect = 3;
 
     private BufferedImage getCurrentAnimation(){
         if(xMove < 0) {
@@ -136,8 +135,8 @@ public class Player extends Creature {
 
     private void checkAlive() {
         List<Balloon> balloons = handler.getGame().getGameState().getBalloons();
-        for (int i = 0; i < balloons.size(); i++) {
-            if (isCollision((float) balloons.get(i).getCurrentTopLeftX(), (float) balloons.get(i).getCurrentTopLeftY())) {
+        for (Balloon balloon : balloons) {
+            if (isCollision((float) balloon.getCurrentTopLeftX(), (float) balloon.getCurrentTopLeftY())) {
                 isAlive = false;
                 return;
             }
@@ -217,12 +216,14 @@ public class Player extends Creature {
     }
 
     private boolean isPlayerNearBot(float playerX, float playerY, float botX, float botY) {
-        return Math.abs(playerX - botX) <= Tile.TILE_WIDTH * 1.9
-                && Math.abs(playerY - botY) <= Tile.TILE_HEIGHT * 1.9;
+        return Math.abs(playerX - botX) <= Tile.TILE_WIDTH * 2
+                && Math.abs(playerY - botY) <= Tile.TILE_HEIGHT * 2;
     }
 
     private void autoMove() {
         if (!modeAI) return;
+
+        if (getLeftX() % 36 != 0 || getUpY() % 36 != 0) return;
 
         if (world == null) world = handler.getGame().getGameState().getWorld();
 
@@ -238,15 +239,16 @@ public class Player extends Creature {
 
         if (!isRunningFromBomb) {
             lastSafeArea = null;
+            isRunToCorner = false;
             if (isPlayerNearBot(getLeftX(), getUpY(), balloons.get(0).getX(), balloons.get(0).getY())) {
                 playerAI.stop();
             } else {
                 catchingBalloon(balloons.get(0));
+//                System.out.println("catch");
             }
         } else {
             if (TimeManage.timeNow() >= timeStopRunningFromBomb) {
                 isRunningFromBomb = false;
-                return;
             }
 
             if (lastSafeArea == null || !isSafe()) {
@@ -268,17 +270,19 @@ public class Player extends Creature {
         movePlayerToPosition(tx, ty);
     }
 
+    private boolean isRunToCorner = false;
+
     private void runToSafeArea() {
+
         int playerX = (int) getLeftX() / Tile.TILE_WIDTH;
         int playerY = (int) getUpY() / Tile.TILE_HEIGHT;
 
         if (lastSafeArea != null) {
-//            if (playerX == lastSafeArea.x && playerY == lastSafeArea.y) {
-//                playerAI.stop();
-//                lastSafeArea = null;
-//            } else {
+            if (!isRunToCorner) {
+                runToCorner();
+            } else {
                 movePlayerToPosition(lastSafeArea.x, lastSafeArea.y);
-//            }
+            }
         } else {
             List<World.Position> safePositionList = new ArrayList<>();
 
@@ -299,8 +303,10 @@ public class Player extends Creature {
                 playerY = bomb.flameJ();
                 System.out.println("bomb at " + playerX + " " + playerY);
             }
-            tryAdd(safePositionList, playerX - 2, playerY);
-//            tryAdd(safePositionList, playerX + 2, playerY);
+            if (!tryAdd(safePositionList, playerX - 2, playerY)) {
+                tryAdd(safePositionList, playerX - 3, playerY);
+            }
+            tryAdd(safePositionList, playerX + 2, playerY);
 //            tryAdd(safePositionList, playerX, playerY - 2);
 //            tryAdd(safePositionList, playerX, playerY + 2);
 //            tryAdd(safePositionList, playerX - 1, playerY - 1);
@@ -314,15 +320,23 @@ public class Player extends Creature {
             System.out.println(lastSafeArea.x + " " + lastSafeArea.y);
 
 //            System.out.println(bestPosition.x + " " + bestPosition.y);
-            movePlayerToPosition(bestPosition.x, bestPosition.y);
+
+            System.out.println(isRunToCorner);
+            if (!isRunToCorner) {
+                runToCorner();
+            } else {
+                movePlayerToPosition(bestPosition.x, bestPosition.y);
+            }
         }
     }
 
-    private void tryAdd(List<World.Position> list, int placeX, int placeY) {
-        if (!validPlaceX(placeX) || !validPlaceY(placeY)) return;
+    private boolean tryAdd(List<World.Position> list, int placeX, int placeY) {
+        if (!validPlaceX(placeX) || !validPlaceY(placeY)) return false;
         if (world.getCharTile(placeX, placeY) == ' ') {
             list.add(new World.Position(placeX, placeY));
+            return true;
         }
+        return false;
     }
 
     private boolean validPlaceX(int placeX) {
@@ -367,40 +381,52 @@ public class Player extends Creature {
     }
 
     private void movePlayerToPosition(int tx, int ty) {
+
         int playerX = (int) getLeftX() / Tile.TILE_WIDTH;
         int playerY = (int) getUpY() / Tile.TILE_HEIGHT;
 
         List<World.Position> path = enemyAI.path(playerX, playerY, tx, ty);
-//        System.out.println(path);
+
+
         if (path.size() == 0) return;
         while (path.get(path.size() - 1).x == playerX && path.get(path.size()-1).y == playerY) {
             path.remove(path.size() -1);
             if (path.size() == 0) return;
         }
+
+//        System.out.println(path);
+
         World.Position catchingPosition = path.get(path.size() - 1);
         int newPlayerX = catchingPosition.x;
         int newPlayerY = catchingPosition.y;
 
+//        System.out.println(playerX + " " + newPlayerX + " " + playerY + " " + newPlayerY);
+//        System.out.println(getLeftX() + " " + getUpY());
+
 
         if (newPlayerY == playerY && newPlayerX > playerX) {
+//            System.out.println("move right");
             playerAI.stop();
             playerAI.moveRight();
             return;
         }
 
         if (newPlayerY == playerY && newPlayerX < playerX) {
+//            System.out.println("move left");
             playerAI.stop();
             playerAI.moveLeft();
             return;
         }
 
         if (newPlayerX == playerX && newPlayerY > playerY) {
+//            System.out.println("move down");
             playerAI.stop();
             playerAI.moveDown();
             return;
         }
 
         if (newPlayerX == playerX && newPlayerY < playerY) {
+//            System.out.println("move up");
             playerAI.stop();
             playerAI.moveUp();
             return;
@@ -410,5 +436,45 @@ public class Player extends Creature {
     private boolean isSafe() {
         return Math.abs(getLeftX() - lastSafeArea.x * Tile.TILE_WIDTH) <= 2
                 && Math.abs(getUpY() - lastSafeArea.y * Tile.TILE_HEIGHT) <= 2;
+    }
+
+    private void runToCorner() {
+        int playerX = (int) getLeftX() / 36 * 36;
+        int playerY = (int) getUpY() / 36 * 36;
+//        System.out.println("corner " + playerX / 36 + " " + playerY / 36);
+
+        System.out.println(playerX + " " + playerY + " " + getLeftX() + " " + getUpY());
+        if (Math.abs(playerX - getLeftX()) <= 2 && Math.abs(playerY - getUpY()) <= 2) {
+            isRunToCorner = true;
+            return;
+        }
+
+        if (getUpY() == playerY && getLeftX() < playerX) {
+//            System.out.println("right");
+            playerAI.stop();
+            playerAI.moveRight();
+            return;
+        }
+
+        if (getUpY() == playerY && getLeftX() > playerX) {
+//            System.out.println("left");
+            playerAI.stop();
+            playerAI.moveLeft();
+            return;
+        }
+
+        if (getLeftX() == playerX && getUpY() < playerY) {
+//            System.out.println("down");
+            playerAI.stop();
+            playerAI.moveDown();
+            return;
+        }
+
+        if (getLeftX() == playerX && getUpY() > playerY) {
+//            System.out.println("up");
+            playerAI.stop();
+            playerAI.moveUp();
+            return;
+        }
     }
 }

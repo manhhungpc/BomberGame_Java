@@ -58,7 +58,6 @@ public class BombSet extends Entity {
             Bomb newBomb = new Bomb(handler, gameState, x, y, 36, 36);
             if (!hasDuplicate(newBomb))
                 bombList.add(newBomb);
-//            System.out.println(x + " " + y);
 
             bombDone = true;
         }

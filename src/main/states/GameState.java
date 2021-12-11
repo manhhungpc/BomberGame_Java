@@ -241,7 +241,7 @@ public class GameState extends State {
             if (!playerI.isAlive()) {
 
                 // add player die animation
-                CreatureDieAnimation temp = new CreatureDieAnimation(100, Assets.playerDie, 30, playerI.getX(), playerI.getY());
+                CreatureDieAnimation temp = new CreatureDieAnimation(200, Assets.playerDie, 35, playerI.getX(), playerI.getY());
                 creatureDieAnimations.add(temp);
 
                 players.remove(i);

@@ -21,6 +21,7 @@ public class Assets {
     public static BufferedImage[] bot3_left, bot3_right, bot3_up, bot3_down;
     public static BufferedImage[] bot4_left, bot4_right, bot4_up, bot4_down;
     public static BufferedImage[] portalOpen, portalClose;
+    public static BufferedImage playerDie1, playerDie2, playerDie3, playerDie4;
 
     private static SpriteSheet botUncutSheet;
 
@@ -211,55 +212,80 @@ public class Assets {
     }
 
     private static void setPlayerImage() {
-        player = ImageLoader.loadImage("/image/bomber-down.png");
-        player_down = new BufferedImage[2];
-        player_up = new BufferedImage[2];
-        player_right = new BufferedImage[2];
-        player_left = new BufferedImage[2];
+        SpriteSheet playerSheet = new SpriteSheet(ImageLoader.loadImage("/image/uncut/bomber3.png"));
 
-        player_down[0] = ImageLoader.loadImage("/image/bomber-down-left.png");
-        player_down[1] = ImageLoader.loadImage("/image/bomber-down-right.png");
+//        player = ImageLoader.loadImage("/image/bomber-down.png");
+        player = playerSheet.crop(0, 48, 32, 48);
+        player_down = new BufferedImage[4];
+        for (int i = 0; i < 4; i++) {
+            player_down[i] = playerSheet.crop(i * 32, 48, 32, 48);
+        }
 
-        player_up[0] = ImageLoader.loadImage("/image/bomber-up-left.png");
-        player_up[1] = ImageLoader.loadImage("/image/bomber-up-right.png");
+        player_up = new BufferedImage[4];
+        for (int i = 0; i < 4; i++) {
+            player_up[i] = playerSheet.crop(i * 32, 0, 32, 48);
+        }
 
-        player_left[0] = ImageLoader.loadImage("/image/bomber-left-up.png");
-        player_left[1] = ImageLoader.loadImage("/image/bomber-left-walk.png");
+        player_right = new BufferedImage[4];
+        for (int i = 0; i < 4; i++) {
+            player_right[i] = playerSheet.crop(i * 32, 3 * 48, 32, 48);
+        }
 
-        player_right[0] = ImageLoader.loadImage("/image/bomber-right-up.png");
-        player_right[1] = ImageLoader.loadImage("/image/bomber-right-walk.png");
+        player_left = new BufferedImage[4];
+        for (int i = 0; i < 4; i++) {
+            player_left[i] = playerSheet.crop(i * 32, 2 * 48, 32, 48);
+        }
+
+//        player_down[0] = ImageLoader.loadImage("/image/bomber-down-left.png");
+//        player_down[1] = ImageLoader.loadImage("/image/bomber-down-right.png");
+//
+//        player_up[0] = ImageLoader.loadImage("/image/bomber-up-left.png");
+//        player_up[1] = ImageLoader.loadImage("/image/bomber-up-right.png");
+//
+//        player_left[0] = ImageLoader.loadImage("/image/bomber-left.png");
+//        player_left[0] = ImageLoader.loadImage("/image/bomber-left-up.png");
+//        player_left[1] = ImageLoader.loadImage("/image/bomber-left-walk.png");
+//
+//        player_right[0] = ImageLoader.loadImage("/image/bomber-right-up.png");
+//        player_right[1] = ImageLoader.loadImage("/image/bomber-right-walk.png");
 
     }
 
     private static void setPlayerDieImage() {
-        playerDie = new BufferedImage[27];
+        SpriteSheet playerSheet = new SpriteSheet(ImageLoader.loadImage("/image/uncut/bomber3.png"));
+        playerDie1 = playerSheet.crop(0, 4 * 48, 32, 48);
+        playerDie2 = playerSheet.crop(32, 4 * 48, 32, 48);
+        playerDie3 = playerSheet.crop(2 * 32, 4 * 48, 32, 48);
+        playerDie4 = playerSheet.crop(3 * 32, 4 * 48, 32, 48);
+
+        playerDie = new BufferedImage[20];
         playerDie[0] = empty;
-        playerDie[1] = ImageLoader.loadImage("/image/bomber-die.png");
+        playerDie[1] = playerDie1;
         playerDie[2] = empty;
-        playerDie[3] = playerDie[1];
+        playerDie[3] = playerDie1;
         playerDie[4] = empty;
-        playerDie[5] = ImageLoader.loadImage("/image/bomber-die2.png");
+        playerDie[5] = playerDie2;
         playerDie[6] = empty;
-        playerDie[7] = playerDie[5];
+        playerDie[7] = playerDie2;
         playerDie[8] = empty;
-        playerDie[9] = ImageLoader.loadImage("/image/bomber-die3.png");
+        playerDie[9] = playerDie3;
         playerDie[10] = empty;
-        playerDie[11] = playerDie[9];
+        playerDie[11] = playerDie3;
         playerDie[12] = empty;
-        playerDie[13] = ImageLoader.loadImage("/image/bomber-die4.png");
-        playerDie[14] = playerDie[13];
-        playerDie[15] = playerDie[13];
-        playerDie[16] = playerDie[13];
-        playerDie[17] = playerDie[13];
-        playerDie[18] = playerDie[13];
-        playerDie[19] = playerDie[13];
-        playerDie[20] = playerDie[13];
-        playerDie[21] = playerDie[13];
-        playerDie[22] = playerDie[13];
-        playerDie[23] = playerDie[13];
-        playerDie[24] = playerDie[13];
-        playerDie[25] = playerDie[13];
-        playerDie[26] = playerDie[13];
+        playerDie[13] = playerDie4;
+        playerDie[14] = empty;
+        playerDie[15] = playerDie4;
+        playerDie[16] = empty;
+        playerDie[17] = playerDie4;
+        playerDie[18] = empty;
+        playerDie[19] = playerDie4;
+//        playerDie[20] = empty;
+//        playerDie[21] = playerDie4;
+//        playerDie[22] = empty;
+//        playerDie[23] = playerDie4;
+//        playerDie[24] = empty;
+//        playerDie[25] = playerDie4;
+//        playerDie[26] = empty;
     }
 
     private static void setBot2Image() {
