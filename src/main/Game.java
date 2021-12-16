@@ -1,5 +1,6 @@
 package main;
 
+import main.Sound.SoundEffect;
 import main.display.Display;
 import main.gfx.Assets;
 import main.input.KeyManager;
@@ -36,6 +37,8 @@ public class Game implements Runnable {
     //Handler
     private Handler handler;
 
+    public static SoundEffect backgroundMusic = new SoundEffect(SoundEffect.BACKGROUND_THEME);
+
     public Game(String title, int width, int height){
         this.width = width;
         this.height = height;
@@ -54,6 +57,8 @@ public class Game implements Runnable {
         gameState = new GameState(handler);
         menuState = new MenuState(handler);
         State.setState(gameState);
+      //  backgroundMusic.play();
+        backgroundMusic.loop();
     }
 
     private int x = 0;

@@ -17,7 +17,11 @@ public class GameState extends State {
 
     public GameState(Handler handler){
         super(handler);
+<<<<<<< Updated upstream
         world = new World("map/level1.txt");
+=======
+        world = new World("F:\\CodeUET\\Java\\OOP\\BomberGame_Java\\src\\resource\\map\\level2.txt");
+>>>>>>> Stashed changes
         handler.setWorld(world);
         player = new Player(handler, 100, 100);
     }

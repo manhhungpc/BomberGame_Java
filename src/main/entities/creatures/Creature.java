@@ -1,6 +1,11 @@
 package main.entities.creatures;
 
 import main.Handler;
+<<<<<<< Updated upstream
+=======
+import main.Sound.SoundEffect;
+import main.entities.bomb.BombSet;
+>>>>>>> Stashed changes
 import main.entities.Entity;
 import main.tiles.Tile;
 
@@ -13,6 +18,8 @@ public abstract class Creature extends Entity {
     protected int health;
     protected float speed;
     protected float xMove, yMove;
+
+    private static SoundEffect power = new SoundEffect(SoundEffect.POWER_UP);
 
     public Creature(Handler handler, float x, float y, int width, int height) {
         super(handler, x, y, width, height);
@@ -52,6 +59,30 @@ public abstract class Creature extends Entity {
         if(yMove < 0){
             //Move up
             int ty = (int) (y + yMove + bounds.y) / Tile.TILE_HEIGHT;
+<<<<<<< Updated upstream
+=======
+
+            char currentTileChar = handler.getWorld().getCharTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty);
+            if (currentTileChar == 'g') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                if (Flame.flameSize < Flame.MAX_FLAME_SIZE) {
+                    Flame.flameSize++;
+                    power.play();
+                }
+
+            }
+            if (currentTileChar == 'e') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.INCREASE_PLAYER_SPEED;
+                power.play();
+            }
+            if (currentTileChar == 'n') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                BombSet.maxBombNumber++;
+                power.play();
+            }
+
+>>>>>>> Stashed changes
             if(!collisionTitle((int) (x + bounds.x) / Tile.TILE_WIDTH, ty) &&
                     !collisionTitle((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, ty)){
                 y += yMove;
@@ -63,6 +94,28 @@ public abstract class Creature extends Entity {
         if(yMove > 0){
             //Move down
             int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILE_HEIGHT;
+<<<<<<< Updated upstream
+=======
+
+            char currentTileChar = handler.getWorld().getCharTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty);
+            if (currentTileChar == 'g') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                if (Flame.flameSize < Flame.MAX_FLAME_SIZE) {Flame.flameSize++;
+                    power.play();
+                }
+            }
+            if (currentTileChar == 'e') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                handler.getGame().getGameState().getPlayers().get(0).speed += Player.INCREASE_PLAYER_SPEED;
+                power.play();
+            }
+            if (currentTileChar == 'n') {
+                handler.getWorld().setTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty, ' ');
+                BombSet.maxBombNumber++;
+                power.play();
+            }
+
+>>>>>>> Stashed changes
             if(!collisionTitle((int) (x + bounds.x) / Tile.TILE_WIDTH, ty) &&
                     !collisionTitle((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, ty)){
                 y += yMove;
