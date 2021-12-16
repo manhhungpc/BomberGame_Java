@@ -9,6 +9,7 @@ import main.entities.creatures.bot.Bot3;
 import main.entities.creatures.bot.Bot4;
 import main.gfx.Assets;
 import main.gfx.CreatureDieAnimation;
+import main.sound.SoundEffect;
 import main.states.GameState;
 import main.tiles.Tile;
 import main.worlds.World;
@@ -28,6 +29,9 @@ public class BombSet extends Entity {
     private boolean bombDone;
     private GameState gameState;
     private World world;
+
+    public static SoundEffect bombSet = new SoundEffect(SoundEffect.PLACE_BOMB);
+    public static SoundEffect enemyDead = new SoundEffect(SoundEffect.ENEMY_DEAD);
 
     public BombSet(Handler handler, GameState gameState, float x, float y, int width, int height, Player player) {
         super(handler, x, y, width, height);
@@ -135,6 +139,8 @@ public class BombSet extends Entity {
                 handler.getGame().getGameState().creatureDieAnimations.add(balloonDie);
 
                 balloonList.remove(i);
+
+                enemyDead.play();
             }
         }
 

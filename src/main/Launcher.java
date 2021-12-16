@@ -4,7 +4,9 @@ import main.tiles.Tile;
 import main.worlds.World;
 
 public class Launcher {
-    public static String PATH = ".\\src\\resource\\map\\level1.txt";
+    private static final String LEVEL1 = ".\\src\\resource\\map\\level1.txt";
+    private static final String LEVEL2 = ".\\src\\resource\\map\\level2.txt";
+    public static String PATH;
     private static int width, height;
 
     public static void findWidthHeight() {
@@ -14,6 +16,15 @@ public class Launcher {
     }
 
     public static void main(String[] args){
+        findWidthHeight();
+        Game game = new Game("Tile Game!", width, height);
+        game.start();
+    }
+
+    public static void launch(int level) {
+        if (level == 1) PATH = LEVEL1;
+        else PATH = LEVEL2;
+
         findWidthHeight();
         Game game = new Game("Tile Game!", width, height);
         game.start();

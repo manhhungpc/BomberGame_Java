@@ -1,6 +1,7 @@
 package main.gfx;
 
 import main.TimeManage;
+import main.sound.SoundEffect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,6 +13,8 @@ public class CreatureDieAnimation extends Animation {
     private final long startTime, time;
     private boolean isAlive = true;
     private int width = 0, height = 0;
+
+    public static SoundEffect playerDie = new SoundEffect(SoundEffect.PLAYER_DEAD);
 
     public CreatureDieAnimation(int speed, BufferedImage[] frames, long time, float x, float y) {
         super(speed, frames);

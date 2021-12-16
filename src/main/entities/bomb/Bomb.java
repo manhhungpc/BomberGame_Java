@@ -6,6 +6,7 @@ import main.entities.creatures.Creature;
 import main.entities.creatures.Player;
 import main.gfx.Animation;
 import main.gfx.Assets;
+import main.sound.SoundEffect;
 import main.states.GameState;
 import main.tiles.Tile;
 import main.worlds.World;
@@ -27,6 +28,8 @@ public class Bomb extends Creature {
 
     private boolean isPlayerOutOfBombTile = false;
 
+    public static SoundEffect explosion;
+
     public Bomb(Handler handler, GameState gameState, float x, float y, int width, int height) {
         super(handler, ((int) x ) / 36 * 36, ((int) y ) / 36 * 36, width, height);
         bombGif = new Animation(250, Assets.bombGif);
@@ -36,6 +39,8 @@ public class Bomb extends Creature {
 
         // create bomb Tile (not solid)
         handler.getWorld().setTile(flameI(), flameJ(), 'v');
+
+        explosion = null;
     }
 
 
@@ -85,7 +90,14 @@ public class Bomb extends Creature {
                 g.drawImage(getCurrentAnimation(), (int) x, (int) y, width, height, null);
         }
 
-        if(flameAlive) flame.render(g);
+        if(flameAlive) {
+            flame.render(g);
+
+            if (explosion == null) {
+                explosion = new SoundEffect(SoundEffect.EXPLOSION);
+                explosion.play();
+            }
+        }
     }
 
     private BufferedImage getCurrentAnimation(){
