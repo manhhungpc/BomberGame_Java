@@ -1,10 +1,10 @@
 package main.entities.bomb;
 
 import main.Handler;
+import main.TimeManage;
 import main.entities.Entity;
 import main.gfx.Animation;
 import main.gfx.Assets;
-import main.gfx.CreatureDieAnimation;
 import main.states.GameState;
 import main.worlds.World;
 
@@ -13,56 +13,60 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Flame extends Entity {
+public class Bot4Fire extends Entity {
 
     public static int flameSize = 1;
     public static final int MAX_FLAME_SIZE = 5;
+    public static final long FIRE_TIME = Bomb.FLAME_TIME;
 
     private Animation flameGifLeft, flameGifRight, flameGifUp, flameGifDown, flameGifMid;
     private int left, right, up, down;
     private final GameState gameState;
     private final List<World.Position> changePositions = new ArrayList<>();
-    private boolean createBrickDie = false;
+    private final int direct;
+    private final long deadTime;
+    public boolean isAlive;
 
-    public Flame(Handler handler, GameState gameState, float x, float y, int width, int height, Bomb bomb) {
+    public Bot4Fire(Handler handler, GameState gameState, float x, float y, int width, int height, int direct) {
         super(handler, x, y, width, height);
         this.gameState = gameState;
+        this.direct = direct;
 
         setFlame4Size();
+        System.out.println(left);
         setAnimation();
 
-        super.x = bomb.getX();
-        super.y = bomb.getY();
+        super.x = x;
+        super.y = y;
+
+        deadTime = TimeManage.timeNow() + FIRE_TIME;
+        isAlive = true;
     }
 
     @Override
     public void tick() {
         flameGifMid.tick();
-        if (left != 0) flameGifLeft.tick();
-        if (right != 0) flameGifRight.tick();
-        if (up != 0) flameGifUp.tick();
-        if (down != 0) flameGifDown.tick();
+        if (left != 0 && direct == 0) flameGifLeft.tick();
+        else if (right != 0 && direct == 1) flameGifRight.tick();
+        else if (up != 0 && direct == 2) flameGifUp.tick();
+        else if (down != 0 && direct == 3) flameGifDown.tick();
+
+        if (TimeManage.timeNow() == deadTime) {
+            isAlive = false;
+        }
     }
 
     @Override
     public void render(Graphics g) {
-//        g.drawImage(Assets.explosion0, (int) x, (int) y, 36, 36, null);
-        g.drawImage(getCurrentAnimationMid(), (int) x, (int) y, 36, 36, null);
-//        System.out.print("mid " + flameGifMid.getIndex());
-        if (left != 0) {
-//            System.out.println(", left" + flameGifLeft.getIndex());
+//        g.drawImage(getCurrentAnimationMid(), (int) x, (int) y, 36, 36, null);
+        if (left != 0 && direct == 0) {
             g.drawImage(getCurrentAnimationLeft(), (int) x-left*36, (int) y, left*36, 36, null);
-        }
-        if (right != 0)
+        }else if (right != 0 && direct == 1) {
             g.drawImage(getCurrentAnimationRight(), (int) x+36, (int) y, right*36, 36, null);
-        if (up != 0)
+        } else if (up != 0 && direct == 2) {
             g.drawImage(getCurrentAnimationUp(), (int) x, (int) y-up*36, 36, up*36, null);
-        if (down != 0)
+        } else if (down != 0 && direct == 3) {
             g.drawImage(getCurrentAnimationDown(), (int) x, (int) y+36, 36, down*36, null);
-
-        if (!createBrickDie) {
-            createBrickDie();
-            createBrickDie = true;
         }
     }
 
@@ -108,16 +112,23 @@ public class Flame extends Entity {
 
     public void setAnimation() {
         flameGifMid = new Animation(100, Assets.flameMid());
-        if (this.left != 0) flameGifLeft = new Animation(100, Assets.flameLeft(this.left));
-        if (this.right != 0) flameGifRight = new Animation(100, Assets.flameRight(this.right));
-        if (this.up != 0) flameGifUp = new Animation(100, Assets.flameUp(this.up));
-        if (this.down != 0) flameGifDown = new Animation(100, Assets.flameDown(this.down));
+        if (this.left != 0 && direct == 0) {
+            flameGifLeft = new Animation(100, Assets.flameLeft(this.left));
+        }
+        else if (this.right != 0 && direct == 1) {
+            flameGifRight = new Animation(100, Assets.flameRight(this.right));
+        }
+        else if (this.up != 0 && direct == 2) {
+            flameGifUp = new Animation(100, Assets.flameUp(this.up));
+        } else if (this.down != 0 && direct == 3) {
+            flameGifDown = new Animation(100, Assets.flameDown(this.down));
+        }
     }
 
     private boolean haveDuplicatePosition(List<World.Position> changePositions, int x, int y) {
         for (int i = 0; i < changePositions.size(); i++) {
             if (x == changePositions.get(i).x
-                && y == changePositions.get(i).y) {
+                    && y == changePositions.get(i).y) {
                 return true;
             }
         }
@@ -172,17 +183,10 @@ public class Flame extends Entity {
             }
             down++;
         }
-    }
 
-    private void createBrickDie() {
-        for (int i = 0; i < changePositions.size(); i++) {
-            World.Position position = changePositions.get(i);
-            int xx = position.x;
-            int yy = position.y;
-            if (gameState.getWorld().getCharTile(xx, yy) == '*') {
-                gameState.getCreatureDieAnimations().add(new CreatureDieAnimation(200, Assets.brickDie, 5, xx * 36, yy * 36, 36, 36));
-            }
-        }
+        if (direct != 0) left = 0;
+        if (direct != 1) right = 0;
+        if (direct != 2) up = 0;
+        if (direct != 3) down = 0;
     }
-
 }

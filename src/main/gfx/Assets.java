@@ -214,8 +214,8 @@ public class Assets {
     private static void setPlayerImage() {
         SpriteSheet playerSheet = new SpriteSheet(ImageLoader.loadImage("/image/uncut/bomber3.png"));
 
-//        player = ImageLoader.loadImage("/image/bomber-down.png");
         player = playerSheet.crop(0, 48, 32, 48);
+
         player_down = new BufferedImage[4];
         for (int i = 0; i < 4; i++) {
             player_down[i] = playerSheet.crop(i * 32, 48, 32, 48);
@@ -235,20 +235,6 @@ public class Assets {
         for (int i = 0; i < 4; i++) {
             player_left[i] = playerSheet.crop(i * 32, 2 * 48, 32, 48);
         }
-
-//        player_down[0] = ImageLoader.loadImage("/image/bomber-down-left.png");
-//        player_down[1] = ImageLoader.loadImage("/image/bomber-down-right.png");
-//
-//        player_up[0] = ImageLoader.loadImage("/image/bomber-up-left.png");
-//        player_up[1] = ImageLoader.loadImage("/image/bomber-up-right.png");
-//
-//        player_left[0] = ImageLoader.loadImage("/image/bomber-left.png");
-//        player_left[0] = ImageLoader.loadImage("/image/bomber-left-up.png");
-//        player_left[1] = ImageLoader.loadImage("/image/bomber-left-walk.png");
-//
-//        player_right[0] = ImageLoader.loadImage("/image/bomber-right-up.png");
-//        player_right[1] = ImageLoader.loadImage("/image/bomber-right-walk.png");
-
     }
 
     private static void setPlayerDieImage() {
@@ -279,13 +265,6 @@ public class Assets {
         playerDie[17] = playerDie4;
         playerDie[18] = empty;
         playerDie[19] = playerDie4;
-//        playerDie[20] = empty;
-//        playerDie[21] = playerDie4;
-//        playerDie[22] = empty;
-//        playerDie[23] = playerDie4;
-//        playerDie[24] = empty;
-//        playerDie[25] = playerDie4;
-//        playerDie[26] = empty;
     }
 
     private static void setBot2Image() {
@@ -375,13 +354,13 @@ public class Assets {
 //        brickDie[6] = brickSheet.crop(98,98);
 //        brickDie[7] = brickSheet.crop(98,98);
         brickDie[0] = empty;
-        brickDie[1] = brick;
+        brickDie[1] = empty;
         brickDie[2] = empty;
-        brickDie[3] = brick;
+        brickDie[3] = empty;
         brickDie[4] = empty;
-        brickDie[5] = brick;
+        brickDie[5] = empty;
         brickDie[6] = empty;
-        brickDie[7] = brick;
+        brickDie[7] = empty;
     }
 
     private static void setPortalImage() {

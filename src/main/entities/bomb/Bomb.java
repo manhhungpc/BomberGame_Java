@@ -17,7 +17,7 @@ import java.util.List;
 public class Bomb extends Creature {
 
     public static final int BOMB_TIME = 20;
-    private static final int FLAME_TIME = 3;
+    public static final int FLAME_TIME = 3;
 
     private final Animation bombGif;
     private long startTime;

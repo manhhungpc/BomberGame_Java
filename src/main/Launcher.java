@@ -4,7 +4,7 @@ import main.tiles.Tile;
 import main.worlds.World;
 
 public class Launcher {
-    public static String PATH = ".\\src\\resource\\map\\level2.txt";
+    public static String PATH = ".\\src\\resource\\map\\level1.txt";
     private static int width, height;
 
     public static void findWidthHeight() {
