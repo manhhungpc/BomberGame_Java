@@ -1,6 +1,8 @@
 package main.entities.creatures;
 
 import main.Handler;
+import main.Sound.SoundEffect;
+import main.entities.bomb.BombSet;
 import main.entities.bomb.BombSet;
 import main.entities.Entity;
 import main.entities.bomb.Flame;

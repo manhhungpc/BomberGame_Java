@@ -1,6 +1,7 @@
 package main.entities.bomb;
 
 import main.Handler;
+import main.Sound.SoundEffect;
 import main.TimeManage;
 import main.entities.creatures.Creature;
 import main.entities.creatures.Player;
@@ -28,6 +29,9 @@ public class Bomb extends Creature {
 
     private boolean isPlayerOutOfBombTile = false;
 
+    public static SoundEffect explosion = new SoundEffect(SoundEffect.EXPLOSION);
+
+
     public Bomb(Handler handler, GameState gameState, float x, float y, int width, int height) {
         super(handler, ((int) x ) / 36 * 36, ((int) y ) / 36 * 36, width, height);
         bombGif = new Animation(250, Assets.bombGif);
@@ -53,6 +57,8 @@ public class Bomb extends Creature {
         long elapsedTime = timeNow - startTime;
 
         if (elapsedTime >= BOMB_TIME)  {
+
+            explosion.play();
 
             // delete bomb tile
             handler.getWorld().setTile((int) (getFlame().getX() / 36), (int) (getFlame().getY() / 36), ' ');
@@ -150,8 +156,8 @@ public class Bomb extends Creature {
                 && player.getLeftX() <= flameX + (flame.getRight() + 1) * Tile.TILE_WIDTH)
                 ||
                 (player.getRightX() >= flameX && player.getLeftX() <= flameX + Tile.TILE_WIDTH
-                && player.getDownY() >= flameY - flame.getUp() * Tile.TILE_HEIGHT
-                && player.getUpY() <= flameY + (flame.getDown() + 1) * Tile.TILE_HEIGHT);
+                        && player.getDownY() >= flameY - flame.getUp() * Tile.TILE_HEIGHT
+                        && player.getUpY() <= flameY + (flame.getDown() + 1) * Tile.TILE_HEIGHT);
     }
 
     private void deletePlayerAtFlame() {

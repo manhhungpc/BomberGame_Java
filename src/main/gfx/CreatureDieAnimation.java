@@ -1,5 +1,6 @@
 package main.gfx;
 
+import main.Sound.SoundEffect;
 import main.TimeManage;
 
 import java.awt.*;
@@ -11,6 +12,8 @@ public class CreatureDieAnimation extends Animation {
     private float y;
     private final long startTime, time;
     private boolean isAlive = true;
+
+    public static SoundEffect playerDie = new SoundEffect(SoundEffect.PLAYER_DEAD);
 
     public CreatureDieAnimation(int speed, BufferedImage[] frames, long time, float x, float y) {
         super(speed, frames);
@@ -26,6 +29,7 @@ public class CreatureDieAnimation extends Animation {
             super.tick();
 
             long elapseTime = TimeManage.timeNow() - startTime;
+            playerDie.play();
             if (elapseTime >= time) {
                 isAlive = false;
             }

@@ -1,6 +1,7 @@
 package main.entities.bomb;
 
 import main.Handler;
+import main.Sound.SoundEffect;
 import main.entities.Entity;
 import main.entities.creatures.bot.Balloon;
 import main.entities.creatures.Player;
@@ -24,6 +25,9 @@ public class BombSet extends Entity {
     private boolean bombDone;
     private GameState gameState;
     private World world;
+    public static SoundEffect bombSet = new SoundEffect(SoundEffect.PLACE_BOMB);
+    public static SoundEffect enemyDead = new SoundEffect(SoundEffect.ENEMY_DEAD);
+
 
     public BombSet(Handler handler, GameState gameState, float x, float y, int width, int height, Player player) {
         super(handler, x, y, width, height);
@@ -42,7 +46,6 @@ public class BombSet extends Entity {
         x = player.getX()+2+14;
         y = player.getY()+20+14;
 
-
         for (int i = bombList.size()-1; i >= 0; i--) {
             if (!bombList.get(i).isAlive()) {
                 momentAfterExploding(bombList.get(i));
@@ -57,6 +60,8 @@ public class BombSet extends Entity {
 //            System.out.println(x + " " + y);
 
             bombDone = true;
+            bombSet.play();
+
         }
         if (!bombedRequest) {
             bombDone = false;
@@ -122,6 +127,7 @@ public class BombSet extends Entity {
             double balloonY = balloonList.get(i).getCurrentTopLeftY();
             if (enemyIsAtFlame(flame, balloonX, balloonY)) {
                 balloonList.remove(i);
+                enemyDead.play();
             }
         }
 
